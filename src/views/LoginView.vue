@@ -1,9 +1,6 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 
-export default defineComponent({
-  name: 'LoginView',
-  setup() {
     const isRegisterView = ref<boolean>(false);
 
     const showRegisterForm = () => {
@@ -14,13 +11,6 @@ export default defineComponent({
       isRegisterView.value = false;
     };
 
-    return {
-      isRegisterView,
-      showRegisterForm,
-      showLoginForm,
-    };
-  },
-});
 </script>
 
 <template>

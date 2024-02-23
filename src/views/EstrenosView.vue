@@ -1,7 +1,5 @@
-<script lang="ts">
-export default {
-    name: "EstrenosView"
-}
+<script setup lang="ts">
+
 </script>
 
 <template>

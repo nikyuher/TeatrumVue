@@ -1,8 +1,23 @@
 <script setup lang="ts">
+import TargetaGenero from '@/components/TargetaGenero.vue'
 
+const obtenerGenero = (contexto: string): string => {
 
-import EjemploComponent from '@/components/EjemploComponent.vue'
-
+    switch (contexto) {
+        case 'comedia':
+            return 'Comedia';
+        case 'terror':
+            return 'Terror';
+        case 'drama':
+            return 'Drama';
+        case 'musical':
+            return 'Musical';
+        case 'tragedia':
+            return 'Tragedia';
+        default:
+            return '';
+    }
+}
 </script>
 
 <template>
@@ -19,45 +34,13 @@ import EjemploComponent from '@/components/EjemploComponent.vue'
                         </div>
                     </div>
                 </section>
-                <section>
-                    <EjemploComponent></EjemploComponent>
-                    <div class="comedia" data-genero="comedia">
-                        <router-link to="/genero" class="cargarContenido" data-genero="comedia">
-                            <h2>Comedia</h2>
+                <section v-for="contexto in ['comedia', 'terror', 'drama', 'musical', 'tragedia']" :key="contexto">
+                    <div :class="contexto">
+                        <router-link to="/genero">
+                            <h2>{{ obtenerGenero(contexto) }}</h2>
                         </router-link>
-                        <div class="contenedorGeneros"></div>
-                    </div>
-                </section>
-                <section>
-                    <div class="terror" data-genero="terror">
-                        <router-link to="/genero" class="cargarContenido" data-genero="terror">
-                            <h2>Terror</h2>
-                        </router-link>
-                        <div class="contenedorGeneros"></div>
-                    </div>
-                </section>
-                <section>
-                    <div class="drama" data-genero="drama">
-                        <router-link to="/genero" class="cargarContenido" data-genero="drama">
-                            <h2>Drama</h2>
-                        </router-link>
-                        <div class="contenedorGeneros"></div>
-                    </div>
-                </section>
-                <section>
-                    <div class="musical" data-genero="musical">
-                        <router-link to="/genero" class="cargarContenido" data-genero="musical">
-                            <h2>Musical</h2>
-                        </router-link>
-                        <div class="contenedorGeneros"></div>
-                    </div>
-                </section>
-                <section>
-                    <div class="tragedia" data-genero="tragedia">
-                        <router-link to="/genero" class="cargarContenido" data-genero="tragedia">
-                            <h2>Tragedia</h2>
-                        </router-link>
-                        <div class="contenedorGeneros"></div>
+                        <TargetaGenero :genero="obtenerGenero(contexto)"></TargetaGenero>
+
                     </div>
                 </section>
             </div>

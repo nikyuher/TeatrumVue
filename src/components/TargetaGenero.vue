@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, defineProps } from 'vue';
+
+const props = defineProps<{
+  genero: string;
+}>();
 
 const obras = ref<any[]>([]);
+const genero = props.genero;
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8001/Obra');
+    const response = await fetch(`http://localhost:8001/Obra/generos/${genero}`);
     if (!response.ok) {
       throw new Error('No se pudo obtener la data');
     }
@@ -15,20 +20,19 @@ onMounted(async () => {
     console.error('Error al obtener las obras:', error);
   }
 });
-
 </script>
 
 <template>
   <div>
-    <h1>Obras de arte</h1>
     <ul>
       <li v-for="obra in obras" :key="obra.obraId">
-        <p>{{ obra.genero }}</p>
-        <h2>{{ obra.título }}</h2>
-        <p>{{ obra.descripción }}</p>
-        <p>Precio de entrada: {{ obra.precioEntrada }}</p>
+        <router-link to="/comprar">
+          <p>{{ obra.genero }}</p>
+          <h3>{{ obra.título }}</h3>
+          <p>{{ obra.descripción }}</p>
+          <p>Precio de entrada: {{ obra.precioEntrada }}</p>
+        </router-link>
       </li>
     </ul>
   </div>
 </template>
-  

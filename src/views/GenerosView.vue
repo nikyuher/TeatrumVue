@@ -1,7 +1,5 @@
-<script lang="ts">
-export default {
-    name: "GenerosView"
-}
+<script setup lang="ts">
+
 </script>
 
 <template>
