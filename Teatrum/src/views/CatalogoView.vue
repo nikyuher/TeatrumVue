@@ -1,7 +1,8 @@
-<script lang="ts">
-export default {
-    name: "CatalogoView"
-}
+<script setup lang="ts">
+
+
+import EjemploComponent from '@/components/EjemploComponent.vue'
+
 </script>
 
 <template>
@@ -19,6 +20,7 @@ export default {
                     </div>
                 </section>
                 <section>
+                    <EjemploComponent></EjemploComponent>
                     <div class="comedia" data-genero="comedia">
                         <router-link to="/genero" class="cargarContenido" data-genero="comedia">
                             <h2>Comedia</h2>
