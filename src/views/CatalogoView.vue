@@ -39,7 +39,7 @@ const obtenerGenero = (contexto: string): string => {
                 <section v-for="contexto in listaGeneros" :key="contexto">
                     <div>
                         <div >
-                            <router-link :to="{ name: 'genero', params: { genero: contexto } }">
+                            <router-link :to="{ name: 'genero', params: { genero: obtenerGenero(contexto) } }">
                                 <h2>{{ obtenerGenero(contexto) }}</h2>
                             </router-link>
                         </div>
