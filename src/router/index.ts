@@ -32,7 +32,7 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
-      path: '/comprar',
+      path: '/comprar/:idObra',
       name: 'comprar',
       component: () => import('../views/ComprarView.vue')
     },

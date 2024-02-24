@@ -30,7 +30,8 @@ onMounted(async () => {
 <template>
   <div class="Contcaja">
     <div class="targeta" v-for="obra in obras" :key="obra.obraId">
-      <router-link to="/comprar">
+      <router-link :to="{ name: 'comprar', params: { idObra: obra.obraId } }">
+        <p>{{ obra.obraId }}</p>
         <p>{{ obra.genero }}</p>
         <h3>{{ obra.título }}</h3>
         <p>{{ obra.descripción }}</p>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import infoObra from '@/components/ReservarObra.vue'
+
 
 </script>
 
@@ -6,31 +8,7 @@
     <main>
         <article>
             <section>
-                <div class="contenedorComprar">
-                    <div class="descriPopular ">
-                        <div class="contImagenObraPopular">
-                            <img src="@/assets/imagenes/obras/dracula.jpg" alt="ObraPopular">
-                        </div>
-                        <div class="descripcionCompra">
-                            <h1 id="tituloObra"></h1>
-                            <p id="descripcionCompra"></p>
-                        </div>
-                    </div>
-                    <div class="formComprar">
-                        <h2>Reserva Asiento</h2>
-                        <div class="contenidoForm">
-                            <form>
-                                <label>Obra de Teatro</label>
-                                <input type="text" id="inputNombreObra" readonly>
-                                <label>Sitio de Asiento</label>
-                                <input type="text" id="inputSitioAsiento" readonly required>
-                                <label>Precio:$</label>
-                                <input type="number" id="inputPrecio" readonly>
-                                <input id="comprar" type="submit" value="Comprar">
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                <infoObra></infoObra>
             </section>
             <section>
                 <div class="contenedorBloques">

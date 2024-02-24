@@ -19,6 +19,7 @@ const obtenerGenero = (contexto: string): string => {
         default:
             return '';
     }
+
 }
 </script>
 
