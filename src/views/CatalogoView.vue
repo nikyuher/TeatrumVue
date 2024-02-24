@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import TargetaGenero from '@/components/TargetaGenero.vue'
 
+import ListaGenero from '@/components/ListaGenero.vue'
+
+const listaGeneros = ['comedia', 'terror', 'drama', 'musical', 'tragedia']
 const obtenerGenero = (contexto: string): string => {
 
     switch (contexto) {
@@ -34,13 +36,14 @@ const obtenerGenero = (contexto: string): string => {
                         </div>
                     </div>
                 </section>
-                <section v-for="contexto in ['comedia', 'terror', 'drama', 'musical', 'tragedia']" :key="contexto">
-                    <div :class="contexto">
-                        <router-link to="/genero">
-                            <h2>{{ obtenerGenero(contexto) }}</h2>
-                        </router-link>
-                        <TargetaGenero :genero="obtenerGenero(contexto)"></TargetaGenero>
-
+                <section v-for="contexto in listaGeneros" :key="contexto">
+                    <div>
+                        <div >
+                            <router-link :to="{ name: 'genero', params: { genero: contexto } }">
+                                <h2>{{ obtenerGenero(contexto) }}</h2>
+                            </router-link>
+                        </div>
+                        <ListaGenero :genero="obtenerGenero(contexto)"></ListaGenero>
                     </div>
                 </section>
             </div>

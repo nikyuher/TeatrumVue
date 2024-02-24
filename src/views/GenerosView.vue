@@ -1,5 +1,18 @@
 <script setup lang="ts">
 
+import ListaGenero from '@/components/ListaGenero.vue'
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+// Obtener la referencia a la ruta actual
+const route = useRoute();
+
+// Inicializar genero como una referencia de tipo string
+const genero = ref<string>('');
+
+// Asignar el valor de la ruta a genero
+genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : route.params.genero;
+
 </script>
 
 <template>
@@ -8,7 +21,7 @@
             <section>
                 <div class="contTituloGeneroSelec">
                     <div class="tituloGeneroSelec">
-                        <h1>Comedia</h1>
+                        <h1>{{ $route.params.genero }}</h1>
                     </div>
                     <div class="imgGeneroSelec">
                         <img src="@/assets/imagenes/obras/banner-generos-teatro.jpg" alt="">
@@ -16,7 +29,8 @@
                 </div>
             </section>
             <section>
-                <div class="contenedorObras">
+                <div>
+                    <ListaGenero :genero="genero"></ListaGenero>
                 </div>
             </section>
         </div>

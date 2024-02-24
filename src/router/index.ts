@@ -21,7 +21,7 @@ const router = createRouter({
     }
     ,
     {
-      path: '/genero',
+      path: '/genero/:genero',
       name: 'genero',
       component: () => import('../views/GenerosView.vue')
     }
