@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import infoObra from '@/components/ReservarObra.vue'
+import butacaG from '@/components/icons/IconButacaGreen.vue'
+import butacaR from '@/components/icons/IconButacaRed.vue'
 
+const bloqueAAsientos = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6'];
+const bloqueBAsientos = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10', 'B11', 'B12'];
+const bloqueCAsientos = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
 
 </script>
 
@@ -13,34 +18,13 @@ import infoObra from '@/components/ReservarObra.vue'
             <section>
                 <div class="contenedorBloques">
                     <div class="bloqueA">
-                        <button>A1</button>
-                        <button>A2</button>
-                        <button>A3</button>
-                        <button>A4</button>
-                        <button>A5</button>
-                        <button>A6</button>
+                        <butacaG v-for="butaca in bloqueAAsientos" :key="butaca">{{ butaca }}</butacaG>
                     </div>
                     <div class="bloqueB">
-                        <button>B1</button>
-                        <button>B2</button>
-                        <button>B3</button>
-                        <button>B4</button>
-                        <button>B5</button>
-                        <button>B6</button>
-                        <button>B7</button>
-                        <button>B8</button>
-                        <button>B9</button>
-                        <button>B10</button>
-                        <button>B11</button>
-                        <button>B12</button>
+                        <butacaG v-for="butaca in bloqueBAsientos" :key="butaca">{{ butaca }}</butacaG>
                     </div>
                     <div class="bloqueC">
-                        <button>C1</button>
-                        <button>C2</button>
-                        <button>C3</button>
-                        <button>C4</button>
-                        <button>C5</button>
-                        <button>C6</button>
+                        <butacaG v-for="butaca in bloqueCAsientos" :key="butaca">{{ butaca }}</butacaG>
                     </div>
                 </div>
             </section>
