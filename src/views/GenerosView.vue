@@ -29,8 +29,10 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
                 </div>
             </section>
             <section>
-                <div>
-                    <ListaGenero :genero="genero"></ListaGenero>
+                <div class="contGeneros">
+                    <div class="listaGeneros">
+                        <ListaGenero :genero="genero"></ListaGenero>
+                    </div>
                 </div>
             </section>
         </div>
@@ -61,5 +63,15 @@ main {
 .imgGeneroSelec img {
     width: 90%;
     height: 400px;
+}
+
+.contGeneros {
+    margin-top: 100px;
+}
+
+.listaGeneros {
+    margin: auto;
+    background-color: green;
+    width: 80%;
 }
 </style>

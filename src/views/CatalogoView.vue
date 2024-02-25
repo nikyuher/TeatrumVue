@@ -39,12 +39,12 @@ const obtenerGenero = (contexto: string): string => {
                 </section>
                 <section v-for="contexto in listaGeneros" :key="contexto">
                     <div>
-                        <div >
+                        <div class="contGenero">
                             <router-link :to="{ name: 'genero', params: { genero: obtenerGenero(contexto) } }">
                                 <h2>{{ obtenerGenero(contexto) }}</h2>
                             </router-link>
                         </div>
-                        <ListaGenero :genero="obtenerGenero(contexto)"></ListaGenero>
+                        <ListaGenero :genero="obtenerGenero(contexto)" :mostrar-solo-tres="true"></ListaGenero>
                     </div>
                 </section>
             </div>
@@ -76,5 +76,9 @@ main {
 
 .imagenGeneros img {
     height: 500px;
+}
+
+.contGenero {
+    display: flex;
 }
 </style>
