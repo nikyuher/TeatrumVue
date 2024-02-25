@@ -98,7 +98,6 @@ const handleButacaSeleccionada = (butaca: string) => {
 .contenedorBloques {
     display: flex;
     width: 80%;
-    height: 500px;
     justify-content: space-evenly;
     margin: auto;
     padding-bottom: 100px;

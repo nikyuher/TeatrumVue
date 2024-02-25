@@ -1,9 +1,9 @@
 <script setup lang="ts">
-
 import { ref, onMounted, defineProps } from 'vue';
 
 const props = defineProps<{
   genero: string;
+  mostrarSoloTres?: boolean;
 }>();
 
 const obras = ref<any[]>([]);
@@ -11,7 +11,6 @@ const genero = props.genero;
 
 onMounted(async () => {
   try {
-
     const response = await fetch(`http://localhost:8001/Obra/generos/${genero}`);
 
     if (!response.ok) {
@@ -19,14 +18,13 @@ onMounted(async () => {
     }
 
     const data = await response.json();
-    obras.value = data;
 
-  }
-  catch (error) {
+    obras.value = props.mostrarSoloTres ? data.slice(0, 4) : data;
+
+  } catch (error) {
     console.error('Error al obtener las obras:', error);
   }
 });
-
 </script>
 
 <template>
@@ -37,7 +35,7 @@ onMounted(async () => {
         <p>{{ obra.genero }}</p>
         <h3>{{ obra.título }}</h3>
         <p>{{ obra.descripción }}</p>
-        <p>Precio de entrada: {{ obra.precioEntrada }}</p>
+        <p>Precio de entrada: ${{ obra.precioEntrada }}</p>
       </router-link>
     </div>
   </div>
@@ -46,12 +44,14 @@ onMounted(async () => {
 <style scoped>
 .Contcaja {
   display: flex;
-  text-decoration: none;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  text-align: justify;
 }
 
 .targeta {
-  margin: 10px auto;
-
+  padding:0 20px;
+  margin: 30px 10px;
   background-color: white;
   width: 300px;
 }

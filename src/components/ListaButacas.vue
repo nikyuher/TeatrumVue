@@ -1,5 +1,8 @@
 <script setup lang="ts">
 
+import butacaG from '@/components/icons/IconButacaGreen.vue'
+import butacaR from '@/components/icons/IconButacaRed.vue'
+
 import { ref, onMounted, defineEmits } from 'vue'
 
 const emits = defineEmits(['infoButaca']);
@@ -36,25 +39,37 @@ const ObtenerButaca = (butaca: string) => {
 <template>
     <div class="bloqueA">
         <div v-for="butaca in butacasFiltradas('A')" :key="butaca.AsientoId">
-            <div class="box" @click="ObtenerButaca(butaca.nombreAsiento)">
-                <p>{{ butaca.nombreAsiento }}</p>
-                <p>{{ butaca.estado }}</p>
+            <div class="box" >
+                <template v-if="butaca.estado">
+                    <butacaR>{{ butaca.nombreAsiento }}</butacaR>
+                </template>
+                <template v-else>
+                    <butacaG @click="ObtenerButaca(butaca.nombreAsiento)">{{ butaca.nombreAsiento }}</butacaG>
+                </template>
             </div>
         </div>
     </div>
     <div class="bloqueB">
         <div v-for="butaca in butacasFiltradas('B')" :key="butaca.AsientoId">
-            <div class="box" @click="ObtenerButaca(butaca.nombreAsiento)">
-                <p>{{ butaca.nombreAsiento }}</p>
-                <p>{{ butaca.estado }}</p>
+            <div class="box">
+                <template v-if="butaca.estado">
+                    <butacaR>{{ butaca.nombreAsiento }}</butacaR>
+                </template>
+                <template v-else>
+                    <butacaG @click="ObtenerButaca(butaca.nombreAsiento)">{{ butaca.nombreAsiento }}</butacaG>
+                </template>
             </div>
         </div>
     </div>
     <div class="bloqueC">
         <div v-for="butaca in butacasFiltradas('C')" :key="butaca.AsientoId">
-            <div class="box" @click="ObtenerButaca(butaca.nombreAsiento)">
-                <p>{{ butaca.nombreAsiento }}</p>
-                <p>{{ butaca.estado }}</p>
+            <div class="box">
+                <template v-if="butaca.estado">
+                    <butacaR>{{ butaca.nombreAsiento }}</butacaR>
+                </template>
+                <template v-else>
+                    <butacaG @click="ObtenerButaca(butaca.nombreAsiento)">{{ butaca.nombreAsiento }}</butacaG>
+                </template>
             </div>
         </div>
     </div>
@@ -92,12 +107,5 @@ const ObtenerButaca = (butaca: string) => {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-}
-
-.contenedorBloques button {
-
-    width: 40px;
-    height: 40px;
-    margin: 10px 30px;
 }
 </style>
