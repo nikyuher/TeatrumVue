@@ -25,9 +25,8 @@ onMounted(async () => {
             titulo: obra.value.título, 
             precio: obra.value.precioEntrada 
         };
-        emits('obraCargada', payload);
 
-        console.log('Datos enviados:', payload); 
+        emits('obraCargada', payload);
 
     } catch (error) {
         console.error('Error al obtener la obra:', error);

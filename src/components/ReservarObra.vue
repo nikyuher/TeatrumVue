@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import butacas from '@/components/ListaButacas.vue'
 import ObraId from '@/components/ObraEspecificaId.vue'
 import Ticket from '@/components/TicketReserva.vue'
 
@@ -11,13 +12,18 @@ const idObra = ref<number>(0);
 idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra[0]) : parseInt(route.params.idObra);
 
 const tituloRecibido = ref<string>("");
-const precioRecibido = ref<number>(0); 
+const nombreButaca = ref<string>("");
+const precioRecibido = ref<number>(0);
 
 const handleObraCargada = (data: { titulo: string; precio: number }) => {
-    console.log('Evento obraCargada recibido con los siguientes datos:', data);
     tituloRecibido.value = data.titulo;
     precioRecibido.value = data.precio;
 };
+
+const handleButacaSeleccionada = (butaca: string) => {
+    nombreButaca.value = butaca;
+};
+
 </script>
 
 <template>
@@ -28,14 +34,19 @@ const handleObraCargada = (data: { titulo: string; precio: number }) => {
                     <img src="@/assets/imagenes/obras/dracula.jpg" alt="ObraPopular">
                 </div>
                 <div class="descripcionCompra">
-                    <ObraId :id-obra="idObra" @obraCargada="handleObraCargada"></ObraId>
+                    <ObraId :id-obra="idObra" @obraCargada="handleObraCargada" ></ObraId>
                 </div>
             </div>
             <div class="formComprar">
-                <Ticket :titulo="tituloRecibido" :precio="precioRecibido"></Ticket>
+                <Ticket :titulo="tituloRecibido" :precio="precioRecibido" :butaca="nombreButaca"></Ticket>
             </div>
         </div>
     </div>
+    <section>
+        <div class="contenedorBloques">
+            <butacas @infoButaca="handleButacaSeleccionada"></butacas>
+        </div>
+    </section>
 </template>
 
 <style scoped>
@@ -81,5 +92,15 @@ const handleObraCargada = (data: { titulo: string; precio: number }) => {
     margin: auto;
     border-radius: 10px;
     color: black;
+}
+
+/*Bloue de seleccion de asientos*/
+.contenedorBloques {
+    display: flex;
+    width: 80%;
+    height: 500px;
+    justify-content: space-evenly;
+    margin: auto;
+    padding-bottom: 100px;
 }
 </style>

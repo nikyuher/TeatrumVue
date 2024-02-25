@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineEmits } from 'vue'
+
+const emits = defineEmits(['infoButaca']);
 
 const butacas = ref<any[]>([]);
 
@@ -25,12 +27,16 @@ const butacasFiltradas = (letra: string) => {
     return butacas.value.filter(butaca => butaca.nombreAsiento.startsWith(letra));
 }
 
+
+const ObtenerButaca = (butaca: string) => {
+    emits('infoButaca', butaca);
+}
 </script>
 
 <template>
     <div class="bloqueA">
         <div v-for="butaca in butacasFiltradas('A')" :key="butaca.AsientoId">
-            <div class="box">
+            <div class="box" @click="ObtenerButaca(butaca.nombreAsiento)">
                 <p>{{ butaca.nombreAsiento }}</p>
                 <p>{{ butaca.estado }}</p>
             </div>
@@ -38,7 +44,7 @@ const butacasFiltradas = (letra: string) => {
     </div>
     <div class="bloqueB">
         <div v-for="butaca in butacasFiltradas('B')" :key="butaca.AsientoId">
-            <div class="box">
+            <div class="box" @click="ObtenerButaca(butaca.nombreAsiento)">
                 <p>{{ butaca.nombreAsiento }}</p>
                 <p>{{ butaca.estado }}</p>
             </div>
@@ -46,7 +52,7 @@ const butacasFiltradas = (letra: string) => {
     </div>
     <div class="bloqueC">
         <div v-for="butaca in butacasFiltradas('C')" :key="butaca.AsientoId">
-            <div class="box">
+            <div class="box" @click="ObtenerButaca(butaca.nombreAsiento)">
                 <p>{{ butaca.nombreAsiento }}</p>
                 <p>{{ butaca.estado }}</p>
             </div>

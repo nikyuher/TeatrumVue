@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import infoObra from '@/components/ReservarObra.vue'
-import butacas from '@/components/ListaButacas.vue'
+import ReservaObra from '@/components/ReservarObra.vue'
+// import butacas from '@/components/ListaButacas.vue'
 
 </script>
 
@@ -8,17 +8,11 @@ import butacas from '@/components/ListaButacas.vue'
     <main>
         <article>
             <section>
-                <infoObra></infoObra>
-            </section>
-            <section>
-                <div class="contenedorBloques">
-                    <butacas></butacas>
-                </div>
+                <ReservaObra></ReservaObra>
             </section>
         </article>
     </main>
 </template>
-
 
 <style scoped>
 main {
@@ -80,14 +74,4 @@ main {
     margin-top: 20px;
 }
 
-/*Bloue de seleccion de asientos*/
-
-.contenedorBloques {
-    display: flex;
-    width: 80%;
-    height: 500px;
-    justify-content: space-evenly;
-    margin: auto;
-    padding-bottom: 100px;
-}
 </style>

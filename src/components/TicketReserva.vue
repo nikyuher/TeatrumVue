@@ -5,6 +5,7 @@ import { defineProps } from 'vue';
 const props = defineProps<{
     titulo: string;
     precio: number;
+    butaca:string;
 }>();
 
 const handleCompra = () => {
@@ -20,7 +21,7 @@ const handleCompra = () => {
             <label>Obra de Teatro</label>
             <input type="text" id="inputNombreObra" :value="titulo">
             <label>Sitio de Asiento</label>
-            <input type="text" id="inputSitioAsiento" required>
+            <input type="text" id="inputSitioAsiento" required :value="butaca">
             <label>Precio:$</label>
             <input type="number" id="inputPrecio" :value="precio">
             <input id="comprar" type="submit" value="Comprar">
@@ -34,7 +35,6 @@ const handleCompra = () => {
     width: 200px;
     margin: auto;
 }
-
 .contenidoForm #comprar {
     margin-top: 20px;
 }
