@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { defineProps} from 'vue';
+
+import { defineProps } from 'vue';
 
 const props = defineProps<{
     titulo: string;
@@ -9,6 +10,7 @@ const props = defineProps<{
 const handleCompra = () => {
     console.log('Compra realizada');
 };
+
 </script>
 
 <template>

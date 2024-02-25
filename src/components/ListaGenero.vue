@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { ref, onMounted, defineProps } from 'vue';
 
 const props = defineProps<{
@@ -25,6 +26,7 @@ onMounted(async () => {
     console.error('Error al obtener las obras:', error);
   }
 });
+
 </script>
 
 <template>

@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import infoObra from '@/components/ReservarObra.vue'
-import butacaG from '@/components/icons/IconButacaGreen.vue'
-import butacaR from '@/components/icons/IconButacaRed.vue'
-
-const bloqueAAsientos = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6'];
-const bloqueBAsientos = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10', 'B11', 'B12'];
-const bloqueCAsientos = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
+import butacas from '@/components/ListaButacas.vue'
 
 </script>
 
@@ -17,20 +12,13 @@ const bloqueCAsientos = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
             </section>
             <section>
                 <div class="contenedorBloques">
-                    <div class="bloqueA">
-                        <butacaG v-for="butaca in bloqueAAsientos" :key="butaca">{{ butaca }}</butacaG>
-                    </div>
-                    <div class="bloqueB">
-                        <butacaG v-for="butaca in bloqueBAsientos" :key="butaca">{{ butaca }}</butacaG>
-                    </div>
-                    <div class="bloqueC">
-                        <butacaG v-for="butaca in bloqueCAsientos" :key="butaca">{{ butaca }}</butacaG>
-                    </div>
+                    <butacas></butacas>
                 </div>
             </section>
         </article>
     </main>
 </template>
+
 
 <style scoped>
 main {
@@ -101,43 +89,5 @@ main {
     justify-content: space-evenly;
     margin: auto;
     padding-bottom: 100px;
-}
-
-.bloqueA {
-    width: 200px;
-    background-color: rgb(255, 255, 255);
-    border-radius: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.bloqueB {
-    width: 400px;
-    background-color: rgb(255, 255, 255);
-    border-radius: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.bloqueC {
-    width: 200px;
-    background-color: rgb(255, 255, 255);
-    border-radius: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.contenedorBloques button {
-
-    width: 40px;
-    height: 40px;
-    margin: 10px 30px;
-}
-
-.color-rojo {
-    background-color: red;
 }
 </style>
