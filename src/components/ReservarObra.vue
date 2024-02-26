@@ -14,10 +14,12 @@ idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra
 const tituloRecibido = ref<string>("");
 const nombreButaca = ref<string>("");
 const precioRecibido = ref<number>(0);
+const imagenRecibido = ref<string>("");
 
-const handleObraCargada = (data: { titulo: string; precio: number }) => {
+const handleObraCargada = (data: { titulo: string; precio: number; imagen: string }) => {
     tituloRecibido.value = data.titulo;
     precioRecibido.value = data.precio;
+    imagenRecibido.value = data.imagen;
 };
 
 const handleButacaSeleccionada = (butaca: string) => {
@@ -31,7 +33,7 @@ const handleButacaSeleccionada = (butaca: string) => {
         <div class="contenedorComprar">
             <div class="descriPopular ">
                 <div class="contImagenObraPopular">
-                    <img src="@/assets/imagenes/obras/dracula.jpg" alt="ObraPopular">
+                    <img :src="imagenRecibido" alt="Imagen de la obra">
                 </div>
                 <div class="descripcionCompra">
                     <ObraId :id-obra="idObra" @obraCargada="handleObraCargada" ></ObraId>

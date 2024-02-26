@@ -25,14 +25,29 @@ onMounted(async () => {
     console.error('Error al obtener las obras:', error);
   }
 });
+
+const base64ToArrayBuffer = (base64: string) => {
+  const binaryString = window.atob(base64);
+  const length = binaryString.length;
+  const bytes = new Uint8Array(length);
+  for (let i = 0; i < length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes.buffer;
+};
+
+const getImagenUrl = (imagenBytes: string) => {
+  const blob = new Blob([base64ToArrayBuffer(imagenBytes)], { type: 'image/png' });
+  return URL.createObjectURL(blob);
+};
+
 </script>
 
 <template>
   <div class="Contcaja">
     <div class="targeta" v-for="obra in obras" :key="obra.obraId">
       <router-link :to="{ name: 'comprar', params: { idObra: obra.obraId } }">
-        <p>{{ obra.obraId }}</p>
-        <p>{{ obra.genero }}</p>
+        <img :src="getImagenUrl(obra.imagen)" alt="Imagen de la obra">
         <h3>{{ obra.título }}</h3>
         <p>{{ obra.descripción }}</p>
         <p>Precio de entrada: ${{ obra.precioEntrada }}</p>
@@ -50,7 +65,7 @@ onMounted(async () => {
 }
 
 .targeta {
-  padding:0 20px;
+  padding: 0 20px;
   margin: 30px 10px;
   background-color: white;
   width: 300px;

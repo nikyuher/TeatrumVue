@@ -21,9 +21,12 @@ onMounted(async () => {
         const data = await response.json();
         obra.value = data;
 
+        // Crear el payload con la URL de la imagen
         const payload = {
-            titulo: obra.value.título, 
-            precio: obra.value.precioEntrada 
+            titulo: obra.value.título,
+            precio: obra.value.precioEntrada,
+            // Convertir los bytes de la imagen en URL utilizando la función getImagenUrl
+            imagen: getImagenUrl(obra.value.imagen)
         };
 
         emits('obraCargada', payload);
@@ -33,6 +36,21 @@ onMounted(async () => {
     }
 });
 
+// Función para convertir los bytes de la imagen en una URL
+const getImagenUrl = (imagenBytes: string) => {
+    const base64ToBlob = (base64: string) => {
+        const binaryString = window.atob(base64);
+        const length = binaryString.length;
+        const bytes = new Uint8Array(length);
+        for (let i = 0; i < length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return new Blob([bytes], { type: 'image/png' });
+    };
+
+    const blob = base64ToBlob(imagenBytes);
+    return URL.createObjectURL(blob);
+};
 </script>
 
 <template>
