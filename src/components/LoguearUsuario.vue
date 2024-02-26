@@ -1,29 +1,57 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 
+const email = ref('');
+const password = ref('');
+const rememberMe = ref(false);
+const responseMessage = ref('');
+
+const login = async () => {
+    try {
+        const userData = {
+            correoElectronico: email.value,
+            contraseña: password.value
+        };
+
+        const response = await fetch('http://localhost:8001/Usuario/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Fallo al Iniciar Sesion.');
+        }
+
+        responseMessage.value = 'Inicio Sesion Correctamente.';
+    } catch (error) {
+        responseMessage.value = 'Ocurrio un Error de sistema.';
+        console.error(error);
+    }
+};
 </script>
 
 <template>
-    <form>
+    <form @submit.prevent="login">
         <div class="input-box">
-            <span class="icon"><ion-icon name="person"></ion-icon></span>
-            <input type="text" required>
-            <label>Username</label>
-        </div>
-        <div class="input-box">
-            <span class="icon"><ion-icon name="mail"></ion-icon></span>
-            <input type="text" required>
+            <input type="email" v-model="email" required>
             <label>Email</label>
         </div>
         <div class="input-box">
-            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
-            <input type="password" required>
+            <input type="password" v-model="password" required>
             <label>Password</label>
         </div>
         <div class="remember-forgot">
-            <label><input type="checkbox">Remember me</label>
+            <label>
+                <input type="checkbox" v-model="rememberMe">
+                Remember me
+            </label>
             <a href="#">Forgot Password?</a>
         </div>
-        <button type="submit" id="login" class="btn">Login</button>
+        <button class="btn" type="submit">Login</button>
+        <p class="response">{{ responseMessage }}</p>
     </form>
 </template>
 
