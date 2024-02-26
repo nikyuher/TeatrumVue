@@ -21,11 +21,9 @@ onMounted(async () => {
         const data = await response.json();
         obra.value = data;
 
-        // Crear el payload con la URL de la imagen
         const payload = {
             titulo: obra.value.título,
             precio: obra.value.precioEntrada,
-            // Convertir los bytes de la imagen en URL utilizando la función getImagenUrl
             imagen: getImagenUrl(obra.value.imagen)
         };
 
