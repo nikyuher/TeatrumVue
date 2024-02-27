@@ -1,58 +1,83 @@
 <script setup lang="ts">
+
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { usarInfoUsuario } from '@/store/store';
+
+const store = usarInfoUsuario();
 
 const email = ref('');
 const password = ref('');
-const rememberMe = ref(false);
 const responseMessage = ref('');
 
+const router = useRouter();
+
 const login = async () => {
-    try {
-        const userData = {
-            correoElectronico: email.value,
-            contraseña: password.value
-        };
+  try {
+    const login = {
+      correoElectronico: email.value,
+      contraseña: password.value
+    };
 
-        const response = await fetch('http://localhost:8001/Usuario/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        });
+    const response = await fetch('http://localhost:8001/Usuario/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(login)
+    });
 
-        if (!response.ok) {
-            throw new Error('Fallo al Iniciar Sesion.');
-        }
-
-        responseMessage.value = 'Inicio Sesion Correctamente.';
-    } catch (error) {
-        responseMessage.value = 'Ocurrio un Error de sistema.';
-        console.error(error);
+    if (!response.ok) {
+      throw new Error('Fallo al Iniciar Sesion.');
     }
+
+    const userResponse = await fetch(`http://localhost:8001/Usuario/login?email=${encodeURIComponent(email.value)}&password=${encodeURIComponent(password.value)}`);
+    const loginGet = await userResponse.json();
+
+    const infoUsuario = {
+      usuarioId: loginGet.usuarioId,
+      rol: loginGet.rol,
+      nombre: loginGet.nombre
+    }
+
+    store.setUserInfo(infoUsuario);
+
+    email.value = '';
+    password.value = '';
+
+    responseMessage.value = 'Inicio Sesion Correctamente.';
+
+    if (!infoUsuario.rol) {
+      router.push('/');
+    }
+
+  } catch (error) {
+    responseMessage.value = 'Ocurrio un Error de sistema.';
+    console.error(error);
+  }
 };
 </script>
 
 <template>
-    <form @submit.prevent="login">
-        <div class="input-box">
-            <input type="email" v-model="email" required>
-            <label>Email</label>
-        </div>
-        <div class="input-box">
-            <input type="password" v-model="password" required>
-            <label>Password</label>
-        </div>
-        <div class="remember-forgot">
-            <label>
-                <input type="checkbox" v-model="rememberMe">
-                Remember me
-            </label>
-            <a href="#">Forgot Password?</a>
-        </div>
-        <button class="btn" type="submit">Login</button>
-        <p class="response">{{ responseMessage }}</p>
-    </form>
+  <form @submit.prevent="login">
+    <div class="input-box">
+      <input type="email" v-model="email" required>
+      <label>Email</label>
+    </div>
+    <div class="input-box">
+      <input type="password" v-model="password" required>
+      <label>Password</label>
+    </div>
+    <div class="remember-forgot">
+      <label>
+        <input type="checkbox">
+        Remember me
+      </label>
+      <a href="#">Forgot Password?</a>
+    </div>
+    <button class="btn" type="submit">Login</button>
+    <p class="response">{{ responseMessage }}</p>
+  </form>
 </template>
 
 <style scoped>
@@ -93,6 +118,7 @@ const login = async () => {
   pointer-events: none;
   transition: .5s;
 }
+
 .input-box input:focus~label,
 .input-box input:valid~label {
   top: -5px
@@ -117,6 +143,7 @@ const login = async () => {
   color: rgb(21, 28, 85);
   line-height: 57px;
 }
+
 .btn {
   width: 100%;
   height: 45px;

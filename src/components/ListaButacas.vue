@@ -3,7 +3,7 @@
 import butacaG from '@/components/icons/IconButacaGreen.vue'
 import butacaR from '@/components/icons/IconButacaRed.vue'
 
-import { ref, onMounted, defineEmits } from 'vue'
+import { ref, onMounted} from 'vue'
 
 const emits = defineEmits(['infoButaca']);
 

@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { computed } from 'vue';
+import { usarInfoUsuario } from '@/store/store';
+
+const store = usarInfoUsuario();
+const userInfo = computed(() => store.userInfo);
 </script>
 
 <template>
@@ -14,7 +18,8 @@ import { RouterLink, RouterView } from 'vue-router'
         <router-link to="/estrenos">Proximos Estrenos</router-link>
         <router-link to="/catalogo">Catalogo</router-link>
         <router-link to="/about">Contactanos</router-link>
-        <router-link to="/login">Iniciar Sesion</router-link>
+        <router-link v-if="!userInfo" to="/login">Iniciar Sesion</router-link>
+        <router-link v-if="userInfo" :to="'/login'">{{ userInfo.nombre }}</router-link>
       </nav>
     </div>
   </header>
