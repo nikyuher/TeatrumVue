@@ -4,28 +4,17 @@ import butacas from '@/components/ListaButacas.vue'
 import ObraId from '@/components/ObraEspecificaId.vue'
 import Ticket from '@/components/TicketReserva.vue'
 
-import { ref} from 'vue';
+import {computed,ref} from 'vue'
+import { useObraInfo } from '@/store/obraInfo';
 import { useRoute } from 'vue-router';
 
+const store = useObraInfo();
+const obraInfo = computed(() => store.infoObra);
 
 const route = useRoute();
 const idObra = ref<number>(0);
 idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra[0]) : parseInt(route.params.idObra);
 
-const tituloRecibido = ref<string>("");
-const nombreButaca = ref<string>("");
-const precioRecibido = ref<number>(0);
-const imagenRecibido = ref<string>("");
-
-const handleObraCargada = (data: { titulo: string; precio: number; imagen: string }) => {
-    tituloRecibido.value = data.titulo;
-    precioRecibido.value = data.precio;
-    imagenRecibido.value = data.imagen;
-};
-
-const handleButacaSeleccionada = (butaca: string) => {
-    nombreButaca.value = butaca;
-};
 
 </script>
 
@@ -34,20 +23,20 @@ const handleButacaSeleccionada = (butaca: string) => {
         <div class="contenedorComprar">
             <div class="descriPopular ">
                 <div class="contImagenObraPopular">
-                    <img :src="imagenRecibido" alt="Imagen de la obra">
+                    <img :src="obraInfo?.imagen" alt="Imagen de la obra">
                 </div>
                 <div class="descripcionCompra">
-                    <ObraId :id-obra="idObra" @obraCargada="handleObraCargada" ></ObraId>
+                    <ObraId :id-obra="idObra" ></ObraId>
                 </div>
             </div>
             <div class="formComprar">
-                <Ticket :titulo="tituloRecibido" :precio="precioRecibido" :butaca="nombreButaca"></Ticket>
+                <Ticket></Ticket>
             </div>
         </div>
     </div>
     <section>
         <div class="contenedorBloques">
-            <butacas @infoButaca="handleButacaSeleccionada"></butacas>
+            <butacas></butacas>
         </div>
     </section>
 </template>

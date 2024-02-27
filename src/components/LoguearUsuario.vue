@@ -49,6 +49,8 @@ const login = async () => {
 
     if (!infoUsuario.rol) {
       router.push('/');
+    } else {
+      router.push('/admin')
     }
 
   } catch (error) {

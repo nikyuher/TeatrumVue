@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { defineProps, defineEmits } from 'vue';
 import { useObraInfo } from '@/store/obraInfo';
+import { ref, onMounted } from 'vue';
 
 const props = defineProps<{
-    idObra: number;
+    idObra?: number;
 }>();
-
-const emits = defineEmits(['obraCargada']);
 
 const obra = ref<any>(null);
 const idObra = props.idObra;
@@ -34,8 +31,6 @@ onMounted(async () => {
 
         // Guarda la información de la obra en el almacén infoObra
         infoObraStore.setObraInfo(infoObra);
-
-        emits('obraCargada', infoObra);
 
     } catch (error) {
         console.error('Error al obtener la obra:', error);
@@ -70,10 +65,3 @@ const getImagenUrl = (imagenBytes: string) => {
 </template>
 
 <style scoped></style>
-
-
-<style scoped></style>
-
-
-<style scoped></style>
-

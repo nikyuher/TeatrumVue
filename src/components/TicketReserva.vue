@@ -1,17 +1,19 @@
 <script setup lang="ts">
 
+import { useInfoButaca } from '@/store/infoButaca';
 import { usarInfoUsuario } from '@/store/userInfo';
+import { useObraInfo } from '@/store/obraInfo';
 import { ref,computed } from 'vue';
 
 
-const props = defineProps<{
-    titulo: string;
-    precio: number;
-    butaca: string;
-}>();
+const Usuario = usarInfoUsuario();
+const userInfo = computed(() => Usuario.userInfo);
 
-const store = usarInfoUsuario();
-const userInfo = computed(() => store.userInfo);
+const Obra = useObraInfo();
+const obraInfo = computed(() => Obra.infoObra);
+
+const Butaca = useInfoButaca();
+const butacaInfo = computed(() => Butaca.butacas);
 
 const handleCompra = () => {
     console.log('Compra realizada');
@@ -24,13 +26,13 @@ const handleCompra = () => {
     <div class="contenidoForm">
         <form @submit.prevent="handleCompra">
             <div class="datosForm">
-                <label>Obra de Teatro</label>
+                <label>Obra de Teatro Id: {{ obraInfo?.idObra }}</label>
                 <p>id Usuario: {{ userInfo?.usuarioId }}</p>
-                <input type="text" id="inputNombreObra" :value="titulo">
-                <label>Sitio de Asiento</label>
-                <input type="text" id="inputSitioAsiento" required :value="butaca">
+                <input type="text" id="inputNombreObra" :value="obraInfo?.titulo">
+                <label>Sitio de Asiento: ID {{ butacaInfo?.asientoId }}</label>
+                <input type="text" id="inputSitioAsiento" required :value="butacaInfo?.nombreAsiento">
                 <label>Precio:$</label>
-                <input type="number" id="inputPrecio" :value="precio">
+                <input type="number" id="inputPrecio" :value="obraInfo?.precio">
             </div>
             <input id="comprar" type="submit" value="Comprar">
         </form>

@@ -6,13 +6,13 @@ interface ButacaInfo {
     estado: boolean;
 }
 
-export const useInfoButacaStore = defineStore({
+export const useInfoButaca = defineStore({
     id: 'infoButaca',
     state: () => ({
-        butacas: [] as ButacaInfo[]
+        butacas: null as ButacaInfo | null
     }),
     actions: {
-        setButacas(butacas: ButacaInfo[]) {
+        setButacas(butacas: ButacaInfo) {
             this.butacas = butacas;
         }
     }
