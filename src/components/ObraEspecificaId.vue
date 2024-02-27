@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
+import { defineProps, defineEmits } from 'vue';
+import { useObraInfo } from '@/store/obraInfo';
 
 const props = defineProps<{
     idObra: number;
@@ -9,6 +11,8 @@ const emits = defineEmits(['obraCargada']);
 
 const obra = ref<any>(null);
 const idObra = props.idObra;
+
+const infoObraStore = useObraInfo();
 
 onMounted(async () => {
     try {
@@ -21,13 +25,17 @@ onMounted(async () => {
         const data = await response.json();
         obra.value = data;
 
-        const payload = {
+        const infoObra = {
+            idObra: obra.value.obraId,
             titulo: obra.value.título,
             precio: obra.value.precioEntrada,
             imagen: getImagenUrl(obra.value.imagen)
         };
 
-        emits('obraCargada', payload);
+        // Guarda la información de la obra en el almacén infoObra
+        infoObraStore.setObraInfo(infoObra);
+
+        emits('obraCargada', infoObra);
 
     } catch (error) {
         console.error('Error al obtener la obra:', error);

@@ -4,8 +4,9 @@ import butacas from '@/components/ListaButacas.vue'
 import ObraId from '@/components/ObraEspecificaId.vue'
 import Ticket from '@/components/TicketReserva.vue'
 
-import { ref } from 'vue';
+import { ref} from 'vue';
 import { useRoute } from 'vue-router';
+
 
 const route = useRoute();
 const idObra = ref<number>(0);
@@ -104,4 +105,4 @@ const handleButacaSeleccionada = (butaca: string) => {
     margin: auto;
     padding-bottom: 100px;
 }
-</style>
+</style>@/store/userInfo

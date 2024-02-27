@@ -1,10 +1,17 @@
 <script setup lang="ts">
 
+import { usarInfoUsuario } from '@/store/userInfo';
+import { ref,computed } from 'vue';
+
+
 const props = defineProps<{
     titulo: string;
     precio: number;
     butaca: string;
 }>();
+
+const store = usarInfoUsuario();
+const userInfo = computed(() => store.userInfo);
 
 const handleCompra = () => {
     console.log('Compra realizada');
@@ -18,6 +25,7 @@ const handleCompra = () => {
         <form @submit.prevent="handleCompra">
             <div class="datosForm">
                 <label>Obra de Teatro</label>
+                <p>id Usuario: {{ userInfo?.usuarioId }}</p>
                 <input type="text" id="inputNombreObra" :value="titulo">
                 <label>Sitio de Asiento</label>
                 <input type="text" id="inputSitioAsiento" required :value="butaca">

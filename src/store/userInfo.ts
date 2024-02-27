@@ -7,7 +7,7 @@ interface UserInfo {
 }
 
 export const usarInfoUsuario = defineStore({
-  id: 'auth',
+  id: 'infoUser',
   state: () => ({
     userInfo: null as UserInfo | null
   }),

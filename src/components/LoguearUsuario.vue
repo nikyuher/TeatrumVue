@@ -2,7 +2,7 @@
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { usarInfoUsuario } from '@/store/store';
+import { usarInfoUsuario } from '@/store/userInfo';
 
 const store = usarInfoUsuario();
 
@@ -179,4 +179,4 @@ const login = async () => {
 .remember-forgot a:hover {
   text-decoration: underline;
 }
-</style>
+</style>@/store/userInfo

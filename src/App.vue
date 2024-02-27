@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { usarInfoUsuario } from '@/store/store';
+import { usarInfoUsuario } from '@/store/userInfo';
 
 const store = usarInfoUsuario();
 const userInfo = computed(() => store.userInfo);
@@ -54,3 +54,4 @@ const userInfo = computed(() => store.userInfo);
 </template>
 
 <style scoped></style>
+@/store/userInfo

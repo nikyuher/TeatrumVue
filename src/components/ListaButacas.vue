@@ -1,17 +1,16 @@
 <script setup lang="ts">
-
-import butacaG from '@/components/icons/IconButacaGreen.vue'
-import butacaR from '@/components/icons/IconButacaRed.vue'
-
-import { ref, onMounted} from 'vue'
+import { ref, onMounted } from 'vue';
+import { defineEmits } from 'vue';
+import { useInfoButacaStore } from '@/store/infoButaca';
 
 const emits = defineEmits(['infoButaca']);
 
 const butacas = ref<any[]>([]);
 
+const infoButacaStore = useInfoButacaStore();
+
 onMounted(async () => {
     try {
-
         const response = await fetch(`http://localhost:8001/Asiento`);
 
         if (!response.ok) {
@@ -21,25 +20,26 @@ onMounted(async () => {
         const data = await response.json();
         butacas.value = data;
 
+        // Guarda la información de las butacas en el almacén infoButacaStore
+        infoButacaStore.setButacas(data);
+
     } catch (error) {
         console.log('Error al cargar las butacas', error)
     }
 })
 
-const butacasFiltradas = (letra: string) => {
-    return butacas.value.filter(butaca => butaca.nombreAsiento.startsWith(letra));
-}
-
-
 const ObtenerButaca = (butaca: string) => {
     emits('infoButaca', butaca);
+}
+const butacasFiltradas = (letra: string) => {
+    return butacas.value.filter(butaca => butaca.nombreAsiento.startsWith(letra));
 }
 </script>
 
 <template>
     <div class="bloqueA">
         <div v-for="butaca in butacasFiltradas('A')" :key="butaca.AsientoId">
-            <div class="box" >
+            <div class="box">
                 <template v-if="butaca.estado">
                     <butacaR>{{ butaca.nombreAsiento }}</butacaR>
                 </template>
