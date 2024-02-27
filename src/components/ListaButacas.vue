@@ -34,6 +34,7 @@ const fetchButaca = async (butacaId: number) => {
         }
 
         const data = await response.json();
+        
         const Butaca = {
             asientoId: data.asientoId,
             nombreAsiento: data.nombreAsiento,
