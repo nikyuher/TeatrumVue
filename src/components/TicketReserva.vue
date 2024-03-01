@@ -65,6 +65,7 @@ const handleCompra = async () => {
         if (!ocuparAsientoResponse.ok) {
             throw new Error('Fallo al actualizar el estado del asiento.');
         } else {
+            Butaca.setButacas(null);
             alert('Compra Realizada');
         }
 

@@ -12,7 +12,7 @@ export const useInfoButaca = defineStore({
         butacas: null as ButacaInfo | null
     }),
     actions: {
-        setButacas(butacas: ButacaInfo) {
+        setButacas(butacas: ButacaInfo | null) {
             this.butacas = butacas;
         }
     }
