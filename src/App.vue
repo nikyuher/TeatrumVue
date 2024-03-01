@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { onBeforeMount, computed } from 'vue';
 import { usarInfoUsuario } from '@/store/userInfo';
 
 const store = usarInfoUsuario();
 const userInfo = computed(() => store.userInfo);
+
+onBeforeMount(() => {
+  store.loadUserInfo();
+});
 </script>
 
 <template>

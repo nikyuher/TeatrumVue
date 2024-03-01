@@ -181,4 +181,4 @@ const login = async () => {
 .remember-forgot a:hover {
   text-decoration: underline;
 }
-</style>@/store/userInfo
+</style>
