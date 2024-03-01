@@ -5,25 +5,39 @@ import { useInfoButaca } from '@/store/infoButaca';
 import butacaR from '@/components/icons/IconButacaRed.vue'
 import butacaG from '@/components/icons/IconButacaGreen.vue'
 
+const props = defineProps<{
+    idObra?: number;
+}>();
+
 const butacas = ref<any[]>([]);
 const infoButaca = useInfoButaca();
 
+const idObra = props.idObra;
+
 onMounted(async () => {
     try {
-        const response = await fetch(`http://localhost:8001/Asiento`);
+        const responseAsientos = await fetch(`http://localhost:8001/Asiento/estado/false`);
+        const responseObra = await fetch(`http://localhost:8001/Obra/${idObra}/asientos`);
 
-        if (!response.ok) {
+        if (!responseAsientos.ok || !responseObra.ok) {
             throw new Error("No se pudo obtener data");
         }
 
-        const data = await response.json();
-        butacas.value = data;
+        const dataAsientos = await responseAsientos.json();
+        const dataObra = await responseObra.json();
 
+        dataObra.asientosOcupados.forEach((obraAsiento: any) => {
+            const index = dataAsientos.findIndex((asiento: any) => asiento.nombreAsiento === obraAsiento.nombreAsiento);
+            if (index !== -1) {
+                dataAsientos[index].estado = obraAsiento.estado;
+            }
+        });
+
+        butacas.value = dataAsientos;
     } catch (error) {
         console.log('Error al cargar las butacas', error)
     }
 });
-
 
 const fetchButaca = async (butacaId: number) => {
     try {
@@ -48,52 +62,52 @@ const fetchButaca = async (butacaId: number) => {
     }
 };
 
-const butacasFiltradas = (letra: string) => {
-    return butacas.value.filter(butaca => butaca.nombreAsiento.startsWith(letra));
-}
-
 const ObtenerButaca = (butacaId: number) => {
     fetchButaca(butacaId);
+}
+
+const butacasFiltradas = (letra: string) => {
+    return butacas.value.filter(butaca => butaca.nombreAsiento.startsWith(letra));
 }
 </script>
 
 <template>
-    <div class="bloqueA">
-        <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
-            <div class="box">
-                <template v-if="butaca.estado">
-                    <butacaR></butacaR>
-                </template>
-                <template v-else>
-                    <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
-                </template>
+        <div class="bloqueA">
+            <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
+                <div class="box">
+                    <template v-if="butaca.estado">
+                        <butacaR></butacaR>
+                    </template>
+                    <template v-else>
+                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                    </template>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="bloqueB">
-        <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
-            <div class="box">
-                <template v-if="butaca.estado">
-                    <butacaR></butacaR>
-                </template>
-                <template v-else>
-                    <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
-                </template>
+        <div class="bloqueB">
+            <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
+                <div class="box">
+                    <template v-if="butaca.estado">
+                        <butacaR></butacaR>
+                    </template>
+                    <template v-else>
+                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                    </template>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="bloqueC">
-        <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
-            <div class="box">
-                <template v-if="butaca.estado">
-                    <butacaR></butacaR>
-                </template>
-                <template v-else>
-                    <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
-                </template>
+        <div class="bloqueC">
+            <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
+                <div class="box">
+                    <template v-if="butaca.estado">
+                        <butacaR></butacaR>
+                    </template>
+                    <template v-else>
+                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                    </template>
+                </div>
             </div>
         </div>
-    </div>
 </template>
 
 <style scoped>

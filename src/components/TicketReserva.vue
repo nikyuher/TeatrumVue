@@ -3,8 +3,13 @@
 import { useInfoButaca } from '@/store/infoButaca';
 import { usarInfoUsuario } from '@/store/userInfo';
 import { useObraInfo } from '@/store/obraInfo';
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 
+
+const props = defineProps<{
+    idObra?: number;
+}>();
+const idObraReal = props.idObra;
 
 const Usuario = usarInfoUsuario();
 const userInfo = computed(() => Usuario.userInfo);
@@ -16,7 +21,6 @@ const Butaca = useInfoButaca();
 const butacaInfo = computed(() => Butaca.butacas);
 
 const idUsuario = Usuario.userInfo?.usuarioId
-const idObra = obraInfo.value?.idObra;
 
 const handleCompra = async () => {
 
@@ -28,8 +32,7 @@ const handleCompra = async () => {
 
         const Reserva = {
             usuarioId: idUsuario,
-            obraId: idObra,
-            asientoId: butacaInfo.value?.asientoId
+            obraId: idObraReal
         };
 
 
@@ -46,21 +49,20 @@ const handleCompra = async () => {
         }
 
 
-        const putAsiento = {
-            asientoId: butacaInfo.value?.asientoId,
-            estado: true
+        const ocuparAsiento = {
+            asientoId: Butaca.butacas?.asientoId,
+            obraId: idObraReal
         };
 
-        // Realizar la solicitud PUT para actualizar el estado del asiento a true
-        const actualizarAsientoResponse = await fetch(`http://localhost:8001/Asiento/${butacaInfo.value?.asientoId}/estado`, {
-            method: 'PUT',
+        const ocuparAsientoResponse = await fetch(`http://localhost:8001/Asiento/ocupados`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(putAsiento)
+            body: JSON.stringify(ocuparAsiento)
         });
 
-        if (!actualizarAsientoResponse.ok) {
+        if (!ocuparAsientoResponse.ok) {
             throw new Error('Fallo al actualizar el estado del asiento.');
         } else {
             alert('Compra Realizada');

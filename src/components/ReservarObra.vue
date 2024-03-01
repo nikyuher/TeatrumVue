@@ -30,13 +30,13 @@ idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra
                 </div>
             </div>
             <div class="formComprar">
-                <Ticket></Ticket>
+                <Ticket :id-obra="idObra" ></Ticket>
             </div>
         </div>
     </div>
     <section>
         <div class="contenedorBloques">
-            <butacas></butacas>
+            <butacas :id-obra="idObra"></butacas>
         </div>
     </section>
 </template>
