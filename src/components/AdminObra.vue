@@ -1,160 +1,104 @@
 <script setup lang="ts">
+import AddObra from '@/components/ObraAdmin/AddObra.vue'
+import DeleteObra from '@/components/ObraAdmin/DeleteObra.vue'
+import PutInfoObra from '@/components/ObraAdmin/PutInfoObra.vue'
+import PutImgObra from '@/components/ObraAdmin/PutImgObra.vue'
+
 import { ref } from 'vue';
 
-interface ObraData {
-    genero: string;
-    título: string;
-    descripción: string;
-    precioEntrada: number;
-    imagen: string | null;
-}
+const isAddObraView = ref<boolean>(true);
+const isDeleteObraView = ref<boolean>(false);
+const isPutInfoObraView = ref<boolean>(false);
+const isPutImgObraView = ref<boolean>(false);
 
-const img = ref<File | null>(null);
-const genero = ref('');
-const titulo = ref('');
-const descri = ref('');
-const precio = ref(0);
-const responseMessage = ref('');
-const imageDataUrl = ref<string | null>(null);
+const showAddObra = () => {
+    isAddObraView.value = true;
+    isDeleteObraView.value = false;
+    isPutInfoObraView.value = false;
+    isPutImgObraView.value = false;
+};
 
-const obra = async () => {
-    try {
-        let obraData: ObraData = {
-            genero: genero.value,
-            título: titulo.value,
-            descripción: descri.value,
-            precioEntrada: precio.value,
-            imagen: null
-        };
+const showDeleteObra = () => {
+    isAddObraView.value = false;
+    isDeleteObraView.value = true;
+    isPutInfoObraView.value = false;
+    isPutImgObraView.value = false;
+};
 
-        if (img.value) {
-            const base64Image = await fileToBase64(img.value);
-            obraData = {
-                ...obraData,
-                imagen: base64Image
-            };
-        }
+const showPutInfoObra = () => {
+    isAddObraView.value = false;
+    isDeleteObraView.value = false;
+    isPutInfoObraView.value = true;
+    isPutImgObraView.value = false;
+};
 
-        const response = await fetch('http://localhost:8001/Obra', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obraData)
-        });
-
-        if (!response.ok) {
-            throw new Error('Fallo al crear la obra.');
-        }
-
-        img.value = null;
-        genero.value = '';
-        titulo.value = '';
-        descri.value = '';
-        precio.value = 0;
-
-        responseMessage.value = 'Creado Correctamente.';
-
-        setTimeout(() => {
-            responseMessage.value = '';
-        }, 3000);
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-const handleFileChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-
-    if (file) {
-        img.value = file;
-        const reader = new FileReader();
-        reader.onload = () => {
-            imageDataUrl.value = reader.result as string;
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-// Función para convertir un archivo a una cadena de datos base64
-const fileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            // Obtener la cadena base64 sin el prefijo 'data:image/jpeg;base64,' o similar
-            const base64 = (reader.result as string).split(',')[1];
-            resolve(base64);
-        };
-        reader.onerror = error => reject(error);
-    });
-}
+const showPutImgObra = () => {
+    isAddObraView.value = false;
+    isDeleteObraView.value = false;
+    isPutInfoObraView.value = false;
+    isPutImgObraView.value = true;
+};
 </script>
-
 
 <template>
     <div>
-        <h2>Crear Obra</h2>
-        <form @submit.prevent="obra">
-            <label for="imagen">Imagen</label>
-            <input type="file" id="imagen" accept="image/*" @change="handleFileChange" required>
-            <div v-if="imageDataUrl">
-                <img :src="imageDataUrl" alt="Imagen seleccionada"
-                    style="max-width: 100%; height: 200px; margin-bottom: 10px;">
-            </div>
-            <label for="genero">Género</label>
-            <input type="text" id="genero" v-model="genero" required>
-            <label for="titulo">Título</label>
-            <input type="text" id="titulo" v-model="titulo" required>
-            <label for="descripcion">Descripción</label>
-            <input type="text" id="descripcion" v-model="descri" required>
-            <label for="precio">Precio</label>
-            <input type="number" id="precio" v-model="precio" required>
-            <input type="submit" value="Enviar">
-            <p class="response">{{ responseMessage }}</p>
-        </form>
+        <nav>
+            <ul>
+                <li @click="showAddObra">Agregar</li>
+                <li @click="showPutInfoObra">Actualizar Info</li>
+                <li @click="showPutImgObra">Actualizar Imagen</li>
+                <li @click="showDeleteObra">Eliminar</li>
+            </ul>
+        </nav>
+        <main>
+            <article>
+                <section>
+                    <div class="wrapper">
+                        <div v-if="isAddObraView">
+                            <AddObra></AddObra>
+                        </div>
+                        <div v-else-if="isDeleteObraView">
+                            <DeleteObra></DeleteObra>
+                        </div>
+                        <div v-else-if="isPutInfoObraView">
+                            <PutInfoObra></PutInfoObra>
+                        </div>
+                        <div v-else>
+                            <PutImgObra></PutImgObra>
+                        </div>
+                    </div>
+                </section>
+            </article>
+        </main>
     </div>
 </template>
 
-
 <style scoped>
-form {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
+nav {
+    background-color: #1997ad;
     border-radius: 5px;
 }
 
-label {
-    display: block;
-    margin-bottom: 10px;
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="file"] {
-    width: 100%;
+li {
     padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
+    color: white;
 }
 
-.response {
-    margin-top: 10px;
-    color: green;
+li:hover {
+    border-radius: 5px;
+    background-color: #204a97;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
 }
 </style>
