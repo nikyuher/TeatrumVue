@@ -40,6 +40,11 @@ const router = createRouter({
       path: '/catalogo',
       name: 'catalogo',
       component: () => import('../views/CatalogoView.vue')
+    },
+    {
+      path: '/admin',
+      name: 'cataadminlogo',
+      component: () => import('../views/AdminView.vue')
     }
   ]
 })

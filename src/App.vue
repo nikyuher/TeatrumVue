@@ -22,6 +22,7 @@ onBeforeMount(() => {
         <router-link to="/estrenos">Proximos Estrenos</router-link>
         <router-link to="/catalogo">Catalogo</router-link>
         <router-link to="/about">Contactanos</router-link>
+        <router-link v-if="userInfo && userInfo.nombre === 'admin'" to="/admin">Administrador</router-link>
         <router-link v-if="!userInfo" to="/login">Iniciar Sesion</router-link>
         <router-link v-if="userInfo" :to="'/login'">{{ userInfo.nombre }}</router-link>
       </nav>
@@ -58,4 +59,3 @@ onBeforeMount(() => {
 </template>
 
 <style scoped></style>
-@/store/userInfo
