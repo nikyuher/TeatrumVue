@@ -2,7 +2,16 @@
 import AdminUser from '@/components/AdminUser.vue'
 import AdminObra from '@/components/AdminObra.vue'
 import AdminButaca from '@/components/AdminButaca.vue'
-import { ref } from 'vue';
+import { ref,computed } from 'vue';
+
+import { usarInfoUsuario } from '@/store/userInfo';
+
+const infoUsuario = usarInfoUsuario();
+
+const isAdmin = computed(() => {
+    // Verificar si userInfo existe y si tiene el rol de administrador
+    return infoUsuario.userInfo !== null && infoUsuario.userInfo.rol;
+});
 
 const isAdminUserView = ref<boolean>(true);
 const isAdminObraView = ref<boolean>(false);
@@ -28,7 +37,7 @@ const showAdminButaca = () => {
 </script>
 
 <template>
-    <div>
+    <div v-if="isAdmin">
         <nav>
             <ul>
                 <li @click="showAdminUser">Usuario</li>
@@ -57,9 +66,20 @@ const showAdminButaca = () => {
             </article>
         </main>
     </div>
+    <div v-else>
+        <div class="contedor">
+            <h1>No tienes permisos para acceder a esta sección.</h1>
+        </div>
+    </div>
 </template>
 
 <style scoped>
+
+.contedor{
+
+    margin: 100px;
+    text-align: center;
+}
 nav {
     background-color: #333;
 }
