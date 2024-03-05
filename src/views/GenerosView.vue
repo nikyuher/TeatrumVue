@@ -71,7 +71,6 @@ main {
 
 .listaGeneros {
     margin: auto;
-    background-color: green;
     width: 80%;
 }
 </style>

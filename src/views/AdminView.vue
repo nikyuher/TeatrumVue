@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AdminUser from '@/components/AdminUser.vue'
-import AdminObra from '@/components/AdminObra.vue'
-import AdminButaca from '@/components/AdminButaca.vue'
+import AdminUser from '@/components/Administrador/AdminUser.vue'
+import AdminObra from '@/components/Administrador/AdminObra.vue'
+import AdminButaca from '@/components/Administrador/AdminButaca.vue'
 import { ref,computed } from 'vue';
 
 import { usarInfoUsuario } from '@/store/userInfo';
@@ -76,7 +76,6 @@ const showAdminButaca = () => {
 <style scoped>
 
 .contedor{
-
     margin: 100px;
     text-align: center;
 }
@@ -108,7 +107,7 @@ li:hover {
 }
 
 .form-box {
-    width: 400px;
+    width: 500px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;

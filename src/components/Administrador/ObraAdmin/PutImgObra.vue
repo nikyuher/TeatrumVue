@@ -82,7 +82,7 @@ const fileToBase64 = (file: File): Promise<string> => {
 
 <template>
     <div>
-        <h2>Actualizar Imagen de Obra</h2>
+        <h2>Actualizar Imagen</h2>
         <form @submit.prevent="updateImage">
             <label for="obraId">ID de Obra</label>
             <input type="number" id="obraId" v-model="obraId" required>

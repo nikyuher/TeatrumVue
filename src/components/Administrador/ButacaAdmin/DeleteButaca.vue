@@ -1,34 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const nombre = ref('');
-const estado = ref(false);
+const butacaId = ref(0);
 const responseMessage = ref('');
 
 const butaca = async () => {
 
     try {
-        const crear = {
-            nombreAsiento: nombre.value,
-            estado: estado.value
-        };
-
-        const response = await fetch('http://localhost:8001/Asiento', {
-            method: 'POST',
+        const response = await fetch(`http://localhost:8001/Asiento/${butacaId.value}`, {
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(crear)
+            }
         });
 
         if (!response.ok) {
-            throw new Error('Fallo al crear Butaca.');
+            throw new Error('Fallo al Eliminar Butaca.');
         }
 
-        nombre.value = ''
-        estado.value = false
+        butacaId.value = 0
 
-        responseMessage.value = 'Creado Correctamente.';
+        responseMessage.value = 'Eliminado Correctamente.';
 
         setTimeout(() => {
             responseMessage.value = '';
@@ -42,15 +34,10 @@ const butaca = async () => {
 
 <template>
     <div>
-        <h2>Crear Butaca</h2>
+        <h2>Borrar Butaca</h2>
         <form @submit.prevent="butaca">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" v-model="nombre" required>
-            <label for="estado">Estado</label>
-            <select id="estado" v-model="estado" required>
-                <option :value="true">True</option>
-                <option :value="false">False</option>
-            </select>
+            <label for="butacaId">ID Butaca</label>
+            <input type="number" id="butacaId" v-model="butacaId" required>
             <input type="submit" value="Enviar">
             <p class="response">{{ responseMessage }}</p>
         </form>
@@ -71,7 +58,7 @@ label {
     margin-bottom: 10px;
 }
 
-input[type="text"],
+input[type="number"],
 select,
 input[type="submit"] {
     width: 100%;

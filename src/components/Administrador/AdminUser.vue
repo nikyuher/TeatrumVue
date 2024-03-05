@@ -1,16 +1,25 @@
 <script setup lang="ts">
 import AdminAdd from '@/components/UserAdmin/AddUser.vue';
 import DeleteAdd from '@/components/UserAdmin/DeleteUser.vue';
+import ListUser from '@/components/UserAdmin/ListUser.vue';
 import { ref } from 'vue';
 
 const isAddUserView = ref<boolean>(true);
+const isListUserView = ref<boolean>(false);
 
 const showAddUser = () => {
     isAddUserView.value = true;
+    isListUserView.value = false;
 };
 
 const showDeleteUser = () => {
     isAddUserView.value = false;
+    isListUserView.value = false;
+};
+
+const showListUser = () => {
+    isAddUserView.value = false;
+    isListUserView.value = true;
 };
 </script>
 
@@ -19,6 +28,7 @@ const showDeleteUser = () => {
         <ul>
             <li @click="showAddUser">Agregar Usuario</li>
             <li @click="showDeleteUser">Eliminar Usuario</li>
+            <li @click="showListUser">Ver Usuarios</li>
         </ul>
     </nav>
     <main>
@@ -27,6 +37,9 @@ const showDeleteUser = () => {
                 <div class="wrapper">
                     <div v-if="isAddUserView">
                         <AdminAdd></AdminAdd>
+                    </div>
+                    <div v-else-if="isListUserView"> 
+                        <ListUser></ListUser>
                     </div>
                     <div v-else>
                         <DeleteAdd></DeleteAdd>
