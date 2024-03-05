@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AddButaca from '@/components/ButacaAdmin/AddButaca.vue';
-import DeleteButaca from '@/components/ButacaAdmin/DeleteButaca.vue';
-import ListButaca from '@/components/ButacaAdmin/ListButaca.vue';
+import AddButaca from '@/components/Administrador/ButacaAdmin/AddButaca.vue';
+import DeleteButaca from '@/components/Administrador/ButacaAdmin/DeleteButaca.vue';
+import ListButaca from '@/components/Administrador/ButacaAdmin/ListButaca.vue';
 import { ref } from 'vue';
 
 const isAddButacaView = ref<boolean>(true);

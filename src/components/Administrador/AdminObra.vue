@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import AddObra from '@/components/ObraAdmin/AddObra.vue'
-import DeleteObra from '@/components/ObraAdmin/DeleteObra.vue'
-import PutInfoObra from '@/components/ObraAdmin/PutInfoObra.vue'
-import PutImgObra from '@/components/ObraAdmin/PutImgObra.vue'
-import ListObra from '@/components/ObraAdmin/ListObra.vue'
+import AddObra from '@/components/Administrador/ObraAdmin/AddObra.vue'
+import DeleteObra from '@/components/Administrador/ObraAdmin/DeleteObra.vue'
+import PutInfoObra from '@/components/Administrador/ObraAdmin/PutInfoObra.vue'
+import PutImgObra from '@/components/Administrador/ObraAdmin/PutImgObra.vue'
+import ListObra from '@/components/Administrador/ObraAdmin/ListObra.vue'
 
 import { ref } from 'vue';
 

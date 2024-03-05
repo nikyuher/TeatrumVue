@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AdminAdd from '@/components/UserAdmin/AddUser.vue';
-import DeleteAdd from '@/components/UserAdmin/DeleteUser.vue';
-import ListUser from '@/components/UserAdmin/ListUser.vue';
+import AdminAdd from '@/components/Administrador/UserAdmin/AddUser.vue';
+import DeleteAdd from '@/components/Administrador/UserAdmin/DeleteUser.vue';
+import ListUser from '@/components/Administrador/UserAdmin/ListUser.vue';
 import { ref } from 'vue';
 
 const isAddUserView = ref<boolean>(true);

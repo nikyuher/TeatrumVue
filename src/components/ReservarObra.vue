@@ -94,4 +94,4 @@ idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra
     margin: auto;
     padding-bottom: 100px;
 }
-</style>@/store/userInfo
+</style>
