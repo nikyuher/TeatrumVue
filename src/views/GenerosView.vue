@@ -17,25 +17,27 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
 
 <template>
     <main>
-        <div class="letraTextoGeneral">
-            <section>
-                <div class="contTituloGeneroSelec">
-                    <div class="tituloGeneroSelec">
-                        <h1>{{ $route.params.genero }}</h1>
+        <article>
+            <div class="letraTextoGeneral">
+                <section>
+                    <div class="contTituloGeneroSelec">
+                        <div class="tituloGeneroSelec">
+                            <h1>{{ $route.params.genero }}</h1>
+                        </div>
+                        <div class="imgGeneroSelec">
+                            <img src="@/assets/imagenes/obras/banner-generos-teatro.jpg" alt="">
+                        </div>
                     </div>
-                    <div class="imgGeneroSelec">
-                        <img src="@/assets/imagenes/obras/banner-generos-teatro.jpg" alt="">
+                </section>
+                <section>
+                    <div class="contGeneros">
+                        <div class="listaGeneros">
+                            <ListaGenero :genero="genero"></ListaGenero>
+                        </div>
                     </div>
-                </div>
-            </section>
-            <section>
-                <div class="contGeneros">
-                    <div class="listaGeneros">
-                        <ListaGenero :genero="genero"></ListaGenero>
-                    </div>
-                </div>
-            </section>
-        </div>
+                </section>
+            </div>
+        </article>
     </main>
 </template>
 

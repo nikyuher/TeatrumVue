@@ -21,15 +21,15 @@ const mostrarView = (view: string) => {
 </script>
 
 <template>
-    <div v-if="isAdmin">
-        <nav>
-            <ul>
-                <li @click="mostrarView('user')">Usuario</li>
-                <li @click="mostrarView('obra')">Obra</li>
-                <li @click="mostrarView('butaca')">Butaca</li>
-            </ul>
-        </nav>
-        <main>
+    <main>
+        <div v-if="isAdmin">
+            <nav>
+                <ul>
+                    <li @click="mostrarView('user')">Usuario</li>
+                    <li @click="mostrarView('obra')">Obra</li>
+                    <li @click="mostrarView('butaca')">Butaca</li>
+                </ul>
+            </nav>
             <article>
                 <section>
                     <div class="wrapper">
@@ -48,21 +48,21 @@ const mostrarView = (view: string) => {
                     </div>
                 </section>
             </article>
-        </main>
-    </div>
-    <div v-else>
-        <div class="contenedor">
-            <h1>No tienes permisos para acceder a esta sección.</h1>
         </div>
-    </div>
+        <div v-else>
+            <div class="contenedor">
+                <h1>No tienes permisos para acceder a esta sección.</h1>
+            </div>
+        </div>
+    </main>
 </template>
 
 <style scoped>
-
 .contenedor {
     margin: 100px;
     text-align: center;
 }
+
 nav {
     background-color: #333;
 }

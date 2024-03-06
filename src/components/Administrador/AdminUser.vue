@@ -19,23 +19,17 @@ const mostrarView = (view: string) => {
             <li @click="mostrarView('list')">Ver Usuarios</li>
         </ul>
     </nav>
-    <main>
-        <article>
-            <section>
-                <div class="wrapper">
-                    <div v-if="vistaActual === 'add'">
-                        <AdminAdd></AdminAdd>
-                    </div>
-                    <div v-else-if="vistaActual === 'list'">
-                        <ListUser></ListUser>
-                    </div>
-                    <div v-else>
-                        <DeleteAdd></DeleteAdd>
-                    </div>
-                </div>
-            </section>
-        </article>
-    </main>
+    <div class="wrapper">
+        <div v-if="vistaActual === 'add'">
+            <AdminAdd></AdminAdd>
+        </div>
+        <div v-else-if="vistaActual === 'list'">
+            <ListUser></ListUser>
+        </div>
+        <div v-else>
+            <DeleteAdd></DeleteAdd>
+        </div>
+    </div>
 </template>
 
 <style scoped>

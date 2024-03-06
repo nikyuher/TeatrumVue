@@ -73,5 +73,4 @@ main {
 .contenidoForm #comprar {
     margin-top: 20px;
 }
-
 </style>

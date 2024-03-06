@@ -19,23 +19,17 @@ const mostrarView = (view: string) => {
             <li @click="mostrarView('list')">Listar Butacas</li>
         </ul>
     </nav>
-    <main>
-        <article>
-            <section>
-                <div class="wrapper">
-                    <div v-if="vistaActual === 'add'">
-                        <AddButaca></AddButaca>
-                    </div>
-                    <div v-else-if="vistaActual === 'list'">
-                        <ListButaca></ListButaca>
-                    </div>
-                    <div v-else>
-                        <DeleteButaca></DeleteButaca>
-                    </div>
-                </div>
-            </section>
-        </article>
-    </main>
+    <div class="wrapper">
+        <div v-if="vistaActual === 'add'">
+            <AddButaca></AddButaca>
+        </div>
+        <div v-else-if="vistaActual === 'list'">
+            <ListButaca></ListButaca>
+        </div>
+        <div v-else>
+            <DeleteButaca></DeleteButaca>
+        </div>
+    </div>
 </template>
 
 <style scoped>

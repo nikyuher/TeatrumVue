@@ -4,7 +4,7 @@ import butacas from '@/components/ListaButacas.vue'
 import ObraId from '@/components/ObraEspecificaId.vue'
 import Ticket from '@/components/TicketReserva.vue'
 
-import {computed,ref} from 'vue'
+import { computed, ref } from 'vue'
 import { useObraInfo } from '@/store/obraInfo';
 import { useRoute } from 'vue-router';
 
@@ -26,19 +26,17 @@ idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra
                     <img :src="obraInfo?.imagen" alt="Imagen de la obra">
                 </div>
                 <div class="descripcionCompra">
-                    <ObraId :id-obra="idObra" ></ObraId>
+                    <ObraId :id-obra="idObra"></ObraId>
                 </div>
             </div>
             <div class="formComprar">
-                <Ticket :id-obra="idObra" ></Ticket>
+                <Ticket :id-obra="idObra"></Ticket>
             </div>
         </div>
     </div>
-    <section>
-        <div class="contenedorBloques">
-            <butacas :id-obra="idObra"></butacas>
-        </div>
-    </section>
+    <div class="contenedorBloques">
+        <butacas :id-obra="idObra"></butacas>
+    </div>
 </template>
 
 <style scoped>

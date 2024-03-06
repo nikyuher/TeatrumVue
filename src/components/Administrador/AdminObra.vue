@@ -25,29 +25,23 @@ const mostrarView = (view: string) => {
                 <li @click="mostrarView('list')">Ver Obras</li>
             </ul>
         </nav>
-        <main>
-            <article>
-                <section>
-                    <div class="wrapper">
-                        <div v-if="vistaActual === 'add'">
-                            <AddObra></AddObra>
-                        </div>
-                        <div v-else-if="vistaActual === 'delete'">
-                            <DeleteObra></DeleteObra>
-                        </div>
-                        <div v-else-if="vistaActual === 'info'">
-                            <PutInfoObra></PutInfoObra>
-                        </div>
-                        <div v-else-if="vistaActual === 'image'">
-                            <PutImgObra></PutImgObra>
-                        </div>
-                        <div v-else>
-                            <ListObra></ListObra>
-                        </div>
-                    </div>
-                </section>
-            </article>
-        </main>
+        <div class="wrapper">
+            <div v-if="vistaActual === 'add'">
+                <AddObra></AddObra>
+            </div>
+            <div v-else-if="vistaActual === 'delete'">
+                <DeleteObra></DeleteObra>
+            </div>
+            <div v-else-if="vistaActual === 'info'">
+                <PutInfoObra></PutInfoObra>
+            </div>
+            <div v-else-if="vistaActual === 'image'">
+                <PutImgObra></PutImgObra>
+            </div>
+            <div v-else>
+                <ListObra></ListObra>
+            </div>
+        </div>
     </div>
 </template>
 

@@ -28,10 +28,7 @@ onBeforeMount(() => {
       </nav>
     </div>
   </header>
-  <main>
-    <router-view />
-  </main>
-
+  <router-view />
   <footer>
     <div class="contFooter">
       <div class="cajaRedes letraFooter colorFooter">

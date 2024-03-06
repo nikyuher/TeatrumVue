@@ -68,7 +68,7 @@ const handleCompra = async () => {
             Butaca.setButacas(null);
             alert('Compra Realizada');
         }
-        
+
         window.location.reload();
     } catch (error) {
         console.log(error)
