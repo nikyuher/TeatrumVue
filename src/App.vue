@@ -24,7 +24,7 @@ onBeforeMount(() => {
         <router-link to="/about">Contactanos</router-link>
         <router-link v-if="userInfo && userInfo.nombre === 'admin'" to="/admin">Administrador</router-link>
         <router-link v-if="!userInfo" to="/login">Iniciar Sesion</router-link>
-        <router-link v-if="userInfo" :to="'/login'">{{ userInfo.nombre }}</router-link>
+        <router-link v-if="userInfo" :to="'/setting'">{{ userInfo.nombre }}</router-link>
       </nav>
     </div>
   </header>

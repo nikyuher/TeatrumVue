@@ -69,6 +69,17 @@ const getImagenUrl = (imagenBytes: string) => {
   margin: 30px 10px;
   background-color: white;
   width: 300px;
+  height: 520px;
+  border-radius: 5px;
 }
+
+.targeta img{
+   height: 300px;
+   margin: 20px 0 20px 0;
+}
+.targeta h3{
+  text-align: left;
+}
+
 </style>
 

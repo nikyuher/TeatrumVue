@@ -64,4 +64,8 @@ const getImagenUrl = (imagenBytes: string) => {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+h1{
+    text-align: left;
+}
+</style>

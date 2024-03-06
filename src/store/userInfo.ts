@@ -13,7 +13,7 @@ export const usarInfoUsuario = defineStore({
   }),
   actions: {
     // Almacenar la información del usuario en localStorage
-    setUserInfo(userInfo: UserInfo) {
+    setUserInfo(userInfo: UserInfo | null) {
       this.userInfo = userInfo;
       localStorage.setItem('userInfo', JSON.stringify(userInfo));
     },
