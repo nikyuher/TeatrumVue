@@ -21,10 +21,10 @@ const eventCerrarSesion = async () => {
 
 <template>
     <div class="contenedor">
-        <form @submit.prevent="eventCerrarSesion">
-            <label>Cerrar Sesion</label>
-            <input type="submit" value="Cerrar Sesion">
-        </form>
+        <h1>Ajustes Usuario</h1>
+        <v-btn @click="eventCerrarSesion">
+            Cerrar Sesion
+        </v-btn>
     </div>
 </template>
 
@@ -33,6 +33,7 @@ const eventCerrarSesion = async () => {
     margin: auto;
     width: 300px;
     height: 500px;
+    text-align: center;
     border: solid 1px black;
 }
 </style>

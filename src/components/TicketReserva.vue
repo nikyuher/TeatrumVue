@@ -83,15 +83,16 @@ const handleCompra = async () => {
     <div class="contenidoForm">
         <form @submit.prevent="handleCompra">
             <div class="datosForm">
-                <label>Obra de Teatro Id: {{ obraInfo?.idObra }}</label>
-                <p>id Usuario: {{ userInfo?.usuarioId }}</p>
-                <input type="text" id="inputNombreObra" :value="obraInfo?.titulo">
-                <label>Sitio de Asiento: ID {{ butacaInfo?.asientoId }}</label>
-                <input type="text" id="inputSitioAsiento" required :value="butacaInfo?.nombreAsiento">
+                <label>Obra de Teatro </label>
+                <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.titulo"></v-text-field>
+                <label>Sitio de Asiento:</label>
+                <v-text-field type="text" id="inputSitioAsiento" required :value="butacaInfo?.nombreAsiento"></v-text-field>
                 <label>Precio:$</label>
-                <input type="number" id="inputPrecio" :value="obraInfo?.precio">
+                <v-text-field type="number" id="inputPrecio" :value="obraInfo?.precio"></v-text-field>
             </div>
-            <input id="comprar" type="submit" value="Comprar">
+            <v-btn type="submit">
+                Comprar
+            </v-btn>
         </form>
     </div>
 </template>

@@ -49,8 +49,7 @@ const handleEstadoChange = () => {
         <div>
             <label for="estado">Filtrar por estado:</label>
             <select id="estado" v-model="estadoSeleccionado" @change="handleEstadoChange">
-                <option value="" disabled selected>Seleccione un estado</option>
-                <option :value="true">Ocupado</option>
+                <option :value="true" >Ocupado</option>
                 <option :value="false">Disponible</option>
             </select>
         </div>

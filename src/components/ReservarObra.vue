@@ -74,7 +74,7 @@ idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra
 /*Formulario de comprar*/
 .formComprar {
     width: 300px;
-    height: 350px;
+    height: 460px;
     background-color: rgb(255, 255, 255);
     display: grid;
     flex-wrap: wrap;

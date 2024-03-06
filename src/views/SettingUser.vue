@@ -14,4 +14,8 @@ import CerrarSesion from '@/components/CerrarSesion.vue';
     </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+section{
+    margin: 100px 0;
+}
+</style>
