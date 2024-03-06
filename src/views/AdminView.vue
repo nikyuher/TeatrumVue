@@ -2,8 +2,8 @@
 import AdminUser from '@/components/Administrador/AdminUser.vue'
 import AdminObra from '@/components/Administrador/AdminObra.vue'
 import AdminButaca from '@/components/Administrador/AdminButaca.vue'
-import { ref,computed } from 'vue';
 
+import { ref, computed } from 'vue';
 import { usarInfoUsuario } from '@/store/userInfo';
 
 const infoUsuario = usarInfoUsuario();
@@ -13,26 +13,10 @@ const isAdmin = computed(() => {
     return infoUsuario.userInfo !== null && infoUsuario.userInfo.rol;
 });
 
-const isAdminUserView = ref<boolean>(true);
-const isAdminObraView = ref<boolean>(false);
-const isAdminButacaView = ref<boolean>(false);
+const vistaActual = ref<string>('user');
 
-const showAdminUser = () => {
-    isAdminUserView.value = true;
-    isAdminObraView.value = false;
-    isAdminButacaView.value = false;
-};
-
-const showAdminObra = () => {
-    isAdminUserView.value = false;
-    isAdminObraView.value = true;
-    isAdminButacaView.value = false;
-};
-
-const showAdminButaca = () => {
-    isAdminUserView.value = false;
-    isAdminObraView.value = false;
-    isAdminButacaView.value = true;
+const mostrarView = (view: string) => {
+    vistaActual.value = view;
 };
 </script>
 
@@ -40,24 +24,24 @@ const showAdminButaca = () => {
     <div v-if="isAdmin">
         <nav>
             <ul>
-                <li @click="showAdminUser">Usuario</li>
-                <li @click="showAdminObra">Obra</li>
-                <li @click="showAdminButaca">Butaca</li>
+                <li @click="mostrarView('user')">Usuario</li>
+                <li @click="mostrarView('obra')">Obra</li>
+                <li @click="mostrarView('butaca')">Butaca</li>
             </ul>
         </nav>
         <main>
             <article>
                 <section>
                     <div class="wrapper">
-                        <div class="form-box" v-if="isAdminUserView">
+                        <div class="form-box" v-if="vistaActual === 'user'">
                             <h2>Admin User</h2>
                             <AdminUser></AdminUser>
                         </div>
-                        <div class="form-box" v-if="isAdminObraView">
+                        <div class="form-box" v-else-if="vistaActual === 'obra'">
                             <h2>Admin Obra</h2>
                             <AdminObra></AdminObra>
                         </div>
-                        <div class="form-box" v-if="isAdminButacaView">
+                        <div class="form-box" v-else-if="vistaActual === 'butaca'">
                             <h2>Admin Butaca</h2>
                             <AdminButaca></AdminButaca>
                         </div>
@@ -67,7 +51,7 @@ const showAdminButaca = () => {
         </main>
     </div>
     <div v-else>
-        <div class="contedor">
+        <div class="contenedor">
             <h1>No tienes permisos para acceder a esta sección.</h1>
         </div>
     </div>
@@ -75,7 +59,7 @@ const showAdminButaca = () => {
 
 <style scoped>
 
-.contedor{
+.contenedor {
     margin: 100px;
     text-align: center;
 }
