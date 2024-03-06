@@ -86,7 +86,7 @@ main {
 }
 
 .descriPopular p {
-  width: 60%;
+  width:600px;
   font-size: 30px;
 }
 
@@ -153,5 +153,51 @@ main {
   font-family: 'Agbalumo', serif;
   text-decoration: none;
   color: rgb(138, 17, 17);
+}
+
+/* Estilos para dispositivos de 1200px */
+@media screen and (max-width: 1200px) {
+  .contObraPopular {
+    background-repeat: no-repeat;
+    background-size: 100% 600px;
+  }
+
+  .descriPopular {
+    width: 90%;
+    margin-bottom: 50px;
+  }
+
+  .descriPopular p {
+    width: 100%;
+    font-size: 24px;
+  }
+
+  .contenido1,
+  .contenido2 {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+  }
+
+  .texto1,
+  .texto2,
+  .texto3 {
+    width: 90%;
+    font-size: 24px;
+    margin: 20px auto;
+  }
+
+  .imgcontent1 img {
+    width: 100%;
+  }
+
+  .botonLlevarGeneros {
+    margin: 40px auto;
+  }
+
+  .diseñoBoton {
+    font-size: 30px;
+    padding: 10px 40px;
+  }
 }
 </style>
