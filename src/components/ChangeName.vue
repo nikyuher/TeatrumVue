@@ -1,25 +1,31 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { usarInfoUsuario } from '@/store/userInfo'
+import { ref } from 'vue';
+import { usarInfoUsuario } from '@/store/userInfo';
 
-const store = usarInfoUsuario();
-
-const nombre = ref('');
-const correo = ref('');
-const contraseña = ref('');
+const nombre = ref<string>('');
+const correo = ref<string>('');
+const contraseña = ref<string>('');
 
 const Usuario = usarInfoUsuario();
-const idUsuario = Usuario.userInfo?.usuarioId
-const butacaInfo = computed(() => Usuario.userInfo);
-const responseMessage = ref('');
+const idUsuario = Usuario.userInfo?.usuarioId;
+
+const responseMessage = ref<string>('');
 
 const UpdateUser = async () => {
     try {
+        if (nombre.value.trim() === '' && correo.value.trim() === '' && contraseña.value.trim() === '') {
+            responseMessage.value = "No hay cambios que hacer";
+            setTimeout(() => {
+                responseMessage.value = '';
+            }, 2000);
+            throw new Error('No hay cambios que hacer');
+        }
+
         const update = {
             usuarioId: idUsuario,
-            nombre: nombre.value,
-            correoElectronico: correo.value,
-            contraseña: contraseña.value
+            nombre: nombre.value.trim() !== '' ? nombre.value.trim() : Usuario.userInfo?.nombre,
+            correoElectronico: correo.value.trim() !== '' ? correo.value.trim() : Usuario.userInfo?.correoElectronico,
+            contraseña: contraseña.value.trim() !== '' ? contraseña.value.trim() : Usuario.userInfo?.contraseña
         };
 
         const response = await fetch(`http://localhost:8001/Usuario/${idUsuario}`, {
@@ -31,59 +37,67 @@ const UpdateUser = async () => {
         });
 
         if (!response.ok) {
-            throw new Error('Fallo al Iniciar Sesion.');
+            throw new Error('Fallo al Hacer cambios.');
         }
 
         const cambioExitoso = {
             usuarioId: idUsuario !== undefined ? idUsuario : 0,
             rol: Usuario.userInfo?.rol !== undefined ? Usuario.userInfo.rol : false,
-            nombre: nombre.value
+            nombre: update.nombre,
+            correoElectronico: update.correoElectronico,
+            contraseña: update.contraseña
         };
 
         if (response.ok) {
-            store.setUserInfo(cambioExitoso);
-            responseMessage.value = "Guardado Correctamente"
+            Usuario.setUserInfo(cambioExitoso);
+            responseMessage.value = "Guardado Correctamente";
+            nombre.value = '';
+            correo.value = '';
+            contraseña.value = '';
+            setTimeout(() => {
+                responseMessage.value = '';
+            }, 2000);
         }
-
-        nombre.value=''
-        correo.value='' 
-        contraseña.value=''
-        setTimeout(() => {
-            responseMessage.value = '';
-        }, 3000);
-    } catch (error) {
+    } catch (error) {   
         console.log(error);
     }
 }
 </script>
 
 <template>
-    <div class="caja">
-        <h3>Cambiar Informacion</h3>
-        <v-form @submit.prevent="UpdateUser">
-            <label>Nombre Usuario {{ butacaInfo?.usuarioId }} </label>
-            <v-text-field v-model="nombre" label="Nombre" hide-details required></v-text-field>
-            <label>Correo Electronico</label>
-            <v-text-field v-model="correo" label="Correo" hide-details required></v-text-field>
-            <label>Contraseña</label>
-            <v-text-field v-model="contraseña" label="Contraseña" hide-details required></v-text-field>
-            <v-btn class="mt-2" type="submit" block>Guardar</v-btn>
-            <p class="response">{{ responseMessage }}</p>
-        </v-form>
-    </div>
+    <v-container>
+        <v-card class="ma-8">
+            <v-card-title class="headline">Cambiar Información</v-card-title>
+            <v-card-text>
+                <v-form @submit.prevent="UpdateUser">
+                    <v-text-field v-model="nombre" label="Nombre" placeholder="Nombre Usuario"></v-text-field>
+                    <v-text-field v-model="correo" label="Correo Electrónico" placeholder="correo@gmail.com"
+                        type="email"></v-text-field>
+                    <v-text-field v-model="contraseña" label="Contraseña" placeholder="Contraseña"
+                        type="password"></v-text-field>
+                    <v-btn class="mr-4" type="submit" color="primary">Guardar</v-btn>
+                </v-form>
+                <v-alert v-if="responseMessage" :value="true"
+                    :type="responseMessage.includes('Guardado') ? 'success' : 'error'">
+                    {{ responseMessage }}
+                </v-alert>
+            </v-card-text>
+        </v-card>
+    </v-container>
 </template>
 
 <style scoped>
-.caja {
-    text-align: center;
+
+.v-card {
+    max-width: 500px;
     margin: auto;
-    padding: 20px;
-    width: 300px;
-    border: solid 1px black;
 }
 
-.response {
-    margin-top: 10px;
-    color: green;
+.v-text-field {
+    margin-bottom: 16px;
+}
+
+.v-btn {
+    margin-top: 16px;
 }
 </style>

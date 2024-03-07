@@ -37,7 +37,9 @@ const login = async () => {
     const infoUsuario = {
       usuarioId: loginGet.usuarioId,
       rol: loginGet.rol,
-      nombre: loginGet.nombre
+      nombre: loginGet.nombre,
+      correoElectronico: email.value,
+      contraseña: password.value
     }
 
     store.setUserInfo(infoUsuario);

@@ -43,7 +43,7 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
 
 <style scoped>
 main {
-    background-color: rgb(55, 55, 117);
+    background-color: rgb(163, 64, 114);
     color: white;
 }
 
@@ -73,6 +73,6 @@ main {
 
 .listaGeneros {
     margin: auto;
-    width: 80%;
+    width: 90%;
 }
 </style>

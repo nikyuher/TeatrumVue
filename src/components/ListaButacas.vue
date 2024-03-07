@@ -76,7 +76,7 @@ const butacasFiltradas = (letra: string) => {
             <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
                 <div class="box">
                     <template v-if="butaca.estado">
-                        <butacaR></butacaR>
+                        <butacaR :class="`cursor-not-allowed`" :text="cursor"></butacaR>
                     </template>
                     <template v-else>
                         <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
@@ -88,7 +88,7 @@ const butacasFiltradas = (letra: string) => {
             <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
                 <div class="box">
                     <template v-if="butaca.estado">
-                        <butacaR></butacaR>
+                        <butacaR :class="`cursor-not-allowed`" :text="cursor"></butacaR>
                     </template>
                     <template v-else>
                         <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
@@ -100,7 +100,7 @@ const butacasFiltradas = (letra: string) => {
             <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
                 <div class="box">
                     <template v-if="butaca.estado">
-                        <butacaR></butacaR>
+                        <butacaR :class="`cursor-not-allowed`" :text="cursor"></butacaR>
                     </template>
                     <template v-else>
                         <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>

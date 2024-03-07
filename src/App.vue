@@ -22,7 +22,7 @@ onBeforeMount(() => {
         <router-link to="/estrenos">Proximos Estrenos</router-link>
         <router-link to="/catalogo">Catalogo</router-link>
         <router-link to="/about">Contactanos</router-link>
-        <router-link v-if="userInfo && userInfo.nombre === 'admin'" to="/admin">Administrador</router-link>
+        <router-link v-if="userInfo && userInfo.rol === true" to="/admin">Administrador</router-link>
         <router-link v-if="!userInfo" to="/login">Iniciar Sesion</router-link>
         <router-link v-if="userInfo" :to="'/setting'">{{ userInfo.nombre }}</router-link>
       </nav>

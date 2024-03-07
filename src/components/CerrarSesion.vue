@@ -6,27 +6,24 @@ const Usuario = usarInfoUsuario();
 const router = useRouter();
 
 const eventCerrarSesion = async () => {
-
     try {
-
-        Usuario.setUserInfo(null)
-
+        Usuario.setUserInfo(null);
         router.push('/');
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
-
+};
 </script>
 
 <template>
-    <div class="contenedor">
-        <h3>Cerrar Sesion</h3>
-        <v-btn @click="eventCerrarSesion">
-            Cerrar Sesion
+    <v-container class="contenedor">
+        <h3>Cerrar Sesión</h3>
+        <v-btn @click="eventCerrarSesion" color="error" dark>
+            Cerrar Sesión
         </v-btn>
-    </div>
+    </v-container>
 </template>
+
 
 <style scoped>
 .contenedor {

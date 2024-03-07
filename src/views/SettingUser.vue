@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import CerrarSesion from '@/components/CerrarSesion.vue';
 import ChangeName from '@/components/ChangeName.vue';
+import InfoUser from '@/components/InfoUser.vue';
 </script>
 
 <template>
@@ -8,6 +9,7 @@ import ChangeName from '@/components/ChangeName.vue';
         <article>
             <section>
                 <div>
+                    <InfoUser></InfoUser>
                     <ChangeName></ChangeName>
                     <CerrarSesion></CerrarSesion>
                 </div>
@@ -17,7 +19,7 @@ import ChangeName from '@/components/ChangeName.vue';
 </template>
 
 <style scoped>
-section{
+section {
     margin: 100px 0;
 }
 </style>

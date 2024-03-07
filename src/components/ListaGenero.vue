@@ -44,7 +44,7 @@ const getImagenUrl = (imagenBytes: string) => {
 </script>
 
 <template>
-  <div class="Contcaja">
+  <div class="d-flex justify-start flex-wrap">
     <div class="targeta" v-for="obra in obras" :key="obra.obraId">
       <router-link :to="{ name: 'comprar', params: { idObra: obra.obraId } }">
         <img :src="getImagenUrl(obra.imagen)" alt="Imagen de la obra">
@@ -57,16 +57,10 @@ const getImagenUrl = (imagenBytes: string) => {
 </template>
 
 <style scoped>
-.Contcaja {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  text-align: justify;
-}
 
 .targeta {
   padding: 0 20px;
-  margin: 30px 10px;
+  margin: 30px 50px;
   background-color: white;
   width: 300px;
   height: 520px;

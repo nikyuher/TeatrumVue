@@ -2,6 +2,7 @@
 import AdminUser from '@/components/Administrador/AdminUser.vue'
 import AdminObra from '@/components/Administrador/AdminObra.vue'
 import AdminButaca from '@/components/Administrador/AdminButaca.vue'
+import { VEmptyState } from 'vuetify/labs/VEmptyState'
 
 import { ref, computed } from 'vue';
 import { usarInfoUsuario } from '@/store/userInfo';
@@ -49,17 +50,18 @@ const mostrarView = (view: string) => {
                 </section>
             </article>
         </div>
-        <div v-else>
-            <div class="contenedor">
-                <h1>No tienes permisos para acceder a esta sección.</h1>
-            </div>
+        <div class="contenedor" v-else>
+            <v-empty-state headline="Whoops, 404" title="Page not found"
+                text="Parece que no tienes Accseso a esta pestaña"
+                image="https://vuetifyjs.b-cdn.net/docs/images/components/v-empty-state/astro-cat.svg">
+            </v-empty-state>
         </div>
     </main>
 </template>
 
 <style scoped>
 .contenedor {
-    margin: 100px;
+    margin: 150px auto;
     text-align: center;
 }
 
