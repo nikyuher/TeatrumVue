@@ -12,7 +12,6 @@ const props = defineProps<{
 const idObraReal = props.idObra;
 
 const Usuario = usarInfoUsuario();
-const userInfo = computed(() => Usuario.userInfo);
 
 const Obra = useObraInfo();
 const obraInfo = computed(() => Obra.infoObra);

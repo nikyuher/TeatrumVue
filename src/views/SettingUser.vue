@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CerrarSesion from '@/components/CerrarSesion.vue';
+import ChangeName from '@/components/ChangeName.vue';
 </script>
 
 <template>
@@ -7,6 +8,7 @@ import CerrarSesion from '@/components/CerrarSesion.vue';
         <article>
             <section>
                 <div>
+                    <ChangeName></ChangeName>
                     <CerrarSesion></CerrarSesion>
                 </div>
             </section>

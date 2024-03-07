@@ -40,7 +40,9 @@ onMounted(async () => {
                     <p><strong>ID:</strong> {{ usuario.usuarioId }}</p>
                     <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
                     <p><strong>Correo:</strong> {{ usuario.correoElectronico }}</p>
+                    <p><strong>Contaseña:</strong> {{ usuario.contraseña }}</p>
                     <p><strong>Rol:</strong> {{ usuario.rol ? 'Administrador' : 'Usuario Normal' }}</p>
+                    <p class="response">{{ responseMessage }}</p>
                 </div>
             </li>
         </ul>
