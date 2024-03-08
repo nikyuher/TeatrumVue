@@ -48,9 +48,9 @@ const getImagenUrl = (imagenBytes: string) => {
     <div class="targeta" v-for="obra in obras" :key="obra.obraId">
       <router-link :to="{ name: 'comprar', params: { idObra: obra.obraId } }">
         <img :src="getImagenUrl(obra.imagen)" alt="Imagen de la obra">
-        <h3>{{ obra.título }}</h3>
-        <p>{{ obra.descripción }}</p>
-        <p>Precio de entrada: ${{ obra.precioEntrada }}</p>
+        <h3 class="text-black">{{ obra.título }}</h3>
+        <p class="text-black">{{ obra.descripción }}</p>
+        <p class="text-black">Precio de entrada: ${{ obra.precioEntrada }}</p>
       </router-link>
     </div>
   </div>
@@ -71,9 +71,12 @@ const getImagenUrl = (imagenBytes: string) => {
    height: 300px;
    margin: 20px 0 20px 0;
 }
-.targeta h3{
+.targeta h3, .targeta p {
   text-align: left;
 }
 
-</style>
+.text-black {
+  color: black;
+}
 
+</style>

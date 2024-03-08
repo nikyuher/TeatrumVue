@@ -16,12 +16,9 @@ const eventCerrarSesion = async () => {
 </script>
 
 <template>
-    <v-container class="contenedor">
-        <h3>Cerrar Sesión</h3>
-        <v-btn @click="eventCerrarSesion" color="error" dark>
-            Cerrar Sesión
-        </v-btn>
-    </v-container>
+    <v-btn @click="eventCerrarSesion" color="error" dark>
+        Cerrar Sesión
+    </v-btn>
 </template>
 
 

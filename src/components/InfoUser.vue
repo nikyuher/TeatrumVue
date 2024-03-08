@@ -13,8 +13,6 @@ const userInfo = computed(() => [
 </script>
 
 <template>
-    <div class="caja">
-        <h3 class="title">Información del Usuario</h3>
         <v-card class="info-card">
             <v-card-title class="info-title">Detalles del Usuario</v-card-title>
             <v-card-text>
@@ -26,7 +24,6 @@ const userInfo = computed(() => [
                 </v-container>
             </v-card-text>
         </v-card>
-    </div>
 </template>
 
 <style scoped>
