@@ -113,7 +113,10 @@ const fileToBase64 = (file: File): Promise<string> => {
             <label for="precio">Precio</label>
             <input type="number" id="precio" v-model="precio" required>
             <input type="submit" value="Enviar">
-            <p class="response">{{ responseMessage }}</p>
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>

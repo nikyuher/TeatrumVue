@@ -58,7 +58,11 @@ const UpdateUser = async () => {
                 responseMessage.value = '';
             }, 2000);
         }
-    } catch (error) {   
+    } catch (error) {
+        responseMessage.value = "El valor ya esta en Uso";
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
         console.log(error);
     }
 }
@@ -87,7 +91,6 @@ const UpdateUser = async () => {
 </template>
 
 <style scoped>
-
 .v-card {
     max-width: 500px;
     margin: auto;

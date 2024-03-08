@@ -39,7 +39,7 @@ const updateImage = async () => {
         img.value = null;
         obraId.value = 0;
 
-        responseMessage.value = 'Imagen actualizada correctamente.';
+        responseMessage.value = 'Actualizado correctamente.';
 
         setTimeout(() => {
             responseMessage.value = '';
@@ -93,7 +93,10 @@ const fileToBase64 = (file: File): Promise<string> => {
                     style="max-width: 100%; height: 200px; margin-bottom: 10px;">
             </div>
             <input type="submit" value="Enviar">
-            <p class="response">{{ responseMessage }}</p>
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Actualizado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>

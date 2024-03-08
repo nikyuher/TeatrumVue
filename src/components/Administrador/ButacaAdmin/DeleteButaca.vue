@@ -15,7 +15,8 @@ const butaca = async () => {
         });
 
         if (!response.ok) {
-            throw new Error('Fallo al Eliminar Butaca.');
+            responseMessage.value = 'Error del Servidor'
+            throw new Error('Error del Servidor');
         }
 
         butacaId.value = 0
@@ -27,6 +28,7 @@ const butaca = async () => {
         }, 3000);
 
     } catch (error) {
+        responseMessage.value = 'Fallo al Eliminar Butaca.'
         console.error(error);
     }
 }
@@ -39,7 +41,10 @@ const butaca = async () => {
             <label for="butacaId">ID Butaca</label>
             <input type="number" id="butacaId" v-model="butacaId" required>
             <input type="submit" value="Enviar">
-            <p class="response">{{ responseMessage }}</p>
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Eliminado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>

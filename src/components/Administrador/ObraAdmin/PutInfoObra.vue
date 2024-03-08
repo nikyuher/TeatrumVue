@@ -39,7 +39,7 @@ const updateObra = async () => {
         descripcion.value = ''
         precioEntrada.value = 0
 
-        responseMessage.value = 'Obra actualizada correctamente.';
+        responseMessage.value = 'Actualizado correctamente.';
 
         setTimeout(() => {
             responseMessage.value = '';
@@ -79,7 +79,10 @@ const updateObra = async () => {
             <div class="form-group">
                 <input type="submit" value="Actualizar" class="btn-submit">
             </div>
-            <p class="response">{{ responseMessage }}</p>
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Actualizado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>

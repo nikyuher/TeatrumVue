@@ -65,7 +65,10 @@ const addUser = async () => {
             <div class="form-group">
                 <input type="submit" value="Enviar" class="btn-submit">
             </div>
-            <p class="response">{{ responseMessage }}</p>
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>

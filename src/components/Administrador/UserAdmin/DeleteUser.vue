@@ -45,7 +45,10 @@ const deleteUser = async () => {
             <div class="form-group">
                 <input type="submit" value="Enviar" class="btn-submit">
             </div>
-            <p class="response">{{ responseMessage }}</p>
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Eliminado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>
