@@ -116,11 +116,10 @@ main {
 }
 
 .contProximosEstrenos {
-    width: 1140px;
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
-    margin: auto;
+    margin-left: 100px;
 }
 
 .cajaProxExtrenos {

@@ -1,9 +1,24 @@
 <script setup lang="ts">
-import { onBeforeMount, computed } from 'vue';
+import { onBeforeMount, computed, onMounted, ref, watch } from 'vue';
 import { usarInfoUsuario } from '@/store/userInfo';
 
+const windowWidth = ref(window.innerWidth);
 const store = usarInfoUsuario();
 const userInfo = computed(() => store.userInfo);
+
+onMounted(() => {
+  window.addEventListener('resize', updateWindowWidth);
+});
+
+watch(windowWidth, (newWidth) => {
+  if (newWidth <= 734) {
+    // Ocultar el menú cuando el ancho de la ventana sea menor o igual a 556px
+  }
+});
+
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
 
 onBeforeMount(() => {
   store.loadUserInfo();
@@ -18,7 +33,36 @@ onBeforeMount(() => {
           <h1>Teatrum</h1>
         </router-link>
       </div>
-      <nav>
+      <div v-if="windowWidth <= 734">
+        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+          v-if="!userInfo" to="/login">Iniciar Sesion</router-link>
+        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+          v-if="userInfo" :to="'/setting'">{{ userInfo.nombre }}</router-link>
+        <v-btn color="rgb(27, 27, 26)">
+          <v-app-bar-nav-icon></v-app-bar-nav-icon>
+          <v-menu activator="parent">
+            <v-list style="background-color: #333;">
+              <v-list-item>
+                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+                  to="/estrenos">ProximosEstrenos</router-link>
+              </v-list-item>
+              <v-list-item>
+                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+                  to="/catalogo">Catalogo</router-link>
+              </v-list-item>
+              <v-list-item>
+                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+                  to="/about">Contactanos</router-link>
+              </v-list-item>
+              <v-list-item><router-link
+                  style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+                  v-if="userInfo && userInfo.rol === true" to="/admin">Administrador</router-link>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </div>
+      <nav v-if="windowWidth > 734">
         <router-link to="/estrenos">Proximos Estrenos</router-link>
         <router-link to="/catalogo">Catalogo</router-link>
         <router-link to="/about">Contactanos</router-link>
@@ -117,27 +161,12 @@ onBeforeMount(() => {
   padding-right: 10px;
   margin-right: 10px;
 }
-@media screen and (max-width: 556px){
-  .contOpciones {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .contOpciones nav {
-    margin-top: 20px;
-  }
-  
-  .contOpciones nav a {
-    padding: 10px;
-    font-size: 14px;
-  }
 
+@media screen and (max-width: 556px) {
   .letraFooter {
     font-size: 12px;
   }
 
-  .iconosRedes a {
-    font-size: 18px;
-  }
+
 }
 </style>

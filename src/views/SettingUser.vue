@@ -17,7 +17,7 @@ const mostrarView = (view: string) => {
             <nav>
                 <ul>
                     <li @click="mostrarView('info')">Información Usuario</li>
-                    <li @click="mostrarView('change')">Cambiar Nombre</li>
+                    <li @click="mostrarView('change')">Cambiar Información</li>
                     <li>
                         <CerrarSesion></CerrarSesion>
                     </li>
@@ -31,7 +31,7 @@ const mostrarView = (view: string) => {
                             <InfoUser></InfoUser>
                         </div>
                         <div class="form-box" v-else-if="vistaActual === 'change'">
-                            <h2>Cambiar Nombre</h2>
+                            <h2>Cambiar Información</h2>
                             <ChangeName></ChangeName>
                         </div>
                     </div>
