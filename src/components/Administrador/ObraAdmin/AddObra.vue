@@ -57,10 +57,15 @@ const obra = async () => {
 
         setTimeout(() => {
             responseMessage.value = '';
-        }, 3000);
+        }, 2000);
 
     } catch (error) {
         console.error(error);
+        responseMessage.value = 'Ha ocurrido un Error al Crear .';
+
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     }
 }
 

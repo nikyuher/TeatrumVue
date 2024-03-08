@@ -10,9 +10,6 @@ const responseMessage = ref('');
 
 const updateObra = async () => {
     try {
-        if (!obraId.value) {
-            throw new Error('Por favor ingrese un ID de obra válido.');
-        }
 
         const obraData = {
             obraId: obraId.value,
@@ -43,11 +40,14 @@ const updateObra = async () => {
 
         setTimeout(() => {
             responseMessage.value = '';
-        }, 3000);
+        }, 2000);
 
     } catch (error) {
         console.error(error);
         responseMessage.value = 'Ha ocurrido un error al actualizar la obra.';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     }
 }
 </script>

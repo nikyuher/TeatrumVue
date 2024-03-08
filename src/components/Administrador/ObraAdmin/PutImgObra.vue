@@ -8,10 +8,7 @@ const imageDataUrl = ref<string | null>(null);
 
 const updateImage = async () => {
     try {
-        if (!obraId.value) {
-            throw new Error('Por favor ingrese un ID de obra válido.');
-        }
-
+        
         if (!img.value) {
             throw new Error('Por favor seleccione una imagen.');
         }
@@ -22,7 +19,6 @@ const updateImage = async () => {
             obraId: obraId.value,
             imagen: base64Image
         };
-
 
         const response = await fetch(`http://localhost:8001/Obra/img/${obraId.value}`, {
             method: 'PUT',
@@ -43,11 +39,14 @@ const updateImage = async () => {
 
         setTimeout(() => {
             responseMessage.value = '';
-        }, 3000);
+        }, 2000);
 
     } catch (error) {
         console.error(error);
         responseMessage.value = 'Ha ocurrido un error al actualizar la imagen de la obra.';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     }
 }
 

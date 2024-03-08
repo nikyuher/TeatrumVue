@@ -25,11 +25,14 @@ const deleteObra = async () => {
 
         setTimeout(() => {
             responseMessage.value = '';
-        }, 3000);
+        }, 2000);
 
     } catch (error) {
         console.error(error);
-        responseMessage.value = 'Ha ocurrido un error.';
+        responseMessage.value = 'No se a podido Eliminar.';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     }
 }
 </script>
