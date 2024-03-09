@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useInfoButaca } from '@/store/infoButaca';
+import { useInfoAsientos } from '@/store/listaButacas'
 
 import butacaR from '@/components/icons/IconButacaRed.vue'
 import butacaG from '@/components/icons/IconButacaGreen.vue'
@@ -11,6 +12,8 @@ const props = defineProps<{
 
 const butacas = ref<any[]>([]);
 const infoButaca = useInfoButaca();
+const listButacas = useInfoAsientos()
+const mostar = computed(() => listButacas.asientos);
 
 const idObra = props.idObra;
 
@@ -34,6 +37,8 @@ onMounted(async () => {
         });
 
         butacas.value = dataAsientos;
+        listButacas.setAsientos(dataAsientos);
+
     } catch (error) {
         console.log('Error al cargar las butacas', error)
     }
@@ -67,7 +72,7 @@ const ObtenerButaca = (butacaId: number) => {
 }
 
 const butacasFiltradas = (letra: string) => {
-    return butacas.value.filter(butaca => butaca.nombreAsiento.startsWith(letra));
+    return mostar.value.filter(butaca => butaca.nombreAsiento.startsWith(letra));
 }
 </script>
 

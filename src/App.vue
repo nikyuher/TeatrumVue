@@ -34,29 +34,23 @@ onBeforeMount(() => {
         </router-link>
       </div>
       <div v-if="windowWidth <= 734">
-        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
-          v-if="!userInfo" to="/login">Iniciar Sesion</router-link>
-        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
-          v-if="userInfo" :to="'/setting'">{{ userInfo.nombre }}</router-link>
+        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" v-if="!userInfo" to="/login">Iniciar Sesion</router-link>
+        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" v-if="userInfo" :to="'/setting'">{{ userInfo.nombre }}</router-link>
         <v-btn color="rgb(27, 27, 26)">
           <v-app-bar-nav-icon></v-app-bar-nav-icon>
           <v-menu activator="parent">
             <v-list style="background-color: #333;">
               <v-list-item>
-                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
-                  to="/estrenos">ProximosEstrenos</router-link>
+                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" to="/estrenos">ProximosEstrenos</router-link>
               </v-list-item>
               <v-list-item>
-                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
-                  to="/catalogo">Catalogo</router-link>
+                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" to="/catalogo">Catalogo</router-link>
               </v-list-item>
               <v-list-item>
-                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
-                  to="/about">Contactanos</router-link>
+                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" to="/about">Contactanos</router-link>
               </v-list-item>
               <v-list-item><router-link
-                  style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
-                  v-if="userInfo && userInfo.rol === true" to="/admin">Administrador</router-link>
+                  style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" v-if="userInfo && userInfo.rol === true" to="/admin">Administrador</router-link>
               </v-list-item>
             </v-list>
           </v-menu>

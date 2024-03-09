@@ -1,6 +1,22 @@
 <script setup lang="ts">
 import { ref, onMounted} from 'vue';
 
+const itemsPerPage = ref(4); 
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+  handleResize();
+});
+
+const handleResize = () => {
+  const width = window.innerWidth;
+  if (width <= 1614) {
+    itemsPerPage.value = width <= 1214 ? (width <= 814 ? 1 : 2) : 3;
+  } else {
+    itemsPerPage.value = 4; 
+  }
+};
+
 const props = defineProps<{
   genero: string;
   mostrarSoloTres?: boolean;
@@ -8,6 +24,7 @@ const props = defineProps<{
 
 const obras = ref<any[]>([]);
 const genero = props.genero;
+
 
 onMounted(async () => {
   try {
@@ -19,7 +36,7 @@ onMounted(async () => {
 
     const data = await response.json();
 
-    obras.value = props.mostrarSoloTres ? data.slice(0, 4) : data;
+    obras.value = props.mostrarSoloTres ? data.slice(0, 6) : data;
 
   } catch (error) {
     console.error('Error al obtener las obras:', error);
@@ -44,20 +61,48 @@ const getImagenUrl = (imagenBytes: string) => {
 </script>
 
 <template>
-  <div class="d-flex justify-start flex-wrap">
-    <div class="targeta" v-for="obra in obras" :key="obra.obraId">
-      <router-link :to="{ name: 'comprar', params: { idObra: obra.obraId } }">
-        <img :src="getImagenUrl(obra.imagen)" alt="Imagen de la obra">
-        <h3 class="text-black">{{ obra.título }}</h3>
-        <p class="text-black">{{ obra.descripción }}</p>
-        <p class="text-black">Precio de entrada: ${{ obra.precioEntrada }}</p>
-      </router-link>
-    </div>
-  </div>
+  <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
+    <template v-slot:default="{ items }">   
+      <div class="d-flex justify-start flex-wrap">
+        <div class="targeta" v-for="obra in items" :key="obra.raw.obraId">
+          <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
+            <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
+            <h3 class="text-black">{{ obra.raw.título }}</h3>
+            <p class="text-black">{{ obra.raw.descripción }}</p>
+            <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
+          </router-link>
+        </div>
+      </div>
+    </template>
+    <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+        <div class="d-flex align-center justify-center pa-4">
+          <v-btn
+            :disabled="page === 1"
+            density="comfortable"
+            icon="mdi-arrow-left"
+            variant="tonal"
+            rounded
+            @click="prevPage"
+          ></v-btn>
+  
+          <div class="mx-2 text-caption">
+            Page {{ page }} of {{ pageCount }}
+          </div>
+  
+          <v-btn
+            :disabled="page >= pageCount"
+            density="comfortable"
+            icon="mdi-arrow-right"
+            variant="tonal"
+            rounded
+            @click="nextPage"
+          ></v-btn>
+        </div>
+      </template>
+  </v-data-iterator>
 </template>
 
 <style scoped>
-
 .targeta {
   padding: 0 20px;
   margin: 30px 50px;
@@ -67,16 +112,17 @@ const getImagenUrl = (imagenBytes: string) => {
   border-radius: 5px;
 }
 
-.targeta img{
-   height: 300px;
-   margin: 20px 0 20px 0;
+.targeta img {
+  height: 300px;
+  margin: 20px 0 20px 0;
 }
-.targeta h3, .targeta p {
+
+.targeta h3,
+.targeta p {
   text-align: left;
 }
 
 .text-black {
   color: black;
 }
-
 </style>

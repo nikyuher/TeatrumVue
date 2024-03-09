@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-
 interface Obra {
   obraId: number;
   genero: string;
@@ -24,6 +23,7 @@ onMounted(async () => {
       obra.imagen = `data:image/jpeg;base64,${obra.imagen}`;
     });
     obras.value = data;
+
   } catch (error) {
     console.error(error);
   }

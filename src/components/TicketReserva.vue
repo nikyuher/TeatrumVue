@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import { useInfoButaca } from '@/store/infoButaca';
+import { useInfoAsientos } from '@/store/listaButacas';
 import { usarInfoUsuario } from '@/store/userInfo';
 import { useObraInfo } from '@/store/obraInfo';
 import { computed } from 'vue';
@@ -18,6 +19,7 @@ const obraInfo = computed(() => Obra.infoObra);
 
 const Butaca = useInfoButaca();
 const butacaInfo = computed(() => Butaca.butacas);
+const Asientos = useInfoAsientos();
 
 const idUsuario = Usuario.userInfo?.usuarioId
 
@@ -64,11 +66,20 @@ const handleCompra = async () => {
         if (!ocuparAsientoResponse.ok) {
             throw new Error('Fallo al actualizar el estado del asiento.');
         } else {
+            
+            const nuevosAsientos = Asientos.asientos.map(asiento => {
+                if (asiento.nombreAsiento === Butaca.butacas?.nombreAsiento) {
+                    return {
+                        ...asiento,
+                        estado: true
+                    };
+                }
+                return asiento;
+            });
+            Asientos.setAsientos(nuevosAsientos);
+            
             Butaca.setButacas(null);
-            alert('Compra Realizada');
         }
-
-        window.location.reload();
     } catch (error) {
         console.log(error)
     }
@@ -85,7 +96,8 @@ const handleCompra = async () => {
                 <label>Obra de Teatro </label>
                 <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.titulo"></v-text-field>
                 <label>Sitio de Asiento:</label>
-                <v-text-field type="text" id="inputSitioAsiento" required :value="butacaInfo?.nombreAsiento"></v-text-field>
+                <v-text-field type="text" id="inputSitioAsiento" required
+                    :value="butacaInfo?.nombreAsiento"></v-text-field>
                 <label>Precio:$</label>
                 <v-text-field type="number" id="inputPrecio" :value="obraInfo?.precio"></v-text-field>
             </div>
