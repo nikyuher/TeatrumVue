@@ -31,9 +31,7 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
                 </section>
                 <section>
                     <div class="contGeneros">
-                        <div class="listaGeneros">
-                            <ListaGenero :genero="genero"></ListaGenero>
-                        </div>
+                        <ListaGenero :genero="genero"></ListaGenero>
                     </div>
                 </section>
             </div>
@@ -69,10 +67,5 @@ main {
 
 .contGeneros {
     margin-top: 100px;
-}
-
-.listaGeneros {
-    margin: auto;
-    width: 90%;
 }
 </style>

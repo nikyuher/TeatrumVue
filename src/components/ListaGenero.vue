@@ -63,7 +63,7 @@ const getImagenUrl = (imagenBytes: string) => {
 <template>
   <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
     <template v-slot:default="{ items }">   
-      <div class="d-flex justify-start flex-wrap">
+      <div class="d-flex flex-wrap align-center justify-center pa-4 ">
         <div class="targeta" v-for="obra in items" :key="obra.raw.obraId">
           <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
             <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
@@ -103,6 +103,11 @@ const getImagenUrl = (imagenBytes: string) => {
 </template>
 
 <style scoped>
+
+.cosa{
+  text-align: center;
+}
+
 .targeta {
   padding: 0 20px;
   margin: 30px 50px;
