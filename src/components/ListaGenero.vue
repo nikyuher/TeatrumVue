@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
 
-const itemsPerPage = ref(4); 
+const props = defineProps<{
+  genero: string;
+  mostrarSoloTres?: boolean;
+  mostrarTodo?: boolean;
+}>();
+const itemsPerPage = ref(4);
+const obras = ref<any[]>([]);
+const genero = props.genero;
 
 onMounted(() => {
   window.addEventListener('resize', handleResize);
@@ -13,18 +20,13 @@ const handleResize = () => {
   if (width <= 1614) {
     itemsPerPage.value = width <= 1214 ? (width <= 814 ? 1 : 2) : 3;
   } else {
-    itemsPerPage.value = 4; 
+    itemsPerPage.value = 4;
   }
 };
 
-const props = defineProps<{
-  genero: string;
-  mostrarSoloTres?: boolean;
-}>();
-
-const obras = ref<any[]>([]);
-const genero = props.genero;
-
+const onClickSeeAll = () => {
+  itemsPerPage.value = itemsPerPage.value === 4 ? obras.value.length : 4;
+};
 
 onMounted(async () => {
   try {
@@ -61,52 +63,76 @@ const getImagenUrl = (imagenBytes: string) => {
 </script>
 
 <template>
-  <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
-    <template v-slot:default="{ items }">   
-      <div class="d-flex flex-wrap align-center justify-center pa-4 ">
-        <div class="targeta" v-for="obra in items" :key="obra.raw.obraId">
-          <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
-            <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
-            <h3 class="text-black">{{ obra.raw.título }}</h3>
-            <p class="text-black">{{ obra.raw.descripción }}</p>
-            <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
-          </router-link>
-        </div>
-      </div>
-    </template>
-    <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
-        <div class="d-flex align-center justify-center pa-4">
-          <v-btn
-            :disabled="page === 1"
-            density="comfortable"
-            icon="mdi-arrow-left"
-            variant="tonal"
-            rounded
-            @click="prevPage"
-          ></v-btn>
-  
-          <div class="mx-2 text-caption">
-            Page {{ page }} of {{ pageCount }}
+  <div v-if="mostrarSoloTres">
+    <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
+      <template v-slot:default="{ items }">
+        <div class="d-flex flex-wrap align-center justify-center pa-4 ">
+          <div class="targeta" v-for="obra in items" :key="obra.raw.obraId">
+            <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
+              <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
+              <h3 class="text-black">{{ obra.raw.título }}</h3>
+              <p class="text-black">{{ obra.raw.descripción }}</p>
+              <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
+            </router-link>
           </div>
-  
-          <v-btn
-            :disabled="page >= pageCount"
-            density="comfortable"
-            icon="mdi-arrow-right"
-            variant="tonal"
-            rounded
-            @click="nextPage"
-          ></v-btn>
         </div>
       </template>
-  </v-data-iterator>
+      <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+        <div class="d-flex align-center justify-center pa-4">
+          <v-btn :disabled="page === 1" density="comfortable" icon="mdi-arrow-left" variant="tonal" rounded
+            @click="prevPage"></v-btn>
+
+          <div class="mx-2 text-caption">
+            Pagina {{ page }} de {{ pageCount }}
+          </div>
+
+          <v-btn :disabled="page >= pageCount" density="comfortable" icon="mdi-arrow-right" variant="tonal" rounded
+            @click="nextPage"></v-btn>
+        </div>
+      </template>
+    </v-data-iterator>
+  </div>
+  <div v-else>
+    <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
+      <template v-slot:default="{ items }">
+        <v-row>
+          <div class="d-flex flex-wrap align-center justify-center pa-4 ">
+            <div class="targeta" v-for="obra in items" :key="obra.raw.obraId">
+              <v-sheet>
+                <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
+                  <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
+                  <h3 class="text-black">{{ obra.raw.título }}</h3>
+                  <p class="text-black">{{ obra.raw.descripción }}</p>
+                  <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
+                </router-link>
+              </v-sheet>
+            </div>
+          </div>
+        </v-row>
+      </template>
+      <template v-slot:header="{ page, pageCount, prevPage, nextPage }">
+        <div class="d-flex align-center justify-center">
+          <h1 class="text-h4 font-weight-bold d-flex justify-space-between mb-4 align-center">
+            <v-btn class="me-8" variant="text" @click="onClickSeeAll">
+              <span class="text-decoration-underline text-none">See all</span>
+            </v-btn>
+          </h1>
+          <div class="d-inline-flex">
+            <v-btn :disabled="page === 1" class="me-2" icon="mdi-arrow-left" size="small" variant="tonal"
+              @click="prevPage"></v-btn>
+            <div class="mx-2 text-caption">
+              Pagina {{ page }} de {{ pageCount }}
+            </div>
+            <v-btn :disabled="page === pageCount" icon="mdi-arrow-right" size="small" variant="tonal"
+              @click="nextPage"></v-btn>
+          </div>
+        </div>
+      </template>
+    </v-data-iterator>
+  </div>
 </template>
 
 <style scoped>
-
-.cosa{
-  text-align: center;
-}
 
 .targeta {
   padding: 0 20px;

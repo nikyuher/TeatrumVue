@@ -31,7 +31,7 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
                 </section>
                 <section>
                     <div class="contGeneros">
-                        <ListaGenero :genero="genero"></ListaGenero>
+                        <ListaGenero :genero="genero" :mostrar-todo="true" class="listaGeneros"></ListaGenero>
                     </div>
                 </section>
             </div>
@@ -40,6 +40,10 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
 </template>
 
 <style scoped>
+
+.listaGeneros {
+    margin: auto;
+}
 main {
     background-color: rgb(163, 64, 114);
     color: white;

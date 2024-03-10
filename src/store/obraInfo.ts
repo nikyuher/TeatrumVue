@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 
-// Define la interfaz para la información de la obra
 interface ObraInfo {
     idObra: number;
     titulo: string;
