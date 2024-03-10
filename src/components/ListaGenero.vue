@@ -7,6 +7,7 @@ const props = defineProps<{
   mostrarTodo?: boolean;
 }>();
 const itemsPerPage = ref(4);
+const itemsPerPage2 = ref(4);
 const obras = ref<any[]>([]);
 const genero = props.genero;
 
@@ -25,7 +26,7 @@ const handleResize = () => {
 };
 
 const onClickSeeAll = () => {
-  itemsPerPage.value = itemsPerPage.value === 4 ? obras.value.length : 4;
+  itemsPerPage2.value = itemsPerPage2.value === 4 ? obras.value.length : 4;
 };
 
 onMounted(async () => {
@@ -93,11 +94,10 @@ const getImagenUrl = (imagenBytes: string) => {
     </v-data-iterator>
   </div>
   <div v-else>
-    <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
+    <v-data-iterator :items="obras" :items-per-page="itemsPerPage2">
       <template v-slot:default="{ items }">
-        <v-row>
           <div class="d-flex flex-wrap align-center justify-center pa-4 ">
-            <div class="targeta" v-for="obra in items" :key="obra.raw.obraId">
+            <v-col class="targeta2" v-for="obra in items" :key="obra.raw.obraId" cols="9" sm="3 " xl="4">
               <v-sheet>
                 <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
                   <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
@@ -106,9 +106,8 @@ const getImagenUrl = (imagenBytes: string) => {
                   <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
                 </router-link>
               </v-sheet>
-            </div>
+            </v-col>
           </div>
-        </v-row>
       </template>
       <template v-slot:header="{ page, pageCount, prevPage, nextPage }">
         <div class="d-flex align-center justify-center">
@@ -143,13 +142,31 @@ const getImagenUrl = (imagenBytes: string) => {
   border-radius: 5px;
 }
 
+.targeta2 {
+  padding: 0 20px;
+  margin: 30px 50px;
+  background-color: white;
+  width: 300px;
+  height: 550px;
+  border-radius: 5px;
+}
+
 .targeta img {
+  height: 300px;
+  margin: 20px 0 20px 0;
+} 
+.targeta2 img {
   height: 300px;
   margin: 20px 0 20px 0;
 }
 
 .targeta h3,
 .targeta p {
+  text-align: left;
+}
+
+.targeta2 h3,
+.targeta2 p {
   text-align: left;
 }
 
