@@ -56,7 +56,10 @@ const login = async () => {
     }
 
   } catch (error) {
-    responseMessage.value = 'Ocurrio un Error de sistema.';
+    responseMessage.value = 'Error al Iniciar Sesion.';
+    setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     console.error(error);
   }
 };
@@ -80,7 +83,9 @@ const login = async () => {
       <a href="#">Forgot Password?</a>
     </div>
     <button class="btn" type="submit">Login</button>
-    <p class="response">{{ responseMessage }}</p>
+    <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+      {{ responseMessage }}
+    </v-alert>
   </form>
 </template>
 

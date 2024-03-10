@@ -7,9 +7,52 @@ const password = ref('');
 const termsAccepted = ref(false);
 const responseMessage = ref('');
 
+const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
+
+const validatePassword = (password: string): boolean => {
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    return passwordRegex.test(password);
+};
+
+const validateName = (name: string): boolean => {
+    return name.length >= 4;
+};
+
 const registerUser = async () => {
+    
+    if (!validateName(username.value)) {
+        responseMessage.value = 'El nombre debe tener al menos 4 caracteres';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
+        return;
+    }
+    
+    if (!validateEmail(email.value)) {
+        responseMessage.value = 'Por favor ingrese un correo electrónico válido';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
+        return;
+    }
+    
+    if (!validatePassword(password.value)) {
+        responseMessage.value = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 3000);
+        return;
+    }
+    
+    
     if (!termsAccepted.value) {
-        responseMessage.value = 'Porfavor acepte los Terminos & Condiciones';
+        responseMessage.value = 'Por favor acepte los Términos & Condiciones';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
         return;
     }
 
@@ -18,7 +61,7 @@ const registerUser = async () => {
         correoElectronico: email.value,
         contraseña: password.value
     };
-
+    
     try {
         const response = await fetch('http://localhost:8001/Usuario', {
             method: 'POST',
@@ -38,10 +81,13 @@ const registerUser = async () => {
         termsAccepted.value = false;
 
         responseMessage.value = 'Usuario Registrado Correctamente.';
-        
+
     } catch (error) {
         responseMessage.value = 'Ocurrio un error al crear el Usuario.';
         console.error(error);
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     }
 };
 </script>
@@ -64,7 +110,9 @@ const registerUser = async () => {
             <label><input type="checkbox" v-model="termsAccepted">I agree to the terms & conditions</label>
         </div>
         <button class="btn" type="submit">Register</button>
-        <p>{{ responseMessage }}</p>
+        <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+            {{ responseMessage }}
+        </v-alert>
     </form>
 </template>
 

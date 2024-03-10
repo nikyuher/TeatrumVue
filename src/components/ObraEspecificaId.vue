@@ -66,6 +66,6 @@ const getImagenUrl = (imagenBytes: string) => {
 
 <style scoped>
 h1{
-    text-align: left;
+    text-align: justify;
 }
 </style>

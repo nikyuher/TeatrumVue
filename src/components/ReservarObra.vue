@@ -4,7 +4,7 @@ import butacas from '@/components/ListaButacas.vue'
 import ObraId from '@/components/ObraEspecificaId.vue'
 import Ticket from '@/components/TicketReserva.vue'
 
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useObraInfo } from '@/store/obraInfo';
 import { useRoute } from 'vue-router';
 
@@ -15,27 +15,69 @@ const route = useRoute();
 const idObra = ref<number>(0);
 idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra[0]) : parseInt(route.params.idObra);
 
+const cambiar = ref<boolean>();
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+const handleResize = () => {
+    const width = window.innerWidth;
+    if (width <= 1060) {
+        cambiar.value = false
+    } else {
+        cambiar.value = true
+    }
+};
 
 </script>
 
 <template>
-    <div>
+    <div v-if="cambiar">
         <div class="contenedorComprar">
-            <div class="descriPopular ">
-                <div class="contImagenObraPopular">
-                    <img :src="obraInfo?.imagen" alt="Imagen de la obra">
-                </div>
-                <div class="descripcionCompra">
-                    <ObraId :id-obra="idObra"></ObraId>
-                </div>
+            <div class="contImagenObraPopular">
+                <img :src="obraInfo?.imagen" alt="Imagen de la obra">
+            </div>
+            <div class="descripcionCompra">
+                <ObraId :id-obra="idObra"></ObraId>
             </div>
             <div class="formComprar">
                 <Ticket :id-obra="idObra"></Ticket>
             </div>
         </div>
+        <div class="contenedorBloques">
+            <butacas :id-obra="idObra"></butacas>
+        </div>
     </div>
-    <div class="contenedorBloques">
-        <butacas :id-obra="idObra"></butacas>
+    <div v-else>
+        <div class="cosa2">
+            <div class="contenedorComprar2">
+                <h1>Informacion Obra</h1>
+                <v-carousel hide-delimiters>
+                    <div class="cosa2">
+                        <v-carousel-item>
+                            <div class="contImagenObraPopular">
+                                <img :src="obraInfo?.imagen" alt="Imagen de la obra">
+                            </div>
+                        </v-carousel-item>
+                        <v-carousel-item>
+                            <div class="descripcionCompra">
+                                <ObraId :id-obra="idObra"></ObraId>
+                            </div>
+                        </v-carousel-item>
+                    </div>
+                </v-carousel>
+            </div>
+            <h1>Informacion Asientos</h1>
+            <div class="contenedorBloques">
+                <butacas :id-obra="idObra"></butacas>
+            </div>
+            <h1>Comprar</h1>
+            <div class="formComprar">
+                <Ticket :id-obra="idObra"></Ticket>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -44,31 +86,26 @@ idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra
 .contenedorComprar {
     display: flex;
     height: 500px;
-    align-items: center;
-    text-align: center;
+    margin-bottom: 30px;
+}
+
+.contenedorComprar2 {
+    height: 550px;
     margin-bottom: 30px;
 }
 
 /*Informacion de la Obra */
-.descriPopular {
-    display: grid;
-    text-align: justify;
-    grid-template-columns: repeat(2, 100%);
-    width: 450px;
-    margin: auto;
-}
 
-.descriPopular p {
-    font-size: 20px;
+.contImagenObraPopular img {
+    width: 266px;
 }
 
 .contImagenObraPopular {
     margin: auto;
 }
 
-.contImagenObraPopular img {
-    object-fit: cover;
-    height: 400px;
+.descripcionCompra {
+    margin-top: 40px;
 }
 
 /*Formulario de comprar*/
@@ -86,10 +123,12 @@ idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra
 
 /*Bloue de seleccion de asientos*/
 .contenedorBloques {
-    display: flex;
-    width: 80%;
-    justify-content: space-evenly;
     margin: auto;
-    padding-bottom: 100px;
+}
+
+.cosa2 {
+    margin: auto;
+    align-items: center;
+    text-align: center
 }
 </style>

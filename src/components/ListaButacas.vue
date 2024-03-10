@@ -17,6 +17,22 @@ const mostar = computed(() => listButacas.asientos);
 
 const idObra = props.idObra;
 
+const cambiar = ref<boolean>();
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+const handleResize = () => {
+    const width = window.innerWidth;
+    if (width <= 1060) {
+        cambiar.value = false
+    } else {
+        cambiar.value = true
+    }
+};
+
 onMounted(async () => {
     try {
         const responseAsientos = await fetch(`http://localhost:8001/Asiento/estado/false`);
@@ -53,7 +69,7 @@ const fetchButaca = async (butacaId: number) => {
         }
 
         const data = await response.json();
-        
+
         const Butaca = {
             asientoId: data.asientoId,
             nombreAsiento: data.nombreAsiento,
@@ -77,45 +93,126 @@ const butacasFiltradas = (letra: string) => {
 </script>
 
 <template>
-        <div class="bloqueA">
-            <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
-                <div class="box">
-                    <template v-if="butaca.estado">
-                        <butacaR :class="`cursor-not-allowed`" ></butacaR>
-                    </template>
-                    <template v-else>
-                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
-                    </template>
+    <div class="cosa" v-if="cambiar">
+        <div>
+            <h3>Grupo A</h3>
+            <div class="bloqueA">
+                <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
+                    <div class="box">
+                        <template v-if="butaca.estado">
+                            <butacaR :class="`cursor-not-allowed`"></butacaR>
+                        </template>
+                        <template v-else>
+                            <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="bloqueB">
-            <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
-                <div class="box">
-                    <template v-if="butaca.estado">
-                        <butacaR :class="`cursor-not-allowed`" ></butacaR>
-                    </template>
-                    <template v-else>
-                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
-                    </template>
+        <div>
+            <h3>Grupo B</h3>
+            <div class="bloqueB">
+                <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
+                    <div class="box">
+                        <template v-if="butaca.estado">
+                            <butacaR :class="`cursor-not-allowed`"></butacaR>
+                        </template>
+                        <template v-else>
+                            <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="bloqueC">
-            <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
-                <div class="box">
-                    <template v-if="butaca.estado">
-                        <butacaR :class="`cursor-not-allowed`" ></butacaR>
-                    </template>
-                    <template v-else>
-                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
-                    </template>
+        <div>
+            <h3>Grupo C</h3>
+            <div class="bloqueC">
+                <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
+                    <div>
+                        <template v-if="butaca.estado">
+                            <butacaR :class="`cursor-not-allowed`"></butacaR>
+                        </template>
+                        <template v-else>
+                            <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div v-else>
+        <v-carousel hide-delimiters>
+            <div class="cosa2">
+                <v-carousel-item>
+                    <div>
+                        <h3>Grupo A</h3>
+                        <div class="bloqueA">
+                            <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
+                                <div class="box">
+                                    <template v-if="butaca.estado">
+                                        <butacaR :class="`cursor-not-allowed`"></butacaR>
+                                    </template>
+                                    <template v-else>
+                                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </v-carousel-item>
+                <v-carousel-item>
+                    <div>
+                        <h3>Grupo B</h3>
+                        <div class="bloqueB">
+                            <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
+                                <div class="box">
+                                    <template v-if="butaca.estado">
+                                        <butacaR :class="`cursor-not-allowed`"></butacaR>
+                                    </template>
+                                    <template v-else>
+                                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </v-carousel-item>
+                <v-carousel-item>
+                    <div>
+                        <h3>Grupo C</h3>
+                        <div class="bloqueC">
+                            <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
+                                <div>
+                                    <template v-if="butaca.estado">
+                                        <butacaR :class="`cursor-not-allowed`"></butacaR>
+                                    </template>
+                                    <template v-else>
+                                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </v-carousel-item>
+            </div>
+        </v-carousel>
+    </div>
 </template>
 
 <style scoped>
+
+.cosa2{
+margin: auto
+}
+
+.cosa {
+    display: flex;
+    width: 80%;
+    justify-content: space-evenly;
+    margin: auto;
+    padding-bottom: 100px;
+}
+
 .bloqueA {
     width: 200px;
     background-color: rgb(255, 255, 255);
@@ -123,12 +220,6 @@ const butacasFiltradas = (letra: string) => {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-}
-
-.box {
-    width: 100px;
-    color: black;
-    text-align: center;
 }
 
 .bloqueB {
