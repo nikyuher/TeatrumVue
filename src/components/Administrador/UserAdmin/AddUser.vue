@@ -6,9 +6,47 @@ const email = ref('');
 const password = ref('');
 const responseMessage = ref('');
 
+const validarEmail = (value: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+};
+
+const validarPassword = (value: string): boolean => {
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    return passwordRegex.test(value);
+};
+
+const validarName = (value: string): boolean => {
+    return value.length >= 4;
+};
+
 const addUser = async () => {
 
     try {
+        if (!validarName(nombre.value)) {
+            responseMessage.value = 'El nombre debe tener al menos 4 caracteres';
+            setTimeout(() => {
+                responseMessage.value = '';
+            }, 2000);
+            return;
+        }
+
+        if (!validarEmail(email.value)) {
+            responseMessage.value = 'Por favor ingrese un correo electrónico válido';
+            setTimeout(() => {
+                responseMessage.value = '';
+            }, 2000);
+            return;
+        }
+
+        if (!validarPassword(password.value)) {
+            responseMessage.value = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
+            setTimeout(() => {
+                responseMessage.value = '';
+            }, 3000);
+            return;
+        }
+
         const crear = {
             nombre: nombre.value,
             correoElectronico: email.value,
@@ -78,8 +116,7 @@ const addUser = async () => {
 </template>
 
 <style scoped>
-
-.contenedor{
+.contenedor {
     width: 300px;
 }
 

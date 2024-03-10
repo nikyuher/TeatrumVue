@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const obraId = ref(0);
 const genero = ref('');
@@ -50,6 +50,13 @@ const updateObra = async () => {
         }, 2000);
     }
 }
+
+const descripcionLength = computed(() => descripcion.value.length);
+const limitInput = () => {
+    if (descripcionLength.value >= 250) {
+        descripcion.value = descripcion.value.substring(0, 250);
+    }
+}
 </script>
 
 <template>
@@ -69,15 +76,18 @@ const updateObra = async () => {
                 <input type="text" id="titulo" v-model="titulo" required>
             </div>
             <div class="form-group">
-                <label for="descripcion">Descripción</label>
-                <input type="text" id="descripcion" v-model="descripcion" required>
+                <label>Descripción</label>
+            <input type="text" id="descripcion" v-model="descripcion" :maxlength="250" @input="limitInput" required>
+            <label :class="{ 'text-red': descripcionLength < 100 }" for="descripcion">
+                Descripción (Mínimo 100 caracteres): {{ descripcionLength }}/250
+            </label>
             </div>
             <div class="form-group">
                 <label for="precioEntrada">Precio de Entrada</label>
                 <input type="number" id="precioEntrada" v-model="precioEntrada" required>
             </div>
             <div class="form-group">
-                <input type="submit" value="Actualizar" class="btn-submit">
+                <input type="submit" value="Actualizar" class="btn-submit" :disabled="descripcionLength < 100">
             </div>
             <v-alert v-if="responseMessage" :value="true"
                 :type="responseMessage.includes('Actualizado') ? 'success' : 'error'">

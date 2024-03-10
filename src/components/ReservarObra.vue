@@ -62,7 +62,7 @@ const handleResize = () => {
                             </div>
                         </v-carousel-item>
                         <v-carousel-item>
-                            <div class="descripcionCompra">
+                            <div class="descripcionCompra2">
                                 <ObraId :id-obra="idObra"></ObraId>
                             </div>
                         </v-carousel-item>
@@ -105,7 +105,16 @@ const handleResize = () => {
 }
 
 .descripcionCompra {
+    width: 30%;
     margin-top: 40px;
+    text-align: justify;
+}
+
+.descripcionCompra2 {
+    width: 60%;
+    margin-top: 40px;
+    text-align: justify;
+    margin: auto;
 }
 
 /*Formulario de comprar*/

@@ -61,6 +61,7 @@ const getImagenUrl = (imagenBytes: string) => {
   return URL.createObjectURL(blob);
 };
 
+
 </script>
 
 <template>
@@ -72,7 +73,7 @@ const getImagenUrl = (imagenBytes: string) => {
             <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
               <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
               <h3 class="text-black">{{ obra.raw.título }}</h3>
-              <p class="text-black">{{ obra.raw.descripción }}</p>
+              <p class="text-black">{{ obra.raw.descripción.slice(0, 100) }}</p>
               <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
             </router-link>
           </div>
@@ -102,7 +103,7 @@ const getImagenUrl = (imagenBytes: string) => {
                 <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
                   <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
                   <h3 class="text-black">{{ obra.raw.título }}</h3>
-                  <p class="text-black">{{ obra.raw.descripción }}</p>
+                  <p class="text-black">{{ obra.raw.descripción.slice(0, 100) }}</p>
                   <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
                 </router-link>
               </v-sheet>

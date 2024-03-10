@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 interface ObraData {
     genero: string;
@@ -96,6 +96,13 @@ const fileToBase64 = (file: File): Promise<string> => {
         reader.onerror = error => reject(error);
     });
 }
+
+const descripcionLength = computed(() => descri.value.length);
+const limitInput = () => {
+    if (descripcionLength.value >= 250) {
+        descri.value = descri.value.substring(0, 250);
+    }
+}
 </script>
 
 
@@ -113,11 +120,14 @@ const fileToBase64 = (file: File): Promise<string> => {
             <input type="text" id="genero" v-model="genero" required>
             <label for="titulo">Título</label>
             <input type="text" id="titulo" v-model="titulo" required>
-            <label for="descripcion">Descripción</label>
-            <input type="text" id="descripcion" v-model="descri" required>
+            <label>Descripción</label>
+            <input type="text" id="descripcion" v-model="descri" :maxlength="250" @input="limitInput" required>
+            <label :class="{ 'text-red': descripcionLength < 100 }" for="descripcion">
+                Descripción (Mínimo 100 caracteres): {{ descripcionLength }}/250
+            </label>
             <label for="precio">Precio</label>
             <input type="number" id="precio" v-model="precio" required>
-            <input type="submit" value="Enviar">
+            <input type="submit" value="Enviar" :disabled="descripcionLength < 100">
             <v-alert v-if="responseMessage" :value="true"
                 :type="responseMessage.includes('Creado') ? 'success' : 'error'">
                 {{ responseMessage }}

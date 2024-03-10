@@ -7,23 +7,23 @@ const password = ref('');
 const termsAccepted = ref(false);
 const responseMessage = ref('');
 
-const validateEmail = (email: string): boolean => {
+const validarEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 };
 
-const validatePassword = (password: string): boolean => {
+const validarPassword = (password: string): boolean => {
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     return passwordRegex.test(password);
 };
 
-const validateName = (name: string): boolean => {
+const validarName = (name: string): boolean => {
     return name.length >= 4;
 };
 
 const registerUser = async () => {
     
-    if (!validateName(username.value)) {
+    if (!validarName(username.value)) {
         responseMessage.value = 'El nombre debe tener al menos 4 caracteres';
         setTimeout(() => {
             responseMessage.value = '';
@@ -31,7 +31,7 @@ const registerUser = async () => {
         return;
     }
     
-    if (!validateEmail(email.value)) {
+    if (!validarEmail(email.value)) {
         responseMessage.value = 'Por favor ingrese un correo electrónico válido';
         setTimeout(() => {
             responseMessage.value = '';
@@ -39,7 +39,7 @@ const registerUser = async () => {
         return;
     }
     
-    if (!validatePassword(password.value)) {
+    if (!validarPassword(password.value)) {
         responseMessage.value = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
         setTimeout(() => {
             responseMessage.value = '';
