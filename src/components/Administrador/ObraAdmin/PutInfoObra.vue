@@ -8,6 +8,8 @@ const descripcion = ref('');
 const precioEntrada = ref(0);
 const responseMessage = ref('');
 
+const generos =  ['comedia','terror','drama','musical','tragedia']
+
 const updateObra = async () => {
     try {
 
@@ -69,7 +71,7 @@ const limitInput = () => {
             </div>
             <div class="form-group">
                 <label for="genero">Género</label>
-                <input type="text" id="genero" v-model="genero" required>
+                <v-select v-model="genero" :items="generos" density="compact" label="generos" required></v-select>
             </div>
             <div class="form-group">
                 <label for="titulo">Título</label>

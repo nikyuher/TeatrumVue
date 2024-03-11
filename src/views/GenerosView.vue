@@ -45,7 +45,7 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
     margin: auto;
 }
 main {
-    background-color: rgb(163, 64, 114);
+    background-color: rgb(99, 0, 0);
     color: white;
 }
 
@@ -56,7 +56,7 @@ main {
 
 .tituloGeneroSelec h1 {
     width: 100%;
-    color: rgb(255, 60, 60);
+    color: rgb(255, 170, 60);
 }
 
 .imgGeneroSelec {

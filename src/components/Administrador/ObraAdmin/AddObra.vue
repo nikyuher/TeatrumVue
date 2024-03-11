@@ -17,6 +17,8 @@ const precio = ref(0);
 const responseMessage = ref('');
 const imageDataUrl = ref<string | null>(null);
 
+const generos =  ['comedia','terror','drama','musical','tragedia']
+
 const obra = async () => {
     try {
         let obraData: ObraData = {
@@ -117,7 +119,7 @@ const limitInput = () => {
                     style="max-width: 100%; height: 200px; margin-bottom: 10px;">
             </div>
             <label for="genero">Género</label>
-            <input type="text" id="genero" v-model="genero" required>
+            <v-select v-model="genero" :items="generos" density="compact" label="generos" required></v-select>
             <label for="titulo">Título</label>
             <input type="text" id="titulo" v-model="titulo" required>
             <label>Descripción</label>

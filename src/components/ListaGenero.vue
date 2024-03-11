@@ -99,7 +99,7 @@ const getImagenUrl = (imagenBytes: string) => {
       <template v-slot:default="{ items }">
           <div class="d-flex flex-wrap align-center justify-center pa-4 ">
             <v-col class="targeta2" v-for="obra in items" :key="obra.raw.obraId" cols="9" sm="3 " xl="4">
-              <v-sheet>
+              <v-sheet style="background-color: rgb(209, 209, 209);">
                 <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
                   <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
                   <h3 class="text-black">{{ obra.raw.título }}</h3>
@@ -137,7 +137,7 @@ const getImagenUrl = (imagenBytes: string) => {
 .targeta {
   padding: 0 20px;
   margin: 30px 50px;
-  background-color: white;
+  background-color: rgb(209, 209, 209);
   width: 300px;
   height: 520px;
   border-radius: 5px;
@@ -146,7 +146,7 @@ const getImagenUrl = (imagenBytes: string) => {
 .targeta2 {
   padding: 0 20px;
   margin: 30px 50px;
-  background-color: white;
+  background-color: rgb(209, 209, 209);
   width: 300px;
   height: 550px;
   border-radius: 5px;

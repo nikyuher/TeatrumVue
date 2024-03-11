@@ -58,7 +58,7 @@ const obtenerGenero = (contexto: string): string => {
 }
 
 main {
-    background-color: rgb(163, 64, 114);
+    background-color: rgb(99, 0, 0);
     color: white;
 }
 
@@ -70,7 +70,11 @@ main {
 
 .tituloGeneros h1 {
     width: 100%;
-    color: rgb(255, 60, 60);
+    color: rgb(235, 170, 49);
+}
+
+h2{
+    color: rgb(235, 170, 49);
 }
 
 .imagenGeneros {

@@ -4,7 +4,7 @@ import { useInfoButaca } from '@/store/infoButaca';
 import { useInfoAsientos } from '@/store/listaButacas';
 import { usarInfoUsuario } from '@/store/userInfo';
 import { useObraInfo } from '@/store/obraInfo';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 
 const props = defineProps<{
@@ -22,7 +22,7 @@ const butacaInfo = computed(() => Butaca.butacas);
 const Asientos = useInfoAsientos();
 
 const idUsuario = Usuario.userInfo?.usuarioId
-
+const snackbar = ref(false);
 const handleCompra = async () => {
 
     try {
@@ -66,7 +66,7 @@ const handleCompra = async () => {
         if (!ocuparAsientoResponse.ok) {
             throw new Error('Fallo al actualizar el estado del asiento.');
         } else {
-            
+
             const nuevosAsientos = Asientos.asientos.map(asiento => {
                 if (asiento.nombreAsiento === Butaca.butacas?.nombreAsiento) {
                     return {
@@ -77,7 +77,7 @@ const handleCompra = async () => {
                 return asiento;
             });
             Asientos.setAsientos(nuevosAsientos);
-            
+            snackbar.value = true;
             Butaca.setButacas(null);
         }
     } catch (error) {
@@ -106,6 +106,10 @@ const handleCompra = async () => {
             </v-btn>
         </form>
     </div>
+
+    <v-snackbar v-model="snackbar" color="success" timeout="2000">
+        Comprado correctamente
+    </v-snackbar>
 </template>
 
 <style scoped>
