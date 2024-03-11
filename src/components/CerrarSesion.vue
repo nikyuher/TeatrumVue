@@ -13,6 +13,7 @@ const eventCerrarSesion = async () => {
         console.log(error);
     }
 };
+
 </script>
 
 <template>

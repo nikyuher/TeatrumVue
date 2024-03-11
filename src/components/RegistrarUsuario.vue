@@ -4,7 +4,7 @@ import { ref } from 'vue';
 const username = ref('');
 const email = ref('');
 const password = ref('');
-const termsAccepted = ref(false);
+const terminos = ref(false);
 const responseMessage = ref('');
 
 const validarEmail = (email: string): boolean => {
@@ -48,7 +48,7 @@ const registerUser = async () => {
     }
     
     
-    if (!termsAccepted.value) {
+    if (!terminos.value) {
         responseMessage.value = 'Por favor acepte los Términos & Condiciones';
         setTimeout(() => {
             responseMessage.value = '';
@@ -78,7 +78,7 @@ const registerUser = async () => {
         username.value = '';
         email.value = '';
         password.value = '';
-        termsAccepted.value = false;
+        terminos.value = false;
 
         responseMessage.value = 'Usuario Registrado Correctamente.';
 
@@ -107,7 +107,7 @@ const registerUser = async () => {
             <label>Password</label>
         </div>
         <div class="remember-forgot">
-            <label><input type="checkbox" v-model="termsAccepted">I agree to the terms & conditions</label>
+            <label><input type="checkbox" v-model="terminos">I agree to the terms & conditions</label>
         </div>
         <button class="btn" type="submit">Register</button>
         <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Creado') ? 'success' : 'error'">

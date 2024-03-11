@@ -23,8 +23,8 @@ const Asientos = useInfoAsientos();
 
 const idUsuario = Usuario.userInfo?.usuarioId
 const snackbar = ref(false);
-const handleCompra = async () => {
 
+const eventoCompra = async () => {
     try {
 
         if (Usuario.userInfo?.usuarioId == null) {
@@ -91,7 +91,7 @@ const handleCompra = async () => {
 <template>
     <h2>Reserva Asiento</h2>
     <div class="contenidoForm">
-        <form @submit.prevent="handleCompra">
+        <form @submit.prevent="eventoCompra">
             <div class="datosForm">
                 <label>Obra de Teatro </label>
                 <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.titulo"></v-text-field>
@@ -106,7 +106,6 @@ const handleCompra = async () => {
             </v-btn>
         </form>
     </div>
-
     <v-snackbar v-model="snackbar" color="success" timeout="2000">
         Comprado correctamente
     </v-snackbar>

@@ -20,11 +20,11 @@ const idObra = props.idObra;
 const cambiar = ref<boolean>();
 
 onMounted(() => {
-    window.addEventListener('resize', handleResize);
-    handleResize();
+    window.addEventListener('resize', ajustarTamaño);
+    ajustarTamaño();
 });
 
-const handleResize = () => {
+const ajustarTamaño = () => {
     const width = window.innerWidth;
     if (width <= 1060) {
         cambiar.value = false
@@ -93,7 +93,7 @@ const butacasFiltradas = (letra: string) => {
 </script>
 
 <template>
-    <div class="cosa" v-if="cambiar">
+    <div class="cosa" v-show="cambiar">
         <div>
             <h3>Grupo A</h3>
             <div class="bloqueA">
@@ -140,7 +140,7 @@ const butacasFiltradas = (letra: string) => {
             </div>
         </div>
     </div>
-    <div v-else>
+    <div v-show="!cambiar">
         <v-carousel hide-delimiters>
             <div class="cosa2">
                 <v-carousel-item>

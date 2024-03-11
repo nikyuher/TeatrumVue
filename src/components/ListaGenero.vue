@@ -12,11 +12,11 @@ const obras = ref<any[]>([]);
 const genero = props.genero;
 
 onMounted(() => {
-  window.addEventListener('resize', handleResize);
-  handleResize();
+  window.addEventListener('resize', ajustarTamaño);
+  ajustarTamaño();
 });
 
-const handleResize = () => {
+const ajustarTamaño = () => {
   const width = window.innerWidth;
   if (width <= 1614) {
     itemsPerPage.value = width <= 1214 ? (width <= 814 ? 1 : 2) : 3;
@@ -65,7 +65,7 @@ const getImagenUrl = (imagenBytes: string) => {
 </script>
 
 <template>
-  <div v-if="mostrarSoloTres">
+  <div v-show="mostrarSoloTres">
     <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
       <template v-slot:default="{ items }">
         <div class="d-flex flex-wrap align-center justify-center pa-4 ">
@@ -94,7 +94,7 @@ const getImagenUrl = (imagenBytes: string) => {
       </template>
     </v-data-iterator>
   </div>
-  <div v-else>
+  <div v-show="!mostrarSoloTres">
     <v-data-iterator :items="obras" :items-per-page="itemsPerPage2">
       <template v-slot:default="{ items }">
           <div class="d-flex flex-wrap align-center justify-center pa-4 ">

@@ -18,13 +18,13 @@ idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra
 const cambiar = ref<boolean>();
 
 onMounted(() => {
-    window.addEventListener('resize', handleResize);
-    handleResize();
+    window.addEventListener('resize', ajustarTamaño);
+    ajustarTamaño();
 });
 
-const handleResize = () => {
-    const width = window.innerWidth;
-    if (width <= 1060) {
+const ajustarTamaño = () => {
+    const resolucion = window.innerWidth;
+    if (resolucion <= 1060) {
         cambiar.value = false
     } else {
         cambiar.value = true
@@ -34,7 +34,7 @@ const handleResize = () => {
 </script>
 
 <template>
-    <div v-if="cambiar">
+    <div v-show="cambiar">
         <div class="contenedorComprar">
             <div class="contImagenObraPopular">
                 <img :src="obraInfo?.imagen" alt="Imagen de la obra">
@@ -50,7 +50,7 @@ const handleResize = () => {
             <butacas :id-obra="idObra"></butacas>
         </div>
     </div>
-    <div v-else>
+    <div v-show="!cambiar">
         <div class="cosa2">
             <div class="contenedorComprar2">
                 <h1>Informacion Obra</h1>
