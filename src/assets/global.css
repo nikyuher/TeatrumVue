@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Radio+Canada:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Denk+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rowdies&display=swap');
+
+/*Cambios Globales*/
+img {
+    object-fit: contain;
+    width: 100%;
+}
+
+
+main a{
+    text-decoration: none;
+}
+
+/*Estilo del logo de la Pagina*/
+.colorFooter * {
+    color: rgb(255, 255, 255);
+}
+
+.logo {
+    font-family: 'Denk One', sans-serif;
+    padding: 10px 20px;
+}
+
+.logo a {
+    text-decoration: none;
+    color: white;
+}
+
+/*Tipos de Leta para la pagina*/
+.letraTextoGeneral h1 {
+    font-size: 60px;
+    text-align: left;
+    color: white;
+    font-family: 'Agbalumo', serif;
+}
+
+.letraTextoGeneral h2 {
+    font-family: 'Rowdies', sans-serif;
+    color: rgb(255, 60, 60);
+    padding-left: 30px;
+    font-size: 40px
+}
+
+.letraTextoGeneral {
+    font-family: 'Ubuntu Condensed', serif;
+}
+
+
+
