@@ -1,3 +1,28 @@
+<template>
+    <div class="contenedor">
+        <h2>Lista de Butacas</h2>
+        <div>
+            <label for="estado">Filtrar por estado:</label>
+            <select id="estado" v-model="estadoSeleccionado" @change="handleEstadoChange" class="custom-select">
+                <option :value="true">Ocupado</option>
+                <option :value="false">Disponible</option>
+            </select>
+        </div>
+        <div class="scroll-container">
+            <ul class="lista-butacas">
+                <li v-for="butaca in butacas" :key="butaca.asientoId" class="butaca-item">
+                    <div class="butaca-info">
+                        <p><strong>ID:</strong> {{ butaca.asientoId }}</p>
+                        <p><strong>Nombre:</strong> {{ butaca.nombreAsiento }}</p>
+                        <p><strong>Estado:</strong> {{ butaca.estado ? 'Ocupado' : 'Disponible' }}</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <p class="response">{{ responseMessage }}</p>
+    </div>
+</template>
+
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
@@ -9,7 +34,7 @@ interface Asiento {
 
 const butacas = ref<Asiento[]>([]);
 const responseMessage = ref('');
-const estadoSeleccionado = ref<boolean | null>(null);
+const estadoSeleccionado = ref<boolean | null>(false);
 
 onMounted(async () => {
     await fetchButacas();
@@ -40,32 +65,7 @@ const fetchButacas = async () => {
 const handleEstadoChange = () => {
     fetchButacas();
 };
-
 </script>
-
-<template>
-    <div class="contenedor">
-        <h2>Lista de Butacas</h2>
-        <div>
-            <label for="estado">Filtrar por estado:</label>
-            <select id="estado" v-model="estadoSeleccionado" @change="handleEstadoChange">
-                <option value="" disabled selected>Seleccione un estado</option>
-                <option :value="true">Ocupado</option>
-                <option :value="false">Disponible</option>
-            </select>
-        </div>
-        <ul class="lista-butacas">
-            <li v-for="butaca in butacas" :key="butaca.asientoId" class="butaca-item">
-                <div class="butaca-info">
-                    <p><strong>ID:</strong> {{ butaca.asientoId }}</p>
-                    <p><strong>Nombre:</strong> {{ butaca.nombreAsiento }}</p>
-                    <p><strong>Estado:</strong> {{ butaca.estado ? 'Ocupado' : 'Disponible' }}</p>
-                </div>
-            </li>
-        </ul>
-        <p class="response">{{ responseMessage }}</p>
-    </div>
-</template>
 
 <style scoped>
 .contenedor {
@@ -76,6 +76,7 @@ const handleEstadoChange = () => {
 .lista-butacas {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
 .butaca-item {
@@ -92,5 +93,28 @@ const handleEstadoChange = () => {
 .response {
     margin-top: 10px;
     color: red;
+}
+
+.scroll-container {
+    overflow-y: auto;
+    height: 500px;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    appearance: none;
+    outline: none;
+    margin-bottom: 20px;
+}
+
+.custom-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 </style>

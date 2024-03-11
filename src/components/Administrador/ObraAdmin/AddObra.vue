@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 interface ObraData {
     genero: string;
@@ -16,6 +16,8 @@ const descri = ref('');
 const precio = ref(0);
 const responseMessage = ref('');
 const imageDataUrl = ref<string | null>(null);
+
+const generos =  ['comedia','terror','drama','musical','tragedia']
 
 const obra = async () => {
     try {
@@ -57,10 +59,15 @@ const obra = async () => {
 
         setTimeout(() => {
             responseMessage.value = '';
-        }, 3000);
+        }, 2000);
 
     } catch (error) {
         console.error(error);
+        responseMessage.value = 'Ha ocurrido un Error al Crear .';
+
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     }
 }
 
@@ -91,6 +98,13 @@ const fileToBase64 = (file: File): Promise<string> => {
         reader.onerror = error => reject(error);
     });
 }
+
+const descripcionLength = computed(() => descri.value.length);
+const limitInput = () => {
+    if (descripcionLength.value >= 250) {
+        descri.value = descri.value.substring(0, 250);
+    }
+}
 </script>
 
 
@@ -105,15 +119,21 @@ const fileToBase64 = (file: File): Promise<string> => {
                     style="max-width: 100%; height: 200px; margin-bottom: 10px;">
             </div>
             <label for="genero">Género</label>
-            <input type="text" id="genero" v-model="genero" required>
+            <v-select v-model="genero" :items="generos" density="compact" label="generos" required></v-select>
             <label for="titulo">Título</label>
             <input type="text" id="titulo" v-model="titulo" required>
-            <label for="descripcion">Descripción</label>
-            <input type="text" id="descripcion" v-model="descri" required>
+            <label>Descripción</label>
+            <input type="text" id="descripcion" v-model="descri" :maxlength="250" @input="limitInput" required>
+            <label :class="{ 'text-red': descripcionLength < 100 }" for="descripcion">
+                Descripción (Mínimo 100 caracteres): {{ descripcionLength }}/250
+            </label>
             <label for="precio">Precio</label>
             <input type="number" id="precio" v-model="precio" required>
-            <input type="submit" value="Enviar">
-            <p class="response">{{ responseMessage }}</p>
+            <input type="submit" value="Enviar" :disabled="descripcionLength < 100">
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>

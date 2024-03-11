@@ -1,9 +1,10 @@
 <script setup lang="ts">
 
 import { useInfoButaca } from '@/store/infoButaca';
+import { useInfoAsientos } from '@/store/listaButacas';
 import { usarInfoUsuario } from '@/store/userInfo';
 import { useObraInfo } from '@/store/obraInfo';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 
 const props = defineProps<{
@@ -12,16 +13,16 @@ const props = defineProps<{
 const idObraReal = props.idObra;
 
 const Usuario = usarInfoUsuario();
-const userInfo = computed(() => Usuario.userInfo);
 
 const Obra = useObraInfo();
 const obraInfo = computed(() => Obra.infoObra);
 
 const Butaca = useInfoButaca();
 const butacaInfo = computed(() => Butaca.butacas);
+const Asientos = useInfoAsientos();
 
 const idUsuario = Usuario.userInfo?.usuarioId
-
+const snackbar = ref(false);
 const handleCompra = async () => {
 
     try {
@@ -65,11 +66,20 @@ const handleCompra = async () => {
         if (!ocuparAsientoResponse.ok) {
             throw new Error('Fallo al actualizar el estado del asiento.');
         } else {
+
+            const nuevosAsientos = Asientos.asientos.map(asiento => {
+                if (asiento.nombreAsiento === Butaca.butacas?.nombreAsiento) {
+                    return {
+                        ...asiento,
+                        estado: true
+                    };
+                }
+                return asiento;
+            });
+            Asientos.setAsientos(nuevosAsientos);
+            snackbar.value = true;
             Butaca.setButacas(null);
-            alert('Compra Realizada');
         }
-        
-        window.location.reload();
     } catch (error) {
         console.log(error)
     }
@@ -83,17 +93,23 @@ const handleCompra = async () => {
     <div class="contenidoForm">
         <form @submit.prevent="handleCompra">
             <div class="datosForm">
-                <label>Obra de Teatro Id: {{ obraInfo?.idObra }}</label>
-                <p>id Usuario: {{ userInfo?.usuarioId }}</p>
-                <input type="text" id="inputNombreObra" :value="obraInfo?.titulo">
-                <label>Sitio de Asiento: ID {{ butacaInfo?.asientoId }}</label>
-                <input type="text" id="inputSitioAsiento" required :value="butacaInfo?.nombreAsiento">
+                <label>Obra de Teatro </label>
+                <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.titulo"></v-text-field>
+                <label>Sitio de Asiento:</label>
+                <v-text-field type="text" id="inputSitioAsiento" required
+                    :value="butacaInfo?.nombreAsiento"></v-text-field>
                 <label>Precio:$</label>
-                <input type="number" id="inputPrecio" :value="obraInfo?.precio">
+                <v-text-field type="number" id="inputPrecio" :value="obraInfo?.precio"></v-text-field>
             </div>
-            <input id="comprar" type="submit" value="Comprar">
+            <v-btn type="submit">
+                Comprar
+            </v-btn>
         </form>
     </div>
+
+    <v-snackbar v-model="snackbar" color="success" timeout="2000">
+        Comprado correctamente
+    </v-snackbar>
 </template>
 
 <style scoped>

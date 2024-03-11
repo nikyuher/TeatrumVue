@@ -7,50 +7,10 @@ import ListObra from '@/components/Administrador/ObraAdmin/ListObra.vue'
 
 import { ref } from 'vue';
 
-const isAddObraView = ref<boolean>(true);
-const isDeleteObraView = ref<boolean>(false);
-const isPutInfoObraView = ref<boolean>(false);
-const isPutImgObraView = ref<boolean>(false);
-const isListObraView = ref<boolean>(false);
+const vistaActual = ref<string>('add');
 
-const showAddObra = () => {
-    isAddObraView.value = true;
-    isDeleteObraView.value = false;
-    isPutInfoObraView.value = false;
-    isPutImgObraView.value = false;
-    isListObraView.value = false;
-};
-
-const showDeleteObra = () => {
-    isAddObraView.value = false;
-    isDeleteObraView.value = true;
-    isPutInfoObraView.value = false;
-    isPutImgObraView.value = false;
-    isListObraView.value = false;
-};
-
-const showPutInfoObra = () => {
-    isAddObraView.value = false;
-    isDeleteObraView.value = false;
-    isPutInfoObraView.value = true;
-    isPutImgObraView.value = false;
-    isListObraView.value = false;
-};
-
-const showPutImgObra = () => {
-    isAddObraView.value = false;
-    isDeleteObraView.value = false;
-    isPutInfoObraView.value = false;
-    isPutImgObraView.value = true;
-    isListObraView.value = false;
-};
-
-const showListObra = () => {
-    isAddObraView.value = false;
-    isDeleteObraView.value = false;
-    isPutInfoObraView.value = false;
-    isPutImgObraView.value = false;
-    isListObraView.value = true;
+const mostrarView = (view: string) => {
+    vistaActual.value = view;
 };
 </script>
 
@@ -58,43 +18,36 @@ const showListObra = () => {
     <div>
         <nav>
             <ul>
-                <li @click="showAddObra">Agregar</li>
-                <li @click="showPutInfoObra">Actualizar Info</li>
-                <li @click="showPutImgObra">Actualizar Imagen</li>
-                <li @click="showDeleteObra">Eliminar</li>
-                <li @click="showListObra">Ver Obras</li>
+                <li @click="mostrarView('add')">Agregar</li>
+                <li @click="mostrarView('info')">Actualizar Info</li>
+                <li @click="mostrarView('image')">Actualizar Imagen</li>
+                <li @click="mostrarView('delete')">Eliminar</li>
+                <li @click="mostrarView('list')">Ver Obras</li>
             </ul>
         </nav>
-        <main>
-            <article>
-                <section>
-                    <div class="wrapper">
-                        <div v-if="isAddObraView">
-                            <AddObra></AddObra>
-                        </div>
-                        <div v-else-if="isDeleteObraView">
-                            <DeleteObra></DeleteObra>
-                        </div>
-                        <div v-else-if="isPutInfoObraView">
-                            <PutInfoObra></PutInfoObra>
-                        </div>
-                        <div v-else-if="isPutImgObraView">
-                            <PutImgObra></PutImgObra>
-                        </div>
-                        <div v-else-if="isListObraView"> 
-                            <ListObra></ListObra>
-                        </div>
-                    </div>
-                </section>
-            </article>
-        </main>
+        <div class="wrapper">
+            <div v-if="vistaActual === 'add'">
+                <AddObra></AddObra>
+            </div>
+            <div v-else-if="vistaActual === 'delete'">
+                <DeleteObra></DeleteObra>
+            </div>
+            <div v-else-if="vistaActual === 'info'">
+                <PutInfoObra></PutInfoObra>
+            </div>
+            <div v-else-if="vistaActual === 'image'">
+                <PutImgObra></PutImgObra>
+            </div>
+            <div v-else>
+                <ListObra></ListObra>
+            </div>
+        </div>
     </div>
 </template>
 
 <style scoped>
-
 nav {
-    width: 450px;
+    width: 100%;
     background-color: #1997ad;
     border-radius: 5px;
 }
@@ -102,8 +55,9 @@ nav {
 ul {
     list-style-type: none;
     padding: 0;
-    margin: 0;  
+    margin: 0;
     display: flex;
+    justify-content: space-around;
 }
 
 li {
@@ -113,7 +67,6 @@ li {
 }
 
 li:hover {
-    border-radius: 5px;
     background-color: #204a97;
 }
 

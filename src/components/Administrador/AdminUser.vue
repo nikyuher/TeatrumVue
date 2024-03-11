@@ -4,50 +4,32 @@ import DeleteAdd from '@/components/Administrador/UserAdmin/DeleteUser.vue';
 import ListUser from '@/components/Administrador/UserAdmin/ListUser.vue';
 import { ref } from 'vue';
 
-const isAddUserView = ref<boolean>(true);
-const isListUserView = ref<boolean>(false);
+const vistaActual = ref<string>('add');
 
-const showAddUser = () => {
-    isAddUserView.value = true;
-    isListUserView.value = false;
-};
-
-const showDeleteUser = () => {
-    isAddUserView.value = false;
-    isListUserView.value = false;
-};
-
-const showListUser = () => {
-    isAddUserView.value = false;
-    isListUserView.value = true;
+const mostrarView = (view: string) => {
+    vistaActual.value = view;
 };
 </script>
 
 <template>
     <nav>
         <ul>
-            <li @click="showAddUser">Agregar Usuario</li>
-            <li @click="showDeleteUser">Eliminar Usuario</li>
-            <li @click="showListUser">Ver Usuarios</li>
+            <li @click="mostrarView('add')">Agregar Usuario</li>
+            <li @click="mostrarView('delete')">Eliminar Usuario</li>
+            <li @click="mostrarView('list')">Ver Usuarios</li>
         </ul>
     </nav>
-    <main>
-        <article>
-            <section>
-                <div class="wrapper">
-                    <div v-if="isAddUserView">
-                        <AdminAdd></AdminAdd>
-                    </div>
-                    <div v-else-if="isListUserView"> 
-                        <ListUser></ListUser>
-                    </div>
-                    <div v-else>
-                        <DeleteAdd></DeleteAdd>
-                    </div>
-                </div>
-            </section>
-        </article>
-    </main>
+    <div class="wrapper">
+        <div v-if="vistaActual === 'add'">
+            <AdminAdd></AdminAdd>
+        </div>
+        <div v-else-if="vistaActual === 'list'">
+            <ListUser></ListUser>
+        </div>
+        <div v-else>
+            <DeleteAdd></DeleteAdd>
+        </div>
+    </div>
 </template>
 
 <style scoped>

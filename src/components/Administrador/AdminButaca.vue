@@ -4,50 +4,32 @@ import DeleteButaca from '@/components/Administrador/ButacaAdmin/DeleteButaca.vu
 import ListButaca from '@/components/Administrador/ButacaAdmin/ListButaca.vue';
 import { ref } from 'vue';
 
-const isAddButacaView = ref<boolean>(true);
-const isListButacaView = ref<boolean>(false);
+const vistaActual = ref<string>('add');
 
-const showAddButaca = () => {
-    isAddButacaView.value = true;
-    isListButacaView.value = false;
-};
-
-const showDeleteButaca = () => {
-    isAddButacaView.value = false;
-    isListButacaView.value = false;
-};
-
-const showListButaca = () => {
-    isAddButacaView.value = false;
-    isListButacaView.value = true;
+const mostrarView = (view: string) => {
+    vistaActual.value = view;
 };
 </script>
 
 <template>
     <nav>
         <ul>
-            <li @click="showAddButaca">Agregar Butaca</li>
-            <li @click="showDeleteButaca">Eliminar Butaca</li>
-            <li @click="showListButaca">Listar Butacas</li>
+            <li @click="mostrarView('add')">Agregar Butaca</li>
+            <li @click="mostrarView('delete')">Eliminar Butaca</li>
+            <li @click="mostrarView('list')">Listar Butacas</li>
         </ul>
     </nav>
-    <main>
-        <article>
-            <section>
-                <div class="wrapper">
-                    <div v-if="isAddButacaView">
-                        <AddButaca />
-                    </div>
-                    <div v-else-if="isListButacaView">
-                        <ListButaca />
-                    </div>
-                    <div v-else>
-                        <DeleteButaca />
-                    </div>
-                </div>
-            </section>
-        </article>
-    </main>
+    <div class="wrapper">
+        <div v-if="vistaActual === 'add'">
+            <AddButaca></AddButaca>
+        </div>
+        <div v-else-if="vistaActual === 'list'">
+            <ListButaca></ListButaca>
+        </div>
+        <div v-else>
+            <DeleteButaca></DeleteButaca>
+        </div>
+    </div>
 </template>
 
 <style scoped>

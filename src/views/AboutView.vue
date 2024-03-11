@@ -118,4 +118,47 @@ main {
   width: 500px;
   margin: auto 40px;
 }
+
+/* Estilos para resolución de 1200px*/
+@media screen and (max-width: 1200px) {
+  .contTituloContact {
+    padding: 50px 0;
+    display: block;
+    text-align: center;
+  }
+
+  .contTituloContact h1 {
+    font-size: 60px;
+  }
+
+  .imgContact img {
+    height: auto;
+    width: 90%;
+    margin-top: 30px;
+  }
+
+  .contContenidoContact {
+    flex-direction: column;
+    font-size: 20px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 0;
+    
+  }
+  .contContenidoContact p{
+    text-align: justify;
+  }
+
+  .contContenidoContact img {
+    height: auto;
+    width: 90%;
+    margin-bottom: 20px;
+  }
+
+  .contenidoContact {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+  }
+}
 </style>

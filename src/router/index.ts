@@ -45,6 +45,11 @@ const router = createRouter({
       path: '/admin',
       name: 'cataadminlogo',
       component: () => import('../views/AdminView.vue')
+    },
+    {
+      path: '/setting',
+      name: 'setting',
+      component: () => import('../views/SettingUser.vue')
     }
   ]
 })

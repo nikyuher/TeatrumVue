@@ -8,10 +8,7 @@ const imageDataUrl = ref<string | null>(null);
 
 const updateImage = async () => {
     try {
-        if (!obraId.value) {
-            throw new Error('Por favor ingrese un ID de obra válido.');
-        }
-
+        
         if (!img.value) {
             throw new Error('Por favor seleccione una imagen.');
         }
@@ -22,7 +19,6 @@ const updateImage = async () => {
             obraId: obraId.value,
             imagen: base64Image
         };
-
 
         const response = await fetch(`http://localhost:8001/Obra/img/${obraId.value}`, {
             method: 'PUT',
@@ -39,15 +35,18 @@ const updateImage = async () => {
         img.value = null;
         obraId.value = 0;
 
-        responseMessage.value = 'Imagen actualizada correctamente.';
+        responseMessage.value = 'Actualizado correctamente.';
 
         setTimeout(() => {
             responseMessage.value = '';
-        }, 3000);
+        }, 2000);
 
     } catch (error) {
         console.error(error);
         responseMessage.value = 'Ha ocurrido un error al actualizar la imagen de la obra.';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     }
 }
 
@@ -93,7 +92,10 @@ const fileToBase64 = (file: File): Promise<string> => {
                     style="max-width: 100%; height: 200px; margin-bottom: 10px;">
             </div>
             <input type="submit" value="Enviar">
-            <p class="response">{{ responseMessage }}</p>
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Actualizado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>

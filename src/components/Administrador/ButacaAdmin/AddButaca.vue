@@ -32,10 +32,15 @@ const butaca = async () => {
 
         setTimeout(() => {
             responseMessage.value = '';
-        }, 3000);
+        }, 2000);
 
     } catch (error) {
         console.error(error);
+        responseMessage.value = 'Ha ocurrido un Error al Crear .';
+
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     }
 }
 </script>
@@ -52,7 +57,10 @@ const butaca = async () => {
                 <option :value="false">Disponible</option>
             </select>
             <input type="submit" value="Enviar">
-            <p class="response">{{ responseMessage }}</p>
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>

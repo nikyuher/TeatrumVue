@@ -25,11 +25,14 @@ const deleteObra = async () => {
 
         setTimeout(() => {
             responseMessage.value = '';
-        }, 3000);
+        }, 2000);
 
     } catch (error) {
         console.error(error);
-        responseMessage.value = 'Ha ocurrido un error.';
+        responseMessage.value = 'No se a podido Eliminar.';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
     }
 }
 </script>
@@ -45,7 +48,10 @@ const deleteObra = async () => {
             <div class="form-group">
                 <input type="submit" value="Enviar" class="btn-submit">
             </div>
-            <p class="response">{{ responseMessage }}</p>
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Eliminado') ? 'success' : 'error'">
+                {{ responseMessage }}
+            </v-alert>
         </form>
     </div>
 </template>

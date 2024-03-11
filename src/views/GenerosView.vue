@@ -17,31 +17,35 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
 
 <template>
     <main>
-        <div class="letraTextoGeneral">
-            <section>
-                <div class="contTituloGeneroSelec">
-                    <div class="tituloGeneroSelec">
-                        <h1>{{ $route.params.genero }}</h1>
+        <article>
+            <div class="letraTextoGeneral">
+                <section>
+                    <div class="contTituloGeneroSelec">
+                        <div class="tituloGeneroSelec">
+                            <h1>{{ $route.params.genero }}</h1>
+                        </div>
+                        <div class="imgGeneroSelec">
+                            <img src="@/assets/imagenes/obras/banner-generos-teatro.jpg" alt="">
+                        </div>
                     </div>
-                    <div class="imgGeneroSelec">
-                        <img src="@/assets/imagenes/obras/banner-generos-teatro.jpg" alt="">
+                </section>
+                <section>
+                    <div class="contGeneros">
+                        <ListaGenero :genero="genero" :mostrar-todo="true" class="listaGeneros"></ListaGenero>
                     </div>
-                </div>
-            </section>
-            <section>
-                <div class="contGeneros">
-                    <div class="listaGeneros">
-                        <ListaGenero :genero="genero"></ListaGenero>
-                    </div>
-                </div>
-            </section>
-        </div>
+                </section>
+            </div>
+        </article>
     </main>
 </template>
 
 <style scoped>
+
+.listaGeneros {
+    margin: auto;
+}
 main {
-    background-color: rgb(55, 55, 117);
+    background-color: rgb(99, 0, 0);
     color: white;
 }
 
@@ -52,7 +56,7 @@ main {
 
 .tituloGeneroSelec h1 {
     width: 100%;
-    color: rgb(255, 60, 60);
+    color: rgb(255, 170, 60);
 }
 
 .imgGeneroSelec {
@@ -67,10 +71,5 @@ main {
 
 .contGeneros {
     margin-top: 100px;
-}
-
-.listaGeneros {
-    margin: auto;
-    width: 80%;
 }
 </style>
