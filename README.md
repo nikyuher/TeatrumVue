@@ -44,3 +44,7 @@ npm run build
 ```sh
 npm run lint
 ```
+# Readme
+
+## Setup local environment (API+DB)
+`docker-compose up --build --force-recreate -d`
