@@ -11,13 +11,17 @@ interface ObraData {
 
 const img = ref<File | null>(null);
 const genero = ref('');
+const dia = ref('');
 const titulo = ref('');
 const descri = ref('');
 const precio = ref(0);
 const responseMessage = ref('');
 const imageDataUrl = ref<string | null>(null);
 
-const generos =  ['comedia','terror','drama','musical','tragedia']
+const generos = ['comedia', 'terror', 'drama', 'musical', 'tragedia']
+const dias = ['lunes', 'martes', 'miercoles','juevez', 'viernes', 'sabado', 'domingo']
+
+
 
 const obra = async () => {
     try {
@@ -120,6 +124,10 @@ const limitInput = () => {
             </div>
             <label for="genero">Género</label>
             <v-select v-model="genero" :items="generos" density="compact" label="generos" required></v-select>
+            <v-select v-model="dia" :items="dias" density="compact" label="dias" required></v-select>
+            <div class="claseTiempo">
+                <p>de</p><input type="time"><p>a</p><input type="time">
+            </div>
             <label for="titulo">Título</label>
             <input type="text" id="titulo" v-model="titulo" required>
             <label>Descripción</label>
@@ -130,8 +138,7 @@ const limitInput = () => {
             <label for="precio">Precio</label>
             <input type="number" id="precio" v-model="precio" required>
             <input type="submit" value="Enviar" :disabled="descripcionLength < 100">
-            <v-alert v-if="responseMessage" :value="true"
-                :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+            <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Creado') ? 'success' : 'error'">
                 {{ responseMessage }}
             </v-alert>
         </form>
@@ -140,6 +147,11 @@ const limitInput = () => {
 
 
 <style scoped>
+.claseTiempo{
+    display: flex;
+justify-content: space-around;
+}
+
 form {
     max-width: 400px;
     margin: 0 auto;
