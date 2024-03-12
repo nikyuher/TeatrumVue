@@ -81,10 +81,14 @@ const registerUser = async () => {
         terminos.value = false;
 
         responseMessage.value = 'Usuario Registrado Correctamente.';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
 
     } catch (error) {
         responseMessage.value = 'Ocurrio un error al crear el Usuario.';
         console.error(error);
+        
         setTimeout(() => {
             responseMessage.value = '';
         }, 2000);
@@ -110,7 +114,7 @@ const registerUser = async () => {
             <label><input type="checkbox" v-model="terminos">I agree to the terms & conditions</label>
         </div>
         <button class="btn" type="submit">Register</button>
-        <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+        <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Usuario') ? 'success' : 'error'">
             {{ responseMessage }}
         </v-alert>
     </form>

@@ -95,14 +95,16 @@ const butacasFiltradas = (letra: string) => {
 <template>
     <div class="cosa" v-show="cambiar">
         <div>
-            <h3>Grupo A</h3>
+            <h3>Lateral Izquierdo</h3>
             <div class="bloqueA">
                 <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
                     <div class="box">
                         <template v-if="butaca.estado">
+                            <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaR :class="`cursor-not-allowed`"></butacaR>
                         </template>
                         <template v-else>
+                            <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
                         </template>
                     </div>
@@ -110,14 +112,16 @@ const butacasFiltradas = (letra: string) => {
             </div>
         </div>
         <div>
-            <h3>Grupo B</h3>
+            <h3>Centro</h3>
             <div class="bloqueB">
                 <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
                     <div class="box">
                         <template v-if="butaca.estado">
+                            <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaR :class="`cursor-not-allowed`"></butacaR>
                         </template>
                         <template v-else>
+                            <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
                         </template>
                     </div>
@@ -125,14 +129,16 @@ const butacasFiltradas = (letra: string) => {
             </div>
         </div>
         <div>
-            <h3>Grupo C</h3>
+            <h3>Lateral Derecho</h3>
             <div class="bloqueC">
                 <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
                     <div>
                         <template v-if="butaca.estado">
+                            <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaR :class="`cursor-not-allowed`"></butacaR>
                         </template>
                         <template v-else>
+                            <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
                         </template>
                     </div>
@@ -145,14 +151,16 @@ const butacasFiltradas = (letra: string) => {
             <div class="cosa2">
                 <v-carousel-item>
                     <div>
-                        <h3>Grupo A</h3>
+                        <h3>Lateral Izquierdo</h3>
                         <div class="bloqueA">
                             <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
                                 <div class="box">
                                     <template v-if="butaca.estado">
+                                        <p class="text-style">{{ butaca.nombreAsiento }}</p>
                                         <butacaR :class="`cursor-not-allowed`"></butacaR>
                                     </template>
                                     <template v-else>
+                                        <p class="text-style">{{ butaca.nombreAsiento }}</p>
                                         <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
                                     </template>
                                 </div>
@@ -162,14 +170,16 @@ const butacasFiltradas = (letra: string) => {
                 </v-carousel-item>
                 <v-carousel-item>
                     <div>
-                        <h3>Grupo B</h3>
+                        <h3>Centro</h3>
                         <div class="bloqueB">
                             <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
                                 <div class="box">
                                     <template v-if="butaca.estado">
+                                        <p class="text-style">{{ butaca.nombreAsiento }}</p>
                                         <butacaR :class="`cursor-not-allowed`"></butacaR>
                                     </template>
                                     <template v-else>
+                                        <p class="text-style">{{ butaca.nombreAsiento }}</p>
                                         <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
                                     </template>
                                 </div>
@@ -179,14 +189,16 @@ const butacasFiltradas = (letra: string) => {
                 </v-carousel-item>
                 <v-carousel-item>
                     <div>
-                        <h3>Grupo C</h3>
+                        <h3>Lateral Derecho</h3>
                         <div class="bloqueC">
                             <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
                                 <div>
                                     <template v-if="butaca.estado">
+                                        <p class="text-style">{{ butaca.nombreAsiento }}</p>
                                         <butacaR :class="`cursor-not-allowed`"></butacaR>
                                     </template>
                                     <template v-else>
+                                        <p class="text-style">{{ butaca.nombreAsiento }}</p>
                                         <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
                                     </template>
                                 </div>
@@ -200,6 +212,13 @@ const butacasFiltradas = (letra: string) => {
 </template>
 
 <style scoped>
+
+.text-style{
+    color: black;
+    text-align: center;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0;
+}
 
 .cosa2{
 margin: auto
