@@ -23,10 +23,11 @@ const UpdateUser = async () => {
 
         const update = {
             usuarioId: idUsuario,
-            nombre: nombre.value.trim() !== '' ? nombre.value.trim() : Usuario.userInfo?.nombre,
-            correoElectronico: correo.value.trim() !== '' ? correo.value.trim() : Usuario.userInfo?.correoElectronico,
-            contraseña: contraseña.value.trim() !== '' ? contraseña.value.trim() : Usuario.userInfo?.contraseña
+            nombre: nombre.value.trim() !== '' ? nombre.value.trim() : (Usuario.userInfo?.nombre || ''),
+            correoElectronico: correo.value.trim() !== '' ? correo.value.trim() : (Usuario.userInfo?.correoElectronico || ''),
+            contraseña: contraseña.value.trim() !== '' ? contraseña.value.trim() : (Usuario.userInfo?.contraseña || '')
         };
+
 
         const response = await fetch(`http://localhost:8001/Usuario/${idUsuario}`, {
             method: 'PUT',
