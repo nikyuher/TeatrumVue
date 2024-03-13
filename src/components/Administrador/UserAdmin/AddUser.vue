@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const nombre = ref('');
 const email = ref('');
@@ -53,7 +56,7 @@ const addUser = async () => {
             contraseña: password.value
         };
 
-        const response = await fetch('http://localhost:8001/Usuario', {
+        const response = await fetch(`${baseUrl}/Usuario`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

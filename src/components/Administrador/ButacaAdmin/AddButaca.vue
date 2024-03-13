@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const nombre = ref('');
 const estado = ref(false);
@@ -13,7 +16,7 @@ const butaca = async () => {
             estado: estado.value
         };
 
-        const response = await fetch('http://localhost:8001/Asiento', {
+        const response = await fetch(`${baseUrl}/Asiento`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

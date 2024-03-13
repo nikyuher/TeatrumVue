@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const obraId = ref(0);
 const genero = ref('');
+const dia = ref('');
 const titulo = ref('');
 const descripcion = ref('');
 const precioEntrada = ref(0);
 const responseMessage = ref('');
 
 const generos =  ['comedia','terror','drama','musical','tragedia']
+const dias = ['lunes', 'martes', 'miercoles','juevez', 'viernes', 'sabado', 'domingo']
 
 const updateObra = async () => {
     try {
@@ -21,7 +26,7 @@ const updateObra = async () => {
             precioEntrada: precioEntrada.value
         };
 
-        const response = await fetch(`http://localhost:8001/Obra/info/${obraId.value}`, {
+        const response = await fetch(`${baseUrl}/Obra/info/${obraId.value}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -73,6 +78,11 @@ const limitInput = () => {
                 <label for="genero">Género</label>
                 <v-select v-model="genero" :items="generos" density="compact" label="generos" required></v-select>
             </div>
+            <label for="fechaHora">Fecha y Hora</label>
+            <v-select v-model="dia" :items="dias" density="compact" label="dias" required></v-select>
+            <div class="claseTiempo">
+                <p>de</p><input type="time" required><p>a</p><input type="time" required>
+            </div>
             <div class="form-group">
                 <label for="titulo">Título</label>
                 <input type="text" id="titulo" v-model="titulo" required>
@@ -100,6 +110,10 @@ const limitInput = () => {
 </template>
 
 <style scoped>
+.claseTiempo{
+    display: flex;
+justify-content: space-around;
+}
 
 .contenedor{
     width: 350px;

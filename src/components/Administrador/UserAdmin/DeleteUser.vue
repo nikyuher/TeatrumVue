@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const userId = ref(0);
 const responseMessage = ref('');
@@ -10,7 +13,7 @@ const deleteUser = async () => {
             throw new Error('Por favor ingrese un ID de usuario válido.');
         }
 
-        const response = await fetch(`http://localhost:8001/Usuario/${userId.value}`, {
+        const response = await fetch(`${baseUrl}/Usuario/${userId.value}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

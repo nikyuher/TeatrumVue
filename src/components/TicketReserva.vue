@@ -5,7 +5,9 @@ import { useInfoAsientos } from '@/store/listaButacas';
 import { usarInfoUsuario } from '@/store/userInfo';
 import { useObraInfo } from '@/store/obraInfo';
 import { computed, ref } from 'vue';
+import urlStore from '@/store/urlApi';
 
+const baseUrl: string = urlStore.baseUrl;
 
 const props = defineProps<{
     idObra?: number;
@@ -33,11 +35,12 @@ const eventoCompra = async () => {
 
         const Reserva = {
             usuarioId: idUsuario,
-            obraId: idObraReal
+            obraId: idObraReal,
+            asientoId: Butaca.butacas?.asientoId
         };
 
 
-        const response = await fetch(`http://localhost:8001/Reserva/${idUsuario}`, {
+        const response = await fetch(`${baseUrl}/${idUsuario}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -53,9 +56,10 @@ const eventoCompra = async () => {
         const ocuparAsiento = {
             asientoId: Butaca.butacas?.asientoId,
             obraId: idObraReal
+            
         };
 
-        const ocuparAsientoResponse = await fetch(`http://localhost:8001/Asiento/ocupados`, {
+        const ocuparAsientoResponse = await fetch(`${baseUrl}/Asiento/ocupados`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -96,10 +100,11 @@ const eventoCompra = async () => {
                 <label>Obra de Teatro </label>
                 <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.titulo"></v-text-field>
                 <label>Sitio de Asiento:</label>
-                <v-text-field type="text" id="inputSitioAsiento" required
-                    :value="butacaInfo?.nombreAsiento"></v-text-field>
-                <label>Precio:$</label>
-                <v-text-field type="number" id="inputPrecio" :value="obraInfo?.precio"></v-text-field>
+                <v-text-field type="text" id="inputSitioAsiento" required :value="butacaInfo?.nombreAsiento"></v-text-field>
+                <label>Dìa y hora</label>
+                <v-text-field type="number">{{ obraInfo?.diaSemana }} - {{ obraInfo?.hora }}:{{ obraInfo?.minuto }}</v-text-field>
+                <label>Precio:</label>
+                <v-text-field type="number" id="inputPrecio" :value="obraInfo?.precio">$</v-text-field>
             </div>
             <v-btn type="submit">
                 Comprar

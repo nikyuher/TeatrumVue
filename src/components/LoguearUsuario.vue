@@ -3,6 +3,9 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { usarInfoUsuario } from '@/store/userInfo';
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const store = usarInfoUsuario();
 
@@ -19,7 +22,7 @@ const login = async () => {
       contraseña: password.value
     };
 
-    const response = await fetch('http://localhost:8001/Usuario/login', {
+    const response = await fetch(`${baseUrl}/Usuario/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -31,15 +34,14 @@ const login = async () => {
       throw new Error('Fallo al Iniciar Sesion.');
     }
 
-    const userResponse = await fetch(`http://localhost:8001/Usuario/login?email=${encodeURIComponent(email.value)}&password=${encodeURIComponent(password.value)}`);
-    const loginGet = await userResponse.json();
+    const userInfo = await response.json()
 
     const infoUsuario = {
-      usuarioId: loginGet.usuarioId,
-      rol: loginGet.rol,
-      nombre: loginGet.nombre,
-      correoElectronico: email.value,
-      contraseña: password.value
+      usuarioId: userInfo.usuarioId,
+      rol: userInfo.rol,
+      nombre: userInfo.nombre,
+      correoElectronico: userInfo.correoElectronico,
+      contraseña: userInfo.contraseña
     }
 
     store.setUserInfo(infoUsuario);

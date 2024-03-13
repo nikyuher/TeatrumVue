@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { usarInfoUsuario } from '@/store/userInfo';
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const nombre = ref<string>('');
 const correo = ref<string>('');
@@ -29,7 +32,7 @@ const UpdateUser = async () => {
         };
 
 
-        const response = await fetch(`http://localhost:8001/Usuario/${idUsuario}`, {
+        const response = await fetch(`${baseUrl}/Usuario/${idUsuario}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

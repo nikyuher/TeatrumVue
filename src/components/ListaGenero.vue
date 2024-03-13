@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const props = defineProps<{
   genero: string;
   mostrarSoloTres?: boolean;
   mostrarTodo?: boolean;
 }>();
+
 const itemsPerPage = ref(4);
 const itemsPerPage2 = ref(4);
 const obras = ref<any[]>([]);
@@ -31,7 +35,7 @@ const onClickSeeAll = () => {
 
 onMounted(async () => {
   try {
-    const response = await fetch(`http://localhost:8001/Obra/generos/${genero}`);
+    const response = await fetch(`${baseUrl}/Obra/generos/${genero}`);
 
     if (!response.ok) {
       throw new Error('No se pudo obtener la data');
@@ -75,6 +79,7 @@ const getImagenUrl = (imagenBytes: string) => {
               <h3 class="text-black">{{ obra.raw.título }}</h3>
               <p class="text-black">{{ obra.raw.descripción.slice(0, 100) }}</p>
               <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
+              <p class="text-black">{{ obra.raw.diaSemana}} - {{ obra.raw.hora}}:{{obra.raw.minuto  }}</p>
             </router-link>
           </div>
         </div>

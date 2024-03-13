@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 interface ObraData {
     genero: string;
@@ -41,7 +44,7 @@ const obra = async () => {
             };
         }
 
-        const response = await fetch('http://localhost:8001/Obra', {
+        const response = await fetch(`${baseUrl}/Obra`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -124,9 +127,10 @@ const limitInput = () => {
             </div>
             <label for="genero">Género</label>
             <v-select v-model="genero" :items="generos" density="compact" label="generos" required></v-select>
+            <label for="fechaHora">Fecha y Hora</label>
             <v-select v-model="dia" :items="dias" density="compact" label="dias" required></v-select>
             <div class="claseTiempo">
-                <p>de</p><input type="time"><p>a</p><input type="time">
+                <p>de</p><input type="time" required><p>a</p><input type="time" required>
             </div>
             <label for="titulo">Título</label>
             <input type="text" id="titulo" v-model="titulo" required>

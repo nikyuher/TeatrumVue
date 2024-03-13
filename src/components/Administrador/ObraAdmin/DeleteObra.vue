@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import urlStore from '@/store/urlApi';
 
 const obraId = ref(0);
 const responseMessage = ref('');
+
+const baseUrl: string = urlStore.baseUrl;
 
 const deleteObra = async () => {
     try {
@@ -10,7 +13,7 @@ const deleteObra = async () => {
             throw new Error('Por favor ingrese un ID de obra válido.');
         }
 
-        const response = await fetch(`http://localhost:8001/Obra/${obraId.value}`, {
+        const response = await fetch(`${baseUrl}/Obra/${obraId.value}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

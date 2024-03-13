@@ -5,6 +5,9 @@ import { useInfoAsientos } from '@/store/listaButacas'
 
 import butacaR from '@/components/icons/IconButacaRed.vue'
 import butacaG from '@/components/icons/IconButacaGreen.vue'
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const props = defineProps<{
     idObra?: number;
@@ -35,8 +38,8 @@ const ajustarTamaño = () => {
 
 onMounted(async () => {
     try {
-        const responseAsientos = await fetch(`http://localhost:8001/Asiento/estado/false`);
-        const responseObra = await fetch(`http://localhost:8001/Obra/${idObra}/asientos`);
+        const responseAsientos = await fetch(`${baseUrl}/Asiento/estado/false`);
+        const responseObra = await fetch(`${baseUrl}/Obra/${idObra}/asientos`);
 
         if (!responseAsientos.ok || !responseObra.ok) {
             throw new Error("No se pudo obtener data");
@@ -62,7 +65,7 @@ onMounted(async () => {
 
 const fetchButaca = async (butacaId: number) => {
     try {
-        const response = await fetch(`http://localhost:8001/Asiento/${butacaId}`);
+        const response = await fetch(`${baseUrl}/Asiento/${butacaId}`);
 
         if (!response.ok) {
             throw new Error('No se pudo obtener la data');

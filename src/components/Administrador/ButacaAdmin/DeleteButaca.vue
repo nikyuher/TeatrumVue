@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const butacaId = ref(0);
 const responseMessage = ref('');
@@ -7,7 +10,7 @@ const responseMessage = ref('');
 const butaca = async () => {
 
     try {
-        const response = await fetch(`http://localhost:8001/Asiento/${butacaId.value}`, {
+        const response = await fetch(`${baseUrl}/Asiento/${butacaId.value}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

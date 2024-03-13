@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const obraId = ref(0);
 const img = ref<File | null>(null);
@@ -20,7 +23,7 @@ const updateImage = async () => {
             imagen: base64Image
         };
 
-        const response = await fetch(`http://localhost:8001/Obra/img/${obraId.value}`, {
+        const response = await fetch(`${baseUrl}/Obra/img/${obraId.value}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

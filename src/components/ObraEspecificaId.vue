@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useObraInfo } from '@/store/obraInfo';
 import { ref, onMounted } from 'vue';
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const props = defineProps<{
     idObra?: number;
@@ -13,7 +16,7 @@ const infoObraStore = useObraInfo();
 
 onMounted(async () => {
     try {
-        const response = await fetch(`http://localhost:8001/Obra/${idObra}`);
+        const response = await fetch(`${baseUrl}/Obra/${idObra}`);
 
         if (!response.ok) {
             throw new Error('No se pudo obtener la data');
@@ -26,6 +29,9 @@ onMounted(async () => {
             idObra: obra.value.obraId,
             titulo: obra.value.título,
             precio: obra.value.precioEntrada,
+            diaSemana: obra.value.diaSemana,
+            hora: obra.value.hora,
+            minuto: obra.value.minuto,
             imagen: getImagenUrl(obra.value.imagen)
         };
 
@@ -65,7 +71,7 @@ const getImagenUrl = (imagenBytes: string) => {
 </template>
 
 <style scoped>
-h1{
+h1 {
     text-align: justify;
 }
 </style>

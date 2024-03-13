@@ -1,3 +1,50 @@
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
+
+interface Asiento {
+    asientoId: number;
+    nombreAsiento: string;
+    estado: boolean;
+}
+
+const butacas = ref<Asiento[]>([]);
+const responseMessage = ref('');
+const estadoSeleccionado = ref<boolean | null>(false);
+
+onMounted(async () => {
+    await fetchButacas();
+});
+
+const fetchButacas = async () => {
+    try {
+        if (estadoSeleccionado.value === null) {
+            responseMessage.value = 'Por favor, seleccione un estado.';
+            return;
+        }
+        
+        const response = await fetch(`${baseUrl}/Asiento/estado/${estadoSeleccionado.value}`);
+        
+        if (!response.ok) {
+            throw new Error('Fallo al obtener la lista de butacas.');
+        }
+        
+        const data = await response.json();
+        butacas.value = data;
+        
+    } catch (error) {
+        console.error(error);
+        responseMessage.value = 'Ha ocurrido un error al obtener la lista de butacas.';
+    }
+};
+
+const handleEstadoChange = () => {
+    fetchButacas();
+};
+</script>
+
 <template>
     <div class="contenedor">
         <h2>Lista de Butacas</h2>
@@ -22,51 +69,6 @@
         <p class="response">{{ responseMessage }}</p>
     </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
-interface Asiento {
-    asientoId: number;
-    nombreAsiento: string;
-    estado: boolean;
-}
-
-const butacas = ref<Asiento[]>([]);
-const responseMessage = ref('');
-const estadoSeleccionado = ref<boolean | null>(false);
-
-onMounted(async () => {
-    await fetchButacas();
-});
-
-const fetchButacas = async () => {
-    try {
-        if (estadoSeleccionado.value === null) {
-            responseMessage.value = 'Por favor, seleccione un estado.';
-            return;
-        }
-
-        const response = await fetch(`http://localhost:8001/Asiento/estado/${estadoSeleccionado.value}`);
-
-        if (!response.ok) {
-            throw new Error('Fallo al obtener la lista de butacas.');
-        }
-
-        const data = await response.json();
-        butacas.value = data;
-
-    } catch (error) {
-        console.error(error);
-        responseMessage.value = 'Ha ocurrido un error al obtener la lista de butacas.';
-    }
-};
-
-const handleEstadoChange = () => {
-    fetchButacas();
-};
-</script>
-
 <style scoped>
 .contenedor {
     width: 80%;

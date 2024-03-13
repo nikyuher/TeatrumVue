@@ -6,6 +6,9 @@ const email = ref('');
 const password = ref('');
 const terminos = ref(false);
 const responseMessage = ref('');
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 const validarEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -63,7 +66,7 @@ const registerUser = async () => {
     };
     
     try {
-        const response = await fetch('http://localhost:8001/Usuario', {
+        const response = await fetch(`${baseUrl}/Usuario`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -80,13 +83,13 @@ const registerUser = async () => {
         password.value = '';
         terminos.value = false;
 
-        responseMessage.value = 'Usuario Registrado Correctamente.';
+        responseMessage.value = 'Registrado Correctamente.';
         setTimeout(() => {
             responseMessage.value = '';
         }, 2000);
 
     } catch (error) {
-        responseMessage.value = 'Ocurrio un error al crear el Usuario.';
+        responseMessage.value = 'Error al Registrarte';
         console.error(error);
         
         setTimeout(() => {
@@ -114,7 +117,7 @@ const registerUser = async () => {
             <label><input type="checkbox" v-model="terminos">I agree to the terms & conditions</label>
         </div>
         <button class="btn" type="submit">Register</button>
-        <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Usuario') ? 'success' : 'error'">
+        <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Registrado') ? 'success' : 'error'">
             {{ responseMessage }}
         </v-alert>
     </form>

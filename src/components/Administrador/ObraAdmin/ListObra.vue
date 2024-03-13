@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import urlStore from '@/store/urlApi';
+const baseUrl: string = urlStore.baseUrl;
+
 interface Obra {
   obraId: number;
   genero: string;
@@ -13,7 +16,7 @@ const obras = ref<Obra[]>([]);
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8001/Obra');
+    const response = await fetch(`${baseUrl}/Obra`);
     if (!response.ok) {
       throw new Error('Fallo al obtener la lista de obras.');
     }

@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import urlStore from '@/store/urlApi';
+
+const baseUrl: string = urlStore.baseUrl;
 
 interface Usuario {
     usuarioId: number;
@@ -14,7 +17,7 @@ const responseMessage = ref('');
 
 onMounted(async () => {
     try {
-        const response = await fetch('http://localhost:8001/Usuario');
+        const response = await fetch(`${baseUrl}/Usuario`);
 
         if (!response.ok) {
             throw new Error('Fallo al obtener la lista de usuarios.');
