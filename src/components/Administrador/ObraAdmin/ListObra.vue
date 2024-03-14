@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import urlStore from '@/store/urlApi';
+
 const baseUrl: string = urlStore.baseUrl;
 
 interface Obra {
@@ -9,10 +10,18 @@ interface Obra {
   título: string;
   descripción: string;
   precioEntrada: number;
-  imagen: string; // Imagen en base64
+  imagen: string;
 }
 
 const obras = ref<Obra[]>([]);
+const headers = [
+  { title: 'Imagen', key: 'imagen' },
+  { title: 'ID', key: 'obraId' },
+  { title: 'Título', key: 'título' },
+  { title: 'Género', key: 'genero' },
+  { title: 'Descripción', key: 'descripción' },
+  { title: 'Precio', key: 'precioEntrada' },
+];
 
 onMounted(async () => {
   try {
@@ -26,48 +35,37 @@ onMounted(async () => {
       obra.imagen = `data:image/jpeg;base64,${obra.imagen}`;
     });
     obras.value = data;
-
   } catch (error) {
     console.error(error);
   }
 });
+
+const truncateDescription = (description: string): string => {
+  return description.length > 30 ? `${description.slice(0, 30)}...` : description;
+};
 </script>
 
 <template>
   <v-container>
     <h2>Listado de Obras</h2>
-    <v-row>
-      <v-col cols="12">
-        <div class="obra-container">
-          <v-card v-for="obra in obras" :key="obra.obraId" class="obra-card">
-            <v-img :src="obra.imagen" height="200"></v-img>
-            <v-card-title class="obra-title">{{ obra.título }}</v-card-title>
-            <v-card-text>
-              <p><strong>ID:</strong> {{ obra.obraId }}</p>
-              <p><strong>Género:</strong> {{ obra.genero }}</p>
-              <p><strong>Descripción:</strong> {{ obra.descripción }}</p>
-              <p><strong>Precio de entrada:</strong> ${{ obra.precioEntrada }}</p>
-            </v-card-text>
-          </v-card>
-        </div>
-      </v-col>
-    </v-row>
+    <v-data-table :headers="headers" :items="obras" item-key="obraId">
+      <template v-slot:item="{ item }">
+        <tr>
+          <td><v-img :src="item.imagen" height="55" contain /></td>
+          <td>{{ item.obraId }}</td>
+          <td>{{ truncateDescription(item.título) }}</td>
+          <td>{{ item.genero }}</td>
+          <td>{{ truncateDescription(item.descripción) }}</td>
+          <td>${{ item.precioEntrada }}</td>
+        </tr>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 
 <style scoped>
-.obra-container {
-  max-height: 800px;
-  overflow-y: auto;
+.contenedor {
   width: 100%;
-}
-
-.obra-card {
-  margin-bottom: 20px;
-  border-radius: 10px;
-}
-
-.obra-title {
-  white-space: normal;
+  margin: auto;
 }
 </style>

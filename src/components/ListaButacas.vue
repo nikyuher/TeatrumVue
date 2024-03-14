@@ -7,11 +7,12 @@ import butacaR from '@/components/icons/IconButacaRed.vue'
 import butacaG from '@/components/icons/IconButacaGreen.vue'
 import urlStore from '@/store/urlApi';
 
-const baseUrl: string = urlStore.baseUrl;
-
 const props = defineProps<{
     idObra?: number;
 }>();
+
+const baseUrl: string = urlStore.baseUrl;
+
 
 const butacas = ref<any[]>([]);
 const infoButaca = useInfoButaca();

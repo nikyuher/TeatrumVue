@@ -4,8 +4,7 @@ interface UserInfo {
   usuarioId: number;
   rol: boolean;
   nombre: string;
-  correoElectronico: string,
-  contraseña:string;
+  correoElectronico: string
 }
 
 export const usarInfoUsuario = defineStore({

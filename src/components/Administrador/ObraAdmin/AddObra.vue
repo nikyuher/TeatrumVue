@@ -8,8 +8,11 @@ interface ObraData {
     genero: string;
     título: string;
     descripción: string;
+    diaSemana: string;
     precioEntrada: number;
     imagen: string | null;
+    hora: number; 
+    minuto: number; 
 }
 
 const img = ref<File | null>(null);
@@ -18,13 +21,15 @@ const dia = ref('');
 const titulo = ref('');
 const descri = ref('');
 const precio = ref(0);
+const hora = ref(0);
+const minuto = ref(0); 
 const responseMessage = ref('');
 const imageDataUrl = ref<string | null>(null);
 
 const generos = ['comedia', 'terror', 'drama', 'musical', 'tragedia']
-const dias = ['lunes', 'martes', 'miercoles','juevez', 'viernes', 'sabado', 'domingo']
-
-
+const dias = ['Monday', 'Tuesday ', 'Wednesday ', 'Thursday ', 'Friday ', 'Saturday ', 'Sunday ']
+const horas = Array.from({ length: 24 }, (_, i) => i); 
+const minutos = Array.from({ length: 60 }, (_, i) => i);
 
 const obra = async () => {
     try {
@@ -32,8 +37,11 @@ const obra = async () => {
             genero: genero.value,
             título: titulo.value,
             descripción: descri.value,
+            diaSemana: dia.value,
             precioEntrada: precio.value,
-            imagen: null
+            imagen: null,
+            hora: hora.value, 
+            minuto: minuto.value
         };
 
         if (img.value) {
@@ -61,6 +69,8 @@ const obra = async () => {
         titulo.value = '';
         descri.value = '';
         precio.value = 0;
+        hora.value = 0; // Restablecer el valor de la hora
+        minuto.value = 0; // Restablecer el valor del minuto
 
         responseMessage.value = 'Creado Correctamente.';
 
@@ -130,7 +140,8 @@ const limitInput = () => {
             <label for="fechaHora">Fecha y Hora</label>
             <v-select v-model="dia" :items="dias" density="compact" label="dias" required></v-select>
             <div class="claseTiempo">
-                <p>de</p><input type="time" required><p>a</p><input type="time" required>
+                <v-select v-model="hora" :items="horas" density="compact" label="horas" required></v-select>
+                <v-select v-model="minuto" :items="minutos" density="compact" label="minutos" required></v-select>
             </div>
             <label for="titulo">Título</label>
             <input type="text" id="titulo" v-model="titulo" required>
@@ -142,7 +153,8 @@ const limitInput = () => {
             <label for="precio">Precio</label>
             <input type="number" id="precio" v-model="precio" required>
             <input type="submit" value="Enviar" :disabled="descripcionLength < 100">
-            <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+            <v-alert v-if="responseMessage" :value="true"
+                :type="responseMessage.includes('Creado') ? 'success' : 'error'">
                 {{ responseMessage }}
             </v-alert>
         </form>
@@ -151,9 +163,9 @@ const limitInput = () => {
 
 
 <style scoped>
-.claseTiempo{
+.claseTiempo {
     display: flex;
-justify-content: space-around;
+    justify-content: space-around;
 }
 
 form {

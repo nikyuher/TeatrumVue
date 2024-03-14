@@ -39,8 +39,7 @@ const eventoCompra = async () => {
             asientoId: Butaca.butacas?.asientoId
         };
 
-
-        const response = await fetch(`${baseUrl}/${idUsuario}`, {
+        const response = await fetch(`${baseUrl}/Reserva/${idUsuario}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -56,7 +55,6 @@ const eventoCompra = async () => {
         const ocuparAsiento = {
             asientoId: Butaca.butacas?.asientoId,
             obraId: idObraReal
-            
         };
 
         const ocuparAsientoResponse = await fetch(`${baseUrl}/Asiento/ocupados`, {

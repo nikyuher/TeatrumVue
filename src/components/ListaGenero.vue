@@ -73,15 +73,26 @@ const getImagenUrl = (imagenBytes: string) => {
     <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
       <template v-slot:default="{ items }">
         <div class="d-flex flex-wrap align-center justify-center pa-4 ">
-          <div class="targeta" v-for="obra in items" :key="obra.raw.obraId">
-            <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
-              <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
-              <h3 class="text-black">{{ obra.raw.título }}</h3>
-              <p class="text-black">{{ obra.raw.descripción.slice(0, 100) }}</p>
-              <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
-              <p class="text-black">{{ obra.raw.diaSemana}} - {{ obra.raw.hora}}:{{obra.raw.minuto  }}</p>
-            </router-link>
-          </div>
+          <v-hover v-slot="{ isHovering, props }">
+            <div class="targeta" v-for="obra in items" :key="obra.raw.obraId" v-bind="props">
+              <v-img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra" style="height: 450px;">
+                <v-expand-transition>
+                  <div v-if="isHovering" class="transition-fast-in-fast-out bg-orange-darken-2 cosa"
+                    style="height: 100%">
+                    <h3 class="text-black">{{ obra.raw.título }}</h3>
+                    <p class="text-black">{{ obra.raw.descripción.slice(0, 100) }}</p>
+                    <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
+                    <p class="text-black">{{ obra.raw.diaSemana }} - {{ obra.raw.hora }}:{{ obra.raw.minuto }}</p>
+                  </div>
+                </v-expand-transition>
+              </v-img>
+              <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
+                <v-btn :value="Comprar">
+                  Comprar
+                </v-btn>
+              </router-link>
+            </div>
+          </v-hover>
         </div>
       </template>
       <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
@@ -102,18 +113,18 @@ const getImagenUrl = (imagenBytes: string) => {
   <div v-show="!mostrarSoloTres">
     <v-data-iterator :items="obras" :items-per-page="itemsPerPage2">
       <template v-slot:default="{ items }">
-          <div class="d-flex flex-wrap align-center justify-center pa-4 ">
-            <v-col class="targeta2" v-for="obra in items" :key="obra.raw.obraId" cols="9" sm="3 " xl="4">
-              <v-sheet style="background-color: rgb(209, 209, 209);">
-                <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
-                  <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
-                  <h3 class="text-black">{{ obra.raw.título }}</h3>
-                  <p class="text-black">{{ obra.raw.descripción.slice(0, 100) }}</p>
-                  <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
-                </router-link>
-              </v-sheet>
-            </v-col>
-          </div>
+        <div class="d-flex flex-wrap align-center justify-center pa-4 ">
+          <v-col class="targeta2" v-for="obra in items" :key="obra.raw.obraId" cols="9" sm="3 " xl="4">
+            <v-sheet style="background-color: rgb(209, 209, 209);">
+              <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
+                <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
+                <h3 class="text-black">{{ obra.raw.título }}</h3>
+                <p class="text-black">{{ obra.raw.descripción.slice(0, 100) }}</p>
+                <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
+              </router-link>
+            </v-sheet>
+          </v-col>
+        </div>
       </template>
       <template v-slot:header="{ page, pageCount, prevPage, nextPage }">
         <div class="d-flex align-center justify-center">
@@ -138,14 +149,19 @@ const getImagenUrl = (imagenBytes: string) => {
 </template>
 
 <style scoped>
+.cosa {
+  margin: auto;
+  align-items: center;
+  text-align: center;
+}
 
 .targeta {
-  padding: 0 20px;
   margin: 30px 50px;
   background-color: rgb(209, 209, 209);
   width: 300px;
   height: 520px;
   border-radius: 5px;
+  text-align: center;
 }
 
 .targeta2 {
@@ -157,10 +173,6 @@ const getImagenUrl = (imagenBytes: string) => {
   border-radius: 5px;
 }
 
-.targeta img {
-  height: 300px;
-  margin: 20px 0 20px 0;
-} 
 .targeta2 img {
   height: 300px;
   margin: 20px 0 20px 0;

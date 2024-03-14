@@ -93,8 +93,7 @@ li:hover {
 }
 
 .form-box {
-    width: 500px;
-    padding: 20px;
+        padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin: 20px;

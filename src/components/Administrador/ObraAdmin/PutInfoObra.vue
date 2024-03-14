@@ -8,12 +8,16 @@ const obraId = ref(0);
 const genero = ref('');
 const dia = ref('');
 const titulo = ref('');
+const hora = ref(0);
+const minuto = ref(0); 
 const descripcion = ref('');
 const precioEntrada = ref(0);
 const responseMessage = ref('');
 
 const generos =  ['comedia','terror','drama','musical','tragedia']
-const dias = ['lunes', 'martes', 'miercoles','juevez', 'viernes', 'sabado', 'domingo']
+const dias = ['Monday', 'Tuesday ', 'Wednesday ', 'Thursday ', 'Friday ', 'Saturday ', 'Sunday ']
+const horas = Array.from({ length: 24 }, (_, i) => i); 
+const minutos = Array.from({ length: 60 }, (_, i) => i);
 
 const updateObra = async () => {
     try {
@@ -81,7 +85,8 @@ const limitInput = () => {
             <label for="fechaHora">Fecha y Hora</label>
             <v-select v-model="dia" :items="dias" density="compact" label="dias" required></v-select>
             <div class="claseTiempo">
-                <p>de</p><input type="time" required><p>a</p><input type="time" required>
+                <v-select v-model="hora" :items="horas" density="compact" label="horas" required></v-select>
+                <v-select v-model="minuto" :items="minutos" density="compact" label="minutos" required></v-select>
             </div>
             <div class="form-group">
                 <label for="titulo">Título</label>

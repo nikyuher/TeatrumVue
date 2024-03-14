@@ -2,6 +2,7 @@
 import CerrarSesion from '@/components/CerrarSesion.vue';
 import ChangeName from '@/components/ChangeName.vue';
 import InfoUser from '@/components/InfoUser.vue';
+import Reservas from '@/components/ListaReservas.vue';
 import { ref } from 'vue';
 
 const vistaActual = ref<string>('info');
@@ -29,6 +30,7 @@ const mostrarView = (view: string) => {
                         <div class="form-box" v-if="vistaActual === 'info'">
                             <h2>Información Usuario</h2>
                             <InfoUser></InfoUser>
+                            <Reservas></Reservas>
                         </div>
                         <div class="form-box" v-else-if="vistaActual === 'change'">
                             <h2>Cambiar Información</h2>

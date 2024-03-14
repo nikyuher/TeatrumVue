@@ -27,8 +27,7 @@ const UpdateUser = async () => {
         const update = {
             usuarioId: idUsuario,
             nombre: nombre.value.trim() !== '' ? nombre.value.trim() : (Usuario.userInfo?.nombre || ''),
-            correoElectronico: correo.value.trim() !== '' ? correo.value.trim() : (Usuario.userInfo?.correoElectronico || ''),
-            contraseña: contraseña.value.trim() !== '' ? contraseña.value.trim() : (Usuario.userInfo?.contraseña || '')
+            correoElectronico: correo.value.trim() !== '' ? correo.value.trim() : (Usuario.userInfo?.correoElectronico || '')
         };
 
 
@@ -48,8 +47,7 @@ const UpdateUser = async () => {
             usuarioId: idUsuario !== undefined ? idUsuario : 0,
             rol: Usuario.userInfo?.rol !== undefined ? Usuario.userInfo.rol : false,
             nombre: update.nombre,
-            correoElectronico: update.correoElectronico,
-            contraseña: update.contraseña
+            correoElectronico: update.correoElectronico
         };
 
         if (response.ok) {

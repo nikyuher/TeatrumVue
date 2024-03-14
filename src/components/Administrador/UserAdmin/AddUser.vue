@@ -56,7 +56,7 @@ const addUser = async () => {
             contraseña: password.value
         };
 
-        const response = await fetch(`${baseUrl}/Usuario`, {
+        const response = await fetch(`${baseUrl}/Usuario/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
