@@ -74,24 +74,24 @@ const getImagenUrl = (imagenBytes: string) => {
       <template v-slot:default="{ items }">
         <div class="d-flex flex-wrap align-center justify-center pa-4 ">
           <v-hover v-slot="{ isHovering, props }">
-            <div class="targeta" v-for="obra in items" :key="obra.raw.obraId" v-bind="props">
+            <v-card class="targeta d-flex row" v-for="obra in items" :key="obra.raw.obraId" v-bind="props">
               <v-img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra" style="height: 450px;">
                 <v-expand-transition>
-                  <div v-if="isHovering" class="transition-fast-in-fast-out bg-orange-darken-2 cosa"
+                  <div v-if="isHovering" class=" bg-orange-darken-2 "
                     style="height: 100%">
                     <h3 class="text-black">{{ obra.raw.título }}</h3>
-                    <p class="text-black">{{ obra.raw.descripción.slice(0, 100) }}</p>
+                    <p class="text-black">{{ obra.raw.descripción.slice(0, 150) }}</p>
                     <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
                     <p class="text-black">{{ obra.raw.diaSemana }} - {{ obra.raw.hora }}:{{ obra.raw.minuto }}</p>
                   </div>
                 </v-expand-transition>
               </v-img>
               <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
-                <v-btn :value="Comprar">
+                <v-btn>
                   Comprar
                 </v-btn>
               </router-link>
-            </div>
+            </v-card>
           </v-hover>
         </div>
       </template>
@@ -149,15 +149,10 @@ const getImagenUrl = (imagenBytes: string) => {
 </template>
 
 <style scoped>
-.cosa {
-  margin: auto;
-  align-items: center;
-  text-align: center;
-}
 
 .targeta {
   margin: 30px 50px;
-  background-color: rgb(209, 209, 209);
+  background-color: rgb(255, 255, 255);
   width: 300px;
   height: 520px;
   border-radius: 5px;
@@ -180,7 +175,10 @@ const getImagenUrl = (imagenBytes: string) => {
 
 .targeta h3,
 .targeta p {
-  text-align: left;
+  text-align: justify;
+  width: 90%;
+  margin: auto;
+  padding: 25px;
 }
 
 .targeta2 h3,
@@ -190,5 +188,14 @@ const getImagenUrl = (imagenBytes: string) => {
 
 .text-black {
   color: black;
+}
+.v-btn{
+  background-color: rgb(255, 181, 43);
+}
+.v-btn:hover{
+  background-color: rgb(189, 108, 15);
+  height: 50px;
+  align-items: center;
+  color: white;
 }
 </style>

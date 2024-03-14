@@ -20,11 +20,12 @@ const Obra = useObraInfo();
 const obraInfo = computed(() => Obra.infoObra);
 
 const Butaca = useInfoButaca();
-const butacaInfo = computed(() => Butaca.butacas);
 const Asientos = useInfoAsientos();
 
 const idUsuario = Usuario.userInfo?.usuarioId
 const snackbar = ref(false);
+
+const nombreAsientos = computed(() => Butaca.butacasSeleccionadas.map(butaca => butaca.nombreAsiento).join(', '));
 
 const eventoCompra = async () => {
     try {
@@ -33,29 +34,29 @@ const eventoCompra = async () => {
             return alert('Tienes que Iniciar Sesion para Comprar.');
         }
 
-        const Reserva = {
+        const Reservas = Butaca.butacasSeleccionadas.map(butaca => ({
             usuarioId: idUsuario,
             obraId: idObraReal,
-            asientoId: Butaca.butacas?.asientoId
-        };
+            asientoId: butaca.asientoId
+        }));
 
         const response = await fetch(`${baseUrl}/Reserva/${idUsuario}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(Reserva)
+            body: JSON.stringify(Reservas)
         });
 
         if (!response.ok) {
             throw new Error('Fallo al Hacer la reserva');
         }
 
+        const ocuparAsiento = Butaca.butacasSeleccionadas.map(butaca => ({
+            obraId: idObraReal,
+            asientoId: butaca.asientoId
+        }));
 
-        const ocuparAsiento = {
-            asientoId: Butaca.butacas?.asientoId,
-            obraId: idObraReal
-        };
 
         const ocuparAsientoResponse = await fetch(`${baseUrl}/Asiento/ocupados`, {
             method: 'POST',
@@ -70,7 +71,7 @@ const eventoCompra = async () => {
         } else {
 
             const nuevosAsientos = Asientos.asientos.map(asiento => {
-                if (asiento.nombreAsiento === Butaca.butacas?.nombreAsiento) {
+                if (nombreAsientos.value.includes(asiento.nombreAsiento)) {
                     return {
                         ...asiento,
                         estado: true
@@ -78,9 +79,10 @@ const eventoCompra = async () => {
                 }
                 return asiento;
             });
+            
             Asientos.setAsientos(nuevosAsientos);
             snackbar.value = true;
-            Butaca.setButacas(null);
+            Butaca.butacasSeleccionadas = [];
         }
     } catch (error) {
         console.log(error)
@@ -98,9 +100,11 @@ const eventoCompra = async () => {
                 <label>Obra de Teatro </label>
                 <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.titulo"></v-text-field>
                 <label>Sitio de Asiento:</label>
-                <v-text-field type="text" id="inputSitioAsiento" required :value="butacaInfo?.nombreAsiento"></v-text-field>
+                <v-text-field type="text" id="inputSitioAsiento" required :value="nombreAsientos"
+                    readonly></v-text-field>
                 <label>Dìa y hora</label>
-                <v-text-field type="number">{{ obraInfo?.diaSemana }} - {{ obraInfo?.hora }}:{{ obraInfo?.minuto }}</v-text-field>
+                <v-text-field type="number">{{ obraInfo?.diaSemana }} - {{ obraInfo?.hora }}:{{ obraInfo?.minuto
+                    }}</v-text-field>
                 <label>Precio:</label>
                 <v-text-field type="number" id="inputPrecio" :value="obraInfo?.precio">$</v-text-field>
             </div>

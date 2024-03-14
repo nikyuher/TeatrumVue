@@ -18,7 +18,7 @@ const butacas = ref<any[]>([]);
 const infoButaca = useInfoButaca();
 const listButacas = useInfoAsientos()
 const mostar = computed(() => listButacas.asientos);
-
+const butacasSeleccionadas = ref([]);
 const idObra = props.idObra;
 
 const cambiar = ref<boolean>();
@@ -80,7 +80,7 @@ const fetchButaca = async (butacaId: number) => {
             estado: data.estado
         };
 
-        infoButaca.setButacas(Butaca);
+        infoButaca.ButacasSeleccionadas(Butaca);
 
     } catch (error) {
         console.error('Error al obtener la butaca:', error);

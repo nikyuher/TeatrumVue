@@ -6,14 +6,23 @@ interface ButacaInfo {
     estado: boolean;
 }
 
+interface ButacaSeleccionada extends ButacaInfo {
+    cantidad: number;
+}
+
 export const useInfoButaca = defineStore({
     id: 'infoButaca',
     state: () => ({
-        butacas: null as ButacaInfo | null
+        butacasSeleccionadas: [] as ButacaSeleccionada[]
     }),
     actions: {
-        setButacas(butacas: ButacaInfo | null) {
-            this.butacas = butacas;
+        ButacasSeleccionadas(butaca: ButacaInfo  ) {
+            const index = this.butacasSeleccionadas.findIndex(b => b.asientoId === butaca.asientoId);
+            if (index === -1) {
+                this.butacasSeleccionadas.push({ ...butaca, cantidad: 1 });
+            } else {
+                this.butacasSeleccionadas.splice(index, 1);
+            }
         }
     }
 });
