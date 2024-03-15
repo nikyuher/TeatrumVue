@@ -7,7 +7,7 @@ const Usuario = usarInfoUsuario();
 const userInfo = computed(() => [
     { label: 'Rol', value: Usuario.userInfo?.rol ? 'Administrador' : 'Usuario' },
     { label: 'Nombre', value: Usuario.userInfo?.nombre },
-    { label: 'Correo Electrónico', value: Usuario.userInfo?.correoElectronico }
+    { label: 'Correo', value: Usuario.userInfo?.correoElectronico }
 ]);
 </script>
 

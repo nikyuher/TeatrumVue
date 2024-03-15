@@ -71,18 +71,18 @@ const login = async () => {
   <form @submit.prevent="login">
     <div class="input-box">
       <input type="email" v-model="email" required>
-      <label>Email</label>
+      <label>Correo</label>
     </div>
     <div class="input-box">
       <input type="password" v-model="password" required>
-      <label>Password</label>
+      <label>Contraseña</label>
     </div>
     <div class="remember-forgot">
       <label>
         <input type="checkbox">
-        Remember me
+        Recuerdame
       </label>
-      <a href="#">Forgot Password?</a>
+      <a href="#">¿Olvidaste tu contraseña?</a>
     </div>
     <button class="btn" type="submit">Login</button>
     <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Creado') ? 'success' : 'error'">

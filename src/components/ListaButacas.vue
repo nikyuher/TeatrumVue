@@ -5,11 +5,14 @@ import { useInfoAsientos } from '@/store/listaButacas'
 
 import butacaR from '@/components/icons/IconButacaRed.vue'
 import butacaG from '@/components/icons/IconButacaGreen.vue'
+import butacaB from '@/components/icons/IconButacaBlue.vue'
+
 import urlStore from '@/store/urlApi';
 
 const props = defineProps<{
     idObra?: number;
 }>();
+const Butaca = useInfoButaca();
 
 const baseUrl: string = urlStore.baseUrl;
 
@@ -18,7 +21,6 @@ const butacas = ref<any[]>([]);
 const infoButaca = useInfoButaca();
 const listButacas = useInfoAsientos()
 const mostar = computed(() => listButacas.asientos);
-const butacasSeleccionadas = ref([]);
 const idObra = props.idObra;
 
 const cambiar = ref<boolean>();
@@ -39,6 +41,7 @@ const ajustarTamaño = () => {
 
 onMounted(async () => {
     try {
+        Butaca.butacasSeleccionadas = [];
         const responseAsientos = await fetch(`${baseUrl}/Asiento/estado/false`);
         const responseObra = await fetch(`${baseUrl}/Obra/${idObra}/asientos`);
 
@@ -94,9 +97,25 @@ const ObtenerButaca = (butacaId: number) => {
 const butacasFiltradas = (letra: string) => {
     return mostar.value.filter(butaca => butaca.nombreAsiento.startsWith(letra));
 }
+
+const select = ref<number[]>([]);
+
+const toggleSelect = (butacaId: number) => {
+    const index = select.value.indexOf(butacaId);
+    if (index === -1) {
+        // Si el id de la butaca no está en la lista de seleccionados, lo añadimos
+        select.value.push(butacaId);
+    } else {
+        // Si el id de la butaca está en la lista de seleccionados, lo eliminamos
+        select.value.splice(index, 1);
+    }
+}
 </script>
 
 <template>
+    <div class="pantalla">
+        <h1>Pantalla</h1>
+    </div>
     <div class="cosa" v-show="cambiar">
         <div>
             <h3>Lateral Izquierdo</h3>
@@ -107,9 +126,13 @@ const butacasFiltradas = (letra: string) => {
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaR :class="`cursor-not-allowed`"></butacaR>
                         </template>
+                        <template v-else-if="!select.includes(butaca.asientoId)">
+                            <p class="text-style">{{ butaca.nombreAsiento }}</p>
+                            <butacaG @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaG>
+                        </template>
                         <template v-else>
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                            <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                            <butacaB @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaB>
                         </template>
                     </div>
                 </div>
@@ -124,9 +147,13 @@ const butacasFiltradas = (letra: string) => {
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaR :class="`cursor-not-allowed`"></butacaR>
                         </template>
+                        <template v-else-if="!select.includes(butaca.asientoId)">
+                            <p class="text-style">{{ butaca.nombreAsiento }}</p>
+                            <butacaG @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaG>
+                        </template>
                         <template v-else>
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                            <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                            <butacaB @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaB>
                         </template>
                     </div>
                 </div>
@@ -141,9 +168,13 @@ const butacasFiltradas = (letra: string) => {
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaR :class="`cursor-not-allowed`"></butacaR>
                         </template>
+                        <template v-else-if="!select.includes(butaca.asientoId)">
+                            <p class="text-style">{{ butaca.nombreAsiento }}</p>
+                            <butacaG @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaG>
+                        </template>
                         <template v-else>
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                            <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                            <butacaB @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaB>
                         </template>
                     </div>
                 </div>
@@ -216,16 +247,23 @@ const butacasFiltradas = (letra: string) => {
 </template>
 
 <style scoped>
+.pantalla {
+    background-color: gray;
+    text-align: center;
+    width: 70%;
+    margin: auto;
+    margin-bottom: 30px;
+}
 
-.text-style{
+.text-style {
     color: black;
     text-align: center;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: 0;
 }
 
-.cosa2{
-margin: auto
+.cosa2 {
+    margin: auto
 }
 
 .cosa {

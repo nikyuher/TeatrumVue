@@ -8,11 +8,9 @@ interface ObraData {
     genero: string;
     título: string;
     descripción: string;
-    diaSemana: string;
+    fechaHora: string;
     precioEntrada: number;
     imagen: string | null;
-    hora: number; 
-    minuto: number; 
 }
 
 const img = ref<File | null>(null);
@@ -22,26 +20,30 @@ const titulo = ref('');
 const descri = ref('');
 const precio = ref(0);
 const hora = ref(0);
-const minuto = ref(0); 
+const minuto = ref(0);
 const responseMessage = ref('');
 const imageDataUrl = ref<string | null>(null);
 
+const fechaHora = computed(() => {
+    const fecha = dia.value ? new Date(dia.value) : new Date();
+    fecha.setHours(hora.value);
+    fecha.setMinutes(minuto.value);
+    return fecha.toISOString();
+});
+
 const generos = ['comedia', 'terror', 'drama', 'musical', 'tragedia']
-const dias = ['Monday', 'Tuesday ', 'Wednesday ', 'Thursday ', 'Friday ', 'Saturday ', 'Sunday ']
-const horas = Array.from({ length: 24 }, (_, i) => i); 
+const horas = Array.from({ length: 24 }, (_, i) => i);
 const minutos = Array.from({ length: 60 }, (_, i) => i);
 
 const obra = async () => {
     try {
         let obraData: ObraData = {
+            imagen: null,
             genero: genero.value,
             título: titulo.value,
             descripción: descri.value,
-            diaSemana: dia.value,
-            precioEntrada: precio.value,
-            imagen: null,
-            hora: hora.value, 
-            minuto: minuto.value
+            fechaHora: fechaHora.value,
+            precioEntrada: precio.value
         };
 
         if (img.value) {
@@ -64,13 +66,12 @@ const obra = async () => {
             throw new Error('Fallo al crear la obra.');
         }
 
-        img.value = null;
         genero.value = '';
         titulo.value = '';
         descri.value = '';
         precio.value = 0;
-        hora.value = 0; // Restablecer el valor de la hora
-        minuto.value = 0; // Restablecer el valor del minuto
+        hora.value = 0; 
+        minuto.value = 0; 
 
         responseMessage.value = 'Creado Correctamente.';
 
@@ -126,43 +127,66 @@ const limitInput = () => {
 
 
 <template>
-    <div>
-        <h2>Crear Obra</h2>
-        <form @submit.prevent="obra">
-            <label for="imagen">Imagen</label>
-            <input type="file" id="imagen" accept="image/*" @change="handleFileChange" required>
-            <div v-if="imageDataUrl">
-                <img :src="imageDataUrl" alt="Imagen seleccionada"
-                    style="max-width: 100%; height: 200px; margin-bottom: 10px;">
-            </div>
-            <label for="genero">Género</label>
-            <v-select v-model="genero" :items="generos" density="compact" label="generos" required></v-select>
-            <label for="fechaHora">Fecha y Hora</label>
-            <v-select v-model="dia" :items="dias" density="compact" label="dias" required></v-select>
-            <div class="claseTiempo">
-                <v-select v-model="hora" :items="horas" density="compact" label="horas" required></v-select>
-                <v-select v-model="minuto" :items="minutos" density="compact" label="minutos" required></v-select>
-            </div>
-            <label for="titulo">Título</label>
-            <input type="text" id="titulo" v-model="titulo" required>
-            <label>Descripción</label>
-            <input type="text" id="descripcion" v-model="descri" :maxlength="250" @input="limitInput" required>
-            <label :class="{ 'text-red': descripcionLength < 100 }" for="descripcion">
-                Descripción (Mínimo 100 caracteres): {{ descripcionLength }}/250
-            </label>
-            <label for="precio">Precio</label>
-            <input type="number" id="precio" v-model="precio" required>
-            <input type="submit" value="Enviar" :disabled="descripcionLength < 100">
-            <v-alert v-if="responseMessage" :value="true"
-                :type="responseMessage.includes('Creado') ? 'success' : 'error'">
-                {{ responseMessage }}
-            </v-alert>
-        </form>
-    </div>
+    <v-dialog max-width="500">
+        <template v-slot:activator="{ props: activatorProps }">
+            <v-btn v-bind="activatorProps" rounded>
+                <v-icon color="white" size="32">
+                    mdi-plus
+                </v-icon>
+            </v-btn>
+        </template>
+        <template v-slot:default>
+            <v-card title="Crear Obra">
+                <v-card-text>
+                    <form @submit.prevent="obra">
+                        <label for="imagen">Imagen</label>
+                        <input type="file" id="imagen" accept="image/*" @change="handleFileChange" required>
+                        <div v-if="imageDataUrl">
+                            <img :src="imageDataUrl" alt="Imagen seleccionada"
+                                style="max-width: 100%; height: 200px; margin-bottom: 10px;">
+                        </div>
+                        <label for="genero">Género</label>
+                        <v-select v-model="genero" :items="generos" density="compact" label="generos"
+                            required></v-select>
+                        <label for="fechaHora">Fecha y Hora</label>
+                        <input type="date" v-model="dia" required>
+                        <div class="claseTiempo">
+                            <v-select v-model="hora" :items="horas" density="compact" label="horas" required></v-select>
+                            <v-select v-model="minuto" :items="minutos" density="compact" label="minutos"
+                                required></v-select>
+                        </div>
+                        <label for="titulo">Título</label>
+                        <input type="text" id="titulo" v-model="titulo" required>
+                        <label>Descripción</label>
+                        <input type="text" id="descripcion" v-model="descri" :maxlength="250" @input="limitInput"
+                            required>
+                        <label :class="{ 'text-red': descripcionLength < 100 }" for="descripcion">
+                            Descripción (Mínimo 100 caracteres): {{ descripcionLength }}/250
+                        </label>
+                        <label for="precio">Precio</label>
+                        <input type="number" id="precio" v-model="precio" required>
+                        <input type="submit" value="Enviar" :disabled="descripcionLength < 100">
+                        <v-alert v-if="responseMessage" :value="true"
+                            :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+                            {{ responseMessage }}
+                        </v-alert>
+                    </form>
+                </v-card-text>
+            </v-card>
+        </template>
+    </v-dialog>
 </template>
 
 
 <style scoped>
+.v-btn {
+    background-color: rgb(54, 143, 54);
+}
+
+.v-btn:hover {
+    background-color: rgb(39, 102, 39);
+}
+
 .claseTiempo {
     display: flex;
     justify-content: space-around;

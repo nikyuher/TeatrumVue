@@ -92,35 +92,51 @@ const addUser = async () => {
 </script>
 
 <template>
-    <div class="contenedor">
-        <h2>Crear Usuario</h2>
-        <form @submit.prevent="addUser" class="form">
-            <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" v-model="nombre" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Correo</label>
-                <input type="email" id="email" v-model="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" v-model="password" required>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Enviar" class="btn-submit">
-            </div>
-            <v-alert v-if="responseMessage" :value="true"
-                :type="responseMessage.includes('Creado') ? 'success' : 'error'">
-                {{ responseMessage }}
-            </v-alert>
-        </form>
-    </div>
+    <v-dialog max-width="500">
+        <template v-slot:activator="{ props: activatorProps }">
+            <v-btn v-bind="activatorProps" rounded>
+                <v-icon color="white" size="32">
+                    mdi-plus
+                </v-icon>
+            </v-btn>
+        </template>
+        <template v-slot:default>
+            <v-card title="Crear Usuario">
+                <v-card-text>
+                    <form @submit.prevent="addUser" class="form">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" v-model="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo</label>
+                            <input type="email" id="email" v-model="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" id="password" v-model="password" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Enviar" class="btn-submit">
+                        </div>
+                        <v-alert v-if="responseMessage" :value="true"
+                            :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+                            {{ responseMessage }}
+                        </v-alert>
+                    </form>
+                </v-card-text>
+            </v-card>
+        </template>
+    </v-dialog>
 </template>
 
 <style scoped>
-.contenedor {
-    width: 300px;
+
+.v-btn{
+    background-color: rgb(54, 143, 54);
+}
+.v-btn:hover{
+    background-color: rgb(39, 102, 39);
 }
 
 .form {

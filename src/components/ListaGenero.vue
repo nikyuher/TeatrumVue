@@ -65,6 +65,18 @@ const getImagenUrl = (imagenBytes: string) => {
   return URL.createObjectURL(blob);
 };
 
+const formatearFechaHora = (fechaHora: string): string => {
+    const date = new Date(fechaHora);
+    const options: Intl.DateTimeFormatOptions = {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    };
+    return date.toLocaleDateString('es-ES', options);
+};
 
 </script>
 
@@ -73,26 +85,27 @@ const getImagenUrl = (imagenBytes: string) => {
     <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
       <template v-slot:default="{ items }">
         <div class="d-flex flex-wrap align-center justify-center pa-4 ">
-          <v-hover v-slot="{ isHovering, props }">
-            <v-card class="targeta d-flex row" v-for="obra in items" :key="obra.raw.obraId" v-bind="props">
-              <v-img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra" style="height: 450px;">
-                <v-expand-transition>
-                  <div v-if="isHovering" class=" bg-orange-darken-2 "
-                    style="height: 100%">
-                    <h3 class="text-black">{{ obra.raw.título }}</h3>
-                    <p class="text-black">{{ obra.raw.descripción.slice(0, 150) }}</p>
-                    <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
-                    <p class="text-black">{{ obra.raw.diaSemana }} - {{ obra.raw.hora }}:{{ obra.raw.minuto }}</p>
-                  </div>
-                </v-expand-transition>
-              </v-img>
-              <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
-                <v-btn>
-                  Comprar
-                </v-btn>
-              </router-link>
-            </v-card>
-          </v-hover>
+          <div class="targeta d-flex row " v-for="obra in items" :key="obra.raw.obraId">
+            <v-hover v-slot="{ isHovering, props }">
+              <v-card v-bind="props">
+                <v-img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra" style="height: 450px;">
+                  <v-expand-transition>
+                    <div v-if="isHovering" class=" bg-red-darken-1 v-card--reveal" style="height: 100%">
+                      <h3>{{ obra.raw.título }}</h3>
+                      <p>{{ obra.raw.descripción.slice(0, 150) }}</p>
+                      <p>Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
+                      <p>{{ formatearFechaHora( obra.raw.fechaHora ) }}</p>
+                    </div>
+                  </v-expand-transition>
+                </v-img>
+                <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
+                  <v-btn>
+                    Comprar
+                  </v-btn>
+                </router-link>
+              </v-card>
+            </v-hover>
+          </div>
         </div>
       </template>
       <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
@@ -114,16 +127,27 @@ const getImagenUrl = (imagenBytes: string) => {
     <v-data-iterator :items="obras" :items-per-page="itemsPerPage2">
       <template v-slot:default="{ items }">
         <div class="d-flex flex-wrap align-center justify-center pa-4 ">
-          <v-col class="targeta2" v-for="obra in items" :key="obra.raw.obraId" cols="9" sm="3 " xl="4">
-            <v-sheet style="background-color: rgb(209, 209, 209);">
-              <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
-                <img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra">
-                <h3 class="text-black">{{ obra.raw.título }}</h3>
-                <p class="text-black">{{ obra.raw.descripción.slice(0, 100) }}</p>
-                <p class="text-black">Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
-              </router-link>
-            </v-sheet>
-          </v-col>
+          <div class="targeta d-flex row " v-for="obra in items" :key="obra.raw.obraId">
+            <v-hover v-slot="{ isHovering, props }">
+              <v-card v-bind="props">
+                <v-img :src="getImagenUrl(obra.raw.imagen)" alt="Imagen de la obra" style="height: 450px;">
+                  <v-expand-transition>
+                    <div v-if="isHovering" class=" bg-red-darken-1 v-card--reveal" style="height: 100%">
+                      <h3>{{ obra.raw.título }}</h3>
+                      <p>{{ obra.raw.descripción.slice(0, 150) }}</p>
+                      <p>Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
+                      <p>{{ formatearFechaHora( obra.raw.fechaHora ) }}</p>
+                    </div>
+                  </v-expand-transition>
+                </v-img>
+                <router-link :to="{ name: 'comprar', params: { idObra: obra.raw.obraId } }">
+                  <v-btn>
+                    Comprar
+                  </v-btn>
+                </router-link>
+              </v-card>
+            </v-hover>
+          </div>
         </div>
       </template>
       <template v-slot:header="{ page, pageCount, prevPage, nextPage }">
@@ -149,7 +173,6 @@ const getImagenUrl = (imagenBytes: string) => {
 </template>
 
 <style scoped>
-
 .targeta {
   margin: 30px 50px;
   background-color: rgb(255, 255, 255);
@@ -189,13 +212,24 @@ const getImagenUrl = (imagenBytes: string) => {
 .text-black {
   color: black;
 }
-.v-btn{
+
+.v-btn {
   background-color: rgb(255, 181, 43);
 }
-.v-btn:hover{
+
+.v-btn:hover {
   background-color: rgb(189, 108, 15);
   height: 50px;
   align-items: center;
   color: white;
+}
+
+.v-card--reveal {
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  opacity: 0.9;
+  position: absolute;
+  width: 100%;
 }
 </style>

@@ -14,29 +14,31 @@ const mostrarView = (view: string) => {
 
 <template>
     <main>
-        <div>
+        <div class="container">
             <nav>
                 <ul>
                     <li @click="mostrarView('info')">Información Usuario</li>
                     <li @click="mostrarView('change')">Cambiar Información</li>
+                    <li @click="mostrarView('reserva')">Reservas</li>
                     <li>
                         <CerrarSesion></CerrarSesion>
                     </li>
                 </ul>
             </nav>
-            <article>
+            <article class="wrapper">
                 <section>
-                    <div class="wrapper">
-                        <div class="form-box" v-if="vistaActual === 'info'">
+                        <div class="form-box" v-if="vistaActual === 'reserva'">
+                            <h2>Reservas</h2>
+                            <Reservas></Reservas>
+                        </div>
+                        <div class="form-box" v-else-if="vistaActual === 'info'">
                             <h2>Información Usuario</h2>
                             <InfoUser></InfoUser>
-                            <Reservas></Reservas>
                         </div>
                         <div class="form-box" v-else-if="vistaActual === 'change'">
                             <h2>Cambiar Información</h2>
                             <ChangeName></ChangeName>
                         </div>
-                    </div>
                 </section>
             </article>
         </div>
@@ -44,15 +46,23 @@ const mostrarView = (view: string) => {
 </template>
 
 <style scoped>
+.container {
+    display: flex;
+    margin-left: 0;
+    padding: 0;
+    min-height: 885px;
+    justify-content:space-between;
+}
+
 nav {
     background-color: #333;
+    width: 200px;
 }
 
 ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    display: flex;
 }
 
 li {
@@ -66,16 +76,16 @@ li:hover {
 }
 
 .wrapper {
-    margin: 100px 0;
     display: flex;
     justify-content: center;
+    margin: auto;
 }
 
 .form-box {
-    width: 500px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin: 20px;
+    flex-grow: 1;
 }
 </style>

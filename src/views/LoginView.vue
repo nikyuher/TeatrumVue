@@ -23,17 +23,17 @@ const showLoginForm = () => {
       <section>
         <div :class="{ 'wrapper': true, 'active': isRegisterView }">
           <div class="form-box login">
-            <h2>Login</h2>
+            <h2>Iniciar Sesion</h2>
             <Loguear></Loguear>
             <div class="login-register">
-              <p>Don't have an account?<a href="#" class="register-link" @click="showRegisterForm">Register</a></p>
+              <p>¿No tienes una Cuenta?<a href="#" class="register-link" @click="showRegisterForm"> Registrarse</a></p>
             </div>
           </div>
           <div class="form-box register">
-            <h2>Registration</h2>
+            <h2>Registrar Cuenta</h2>
             <Register></Register>
             <div class="login-register">
-              <p>Already have an account?<a href="#" class="login-link" @click="showLoginForm">Login</a></p>
+              <p>¿Ya tienes una cuenta?<a href="#" class="login-link" @click="showLoginForm"> Iniciar Sesion</a></p>
             </div>
           </div>
         </div>

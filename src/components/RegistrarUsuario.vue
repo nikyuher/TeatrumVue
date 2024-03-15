@@ -103,20 +103,20 @@ const registerUser = async () => {
     <form @submit.prevent="registerUser">
         <div class="input-box">
             <input type="text" v-model="username" required>
-            <label>Username</label>
+            <label>Nombre</label>
         </div>
         <div class="input-box">
             <input type="email" v-model="email" required>
-            <label>Email</label>
+            <label>Correo</label>
         </div>
         <div class="input-box">
             <input type="password" v-model="password" required>
-            <label>Password</label>
+            <label>Contraseña</label>
         </div>
         <div class="remember-forgot">
-            <label><input type="checkbox" v-model="terminos">I agree to the terms & conditions</label>
+            <label><input type="checkbox" v-model="terminos">Acepto los términos y condiciones</label>
         </div>
-        <button class="btn" type="submit">Register</button>
+        <button class="btn" type="submit">Resgistrar</button>
         <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Registrado') ? 'success' : 'error'">
             {{ responseMessage }}
         </v-alert>

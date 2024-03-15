@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import urlStore from '@/store/urlApi';
+import DeleteAdd from '@/components/Administrador/UserAdmin/DeleteUser.vue';
+import AdminAdd from '@/components/Administrador/UserAdmin/AddUser.vue';
 
 const baseUrl: string = urlStore.baseUrl;
 const itemsPerPage = ref<number>(10);
@@ -21,7 +23,7 @@ const headers = [
     { title: 'Rol', key: 'rol' }
 ];
 
-onMounted(async () => {
+const fetchUsuarios = async () => {
     try {
         const response = await fetch(`${baseUrl}/Usuario`);
 
@@ -33,22 +35,28 @@ onMounted(async () => {
         usuarios.value = data;
     } catch (error) {
         console.error(error);
-        responseMessage.value =
-            'Ha ocurrido un error al obtener la lista de usuarios.';
+        responseMessage.value = 'Ha ocurrido un error al obtener la lista de usuarios.';
     }
-});
+};
+
+onMounted(fetchUsuarios);
+
+const usuariosTable = computed(() => usuarios.value);
+
 </script>
 
 <template>
     <v-container class="contenedor" style="height: 500px; overflow-y: auto;">
-        <h2 >Lista de Usuarios</h2>
-        <v-data-table :headers="headers" :items="usuarios" v-model:items-per-page="itemsPerPage">
+        <h2>Lista de Usuarios</h2>
+        <AdminAdd @click="fetchUsuarios"></AdminAdd>
+        <v-data-table :headers="headers" :items="usuariosTable" v-model:items-per-page="itemsPerPage">
             <template v-slot:item="{ item }">
                 <tr>
                     <td>{{ item.usuarioId }}</td>
                     <td>{{ item.nombre }}</td>
                     <td>{{ item.correoElectronico }}</td>
                     <td>{{ item.rol ? 'Administrador' : 'Usuario' }}</td>
+                    <DeleteAdd :id-obra="item.usuarioId" @click="fetchUsuarios"></DeleteAdd>
                 </tr>
             </template>
         </v-data-table>
@@ -61,6 +69,6 @@ onMounted(async () => {
 <style scoped>
 .contenedor {
     width: 100%;
-    margin:  auto;
+    margin: auto;
 }
 </style>

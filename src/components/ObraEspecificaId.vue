@@ -29,9 +29,7 @@ onMounted(async () => {
             idObra: obra.value.obraId,
             titulo: obra.value.título,
             precio: obra.value.precioEntrada,
-            diaSemana: obra.value.diaSemana,
-            hora: obra.value.hora,
-            minuto: obra.value.minuto,
+            fechaHora: obra.value.fechaHora,
             imagen: getImagenUrl(obra.value.imagen)
         };
 

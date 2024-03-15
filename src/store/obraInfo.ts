@@ -4,9 +4,7 @@ interface ObraInfo {
     idObra: number;
     titulo: string;
     precio: number;
-    diaSemana: string;
-    hora: number;
-    minuto: string;
+    fechaHora: string;
     imagen: string;
 }
 

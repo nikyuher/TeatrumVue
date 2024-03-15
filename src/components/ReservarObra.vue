@@ -30,26 +30,37 @@ const ajustarTamaño = () => {
         cambiar.value = true
     }
 };
-
+const items = ['Información de la Obra', 'Escoger Butacas', 'Comprar Tickets'];
+const step = ref<number>(1);
 </script>
 
 <template>
-    <div v-show="cambiar">
-        <div class="contenedorComprar">
-            <div class="contImagenObraPopular">
-                <img :src="obraInfo?.imagen" alt="Imagen de la obra">
+    <!-- <div v-show="cambiar"> -->
+    <v-stepper v-model="step" :items="items" show-actions>
+        <template v-slot:item>
+            <div class="contenedorComprar">
+                <div class="contImagenObraPopular">
+                    <img :src="obraInfo?.imagen" alt="Imagen de la obra">
+                </div>
+                <div class="descripcionCompra">
+                    <ObraId :id-obra="idObra"></ObraId>
+                </div>
             </div>
-            <div class="descripcionCompra">
-                <ObraId :id-obra="idObra"></ObraId>
+        </template>
+
+        <template v-slot:item.2>
+            <div class="contenedorBloques">
+                <butacas :id-obra="idObra"></butacas>
             </div>
+        </template>
+
+        <template v-slot:item.3>
             <div class="formComprar">
                 <Ticket :id-obra="idObra"></Ticket>
             </div>
-        </div>
-        <div class="contenedorBloques">
-            <butacas :id-obra="idObra"></butacas>
-        </div>
-    </div>
+        </template>
+    </v-stepper>
+    <!-- </div>
     <div v-show="!cambiar">
         <div class="cosa2">
             <div class="contenedorComprar2">
@@ -78,7 +89,7 @@ const ajustarTamaño = () => {
                 <Ticket :id-obra="idObra"></Ticket>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <style scoped>
@@ -106,7 +117,7 @@ const ajustarTamaño = () => {
 
 .descripcionCompra {
     width: 30%;
-    margin-top: 40px;
+    margin: auto;
     text-align: justify;
 }
 
@@ -120,7 +131,7 @@ const ajustarTamaño = () => {
 /*Formulario de comprar*/
 .formComprar {
     width: 300px;
-    height: 460px;
+    height: 560px;
     background-color: rgb(255, 255, 255);
     display: grid;
     flex-wrap: wrap;

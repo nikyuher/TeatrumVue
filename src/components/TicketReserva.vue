@@ -4,8 +4,10 @@ import { useInfoButaca } from '@/store/infoButaca';
 import { useInfoAsientos } from '@/store/listaButacas';
 import { usarInfoUsuario } from '@/store/userInfo';
 import { useObraInfo } from '@/store/obraInfo';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import urlStore from '@/store/urlApi';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const baseUrl: string = urlStore.baseUrl;
 
@@ -23,9 +25,13 @@ const Butaca = useInfoButaca();
 const Asientos = useInfoAsientos();
 
 const idUsuario = Usuario.userInfo?.usuarioId
-const snackbar = ref(false);
 
 const nombreAsientos = computed(() => Butaca.butacasSeleccionadas.map(butaca => butaca.nombreAsiento).join(', '));
+
+const total = computed(() => {
+    if (!obraInfo.value) return 0;
+    return obraInfo.value.precio * Butaca.butacasSeleccionadas.length;
+})
 
 const eventoCompra = async () => {
     try {
@@ -79,43 +85,65 @@ const eventoCompra = async () => {
                 }
                 return asiento;
             });
-            
+
             Asientos.setAsientos(nuevosAsientos);
-            snackbar.value = true;
             Butaca.butacasSeleccionadas = [];
+            setTimeout(() => {
+                router.push('/catalogo');
+            }, 2000);
         }
+
+
     } catch (error) {
         console.log(error)
     }
 
 };
 
+const formatearFechaHora = (fechaHora: string | undefined): string => {
+    if (!fechaHora) return "";
+    const date = new Date(fechaHora);
+    const options: Intl.DateTimeFormatOptions = {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    };
+    return date.toLocaleDateString('es-ES', options);
+};
+
 </script>
 
 <template>
-    <h2>Reserva Asiento</h2>
-    <div class="contenidoForm">
-        <form @submit.prevent="eventoCompra">
-            <div class="datosForm">
-                <label>Obra de Teatro </label>
-                <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.titulo"></v-text-field>
-                <label>Sitio de Asiento:</label>
-                <v-text-field type="text" id="inputSitioAsiento" required :value="nombreAsientos"
-                    readonly></v-text-field>
-                <label>Dìa y hora</label>
-                <v-text-field type="number">{{ obraInfo?.diaSemana }} - {{ obraInfo?.hora }}:{{ obraInfo?.minuto
-                    }}</v-text-field>
-                <label>Precio:</label>
-                <v-text-field type="number" id="inputPrecio" :value="obraInfo?.precio">$</v-text-field>
-            </div>
-            <v-btn type="submit">
-                Comprar
-            </v-btn>
-        </form>
-    </div>
-    <v-snackbar v-model="snackbar" color="success" timeout="2000">
-        Comprado correctamente
-    </v-snackbar>
+    <form @submit.prevent="eventoCompra">
+        <div class="datosForm">
+            <label>Obra de Teatro </label>
+            <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.titulo"></v-text-field>
+            <label>Sitio de Asiento:</label>
+            <v-text-field type="text" id="inputSitioAsiento" :value="nombreAsientos" readonly></v-text-field>
+            <label>Dìa y hora</label>
+            <v-text-field type="number">{{ formatearFechaHora( Obra.infoObra?.fechaHora ) }}</v-text-field>
+            <label>Precio:</label>
+            <v-text-field type="number" id="inputPrecio" :value="total">$</v-text-field>
+        </div>
+        <v-dialog max-width="500">
+            <template v-slot:activator="{ props: activatorProps }">
+                <v-btn type="submit" v-bind="activatorProps" :disabled="nombreAsientos === ''"
+                    :style="{ backgroundColor: nombreAsientos === '' ? 'red' : '', color: nombreAsientos === '' ? 'white' : '' }">
+                    Comprar
+                </v-btn>
+            </template>
+            <template v-slot:default>
+                <v-card title="Comprado">
+                    <v-card-text>
+                        Comprado Exitosamente
+                    </v-card-text>
+                </v-card>
+            </template>
+        </v-dialog>
+    </form>
 </template>
 
 <style scoped>

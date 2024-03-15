@@ -23,7 +23,7 @@ const mostrarView = (view: string) => {
 
 <template>
     <main>
-        <div v-if="isAdmin">
+        <div class="container" v-if="isAdmin">
             <nav>
                 <ul>
                     <li @click="mostrarView('user')">Usuario</li>
@@ -50,7 +50,7 @@ const mostrarView = (view: string) => {
                 </section>
             </article>
         </div>
-        <div class="contenedor" v-else>
+        <div class="contenedorError" v-else>
             <v-empty-state headline="Whoops, 404" title="Page not found"
                 text="Parece que no tienes Accseso a esta pestaña"
                 image="https://vuetifyjs.b-cdn.net/docs/images/components/v-empty-state/astro-cat.svg">
@@ -60,20 +60,28 @@ const mostrarView = (view: string) => {
 </template>
 
 <style scoped>
-.contenedor {
+.contenedorError {
     margin: 150px auto;
     text-align: center;
 }
 
+.container {
+    display: flex;
+    margin-left: 0;
+    padding: 0;
+    min-height: 885px;
+    justify-content: space-between;
+}
+
 nav {
     background-color: #333;
+    width: 200px;
 }
 
 ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    display: flex;
 }
 
 li {
@@ -93,7 +101,7 @@ li:hover {
 }
 
 .form-box {
-        padding: 20px;
+    padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin: 20px;

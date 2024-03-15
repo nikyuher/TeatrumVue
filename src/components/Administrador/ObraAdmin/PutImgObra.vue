@@ -2,9 +2,14 @@
 import { ref } from 'vue';
 import urlStore from '@/store/urlApi';
 
+const props = defineProps<{
+    idObra: number;
+}>();
+
+
 const baseUrl: string = urlStore.baseUrl;
 
-const obraId = ref(0);
+const obraId = ref(props.idObra);
 const img = ref<File | null>(null);
 const responseMessage = ref('');
 const imageDataUrl = ref<string | null>(null);
@@ -35,8 +40,6 @@ const updateImage = async () => {
             throw new Error('Fallo al actualizar la imagen de la obra.');
         }
 
-        img.value = null;
-        obraId.value = 0;
 
         responseMessage.value = 'Actualizado correctamente.';
 
@@ -83,27 +86,45 @@ const fileToBase64 = (file: File): Promise<string> => {
 </script>
 
 <template>
-    <div>
-        <h2>Actualizar Imagen</h2>
-        <form @submit.prevent="updateImage">
-            <label for="obraId">ID de Obra</label>
-            <input type="number" id="obraId" v-model="obraId" required>
-            <label for="imagen">Nueva Imagen</label>
-            <input type="file" id="imagen" accept="image/*" @change="handleFileChange" required>
-            <div v-if="imageDataUrl">
-                <img :src="imageDataUrl" alt="Imagen seleccionada"
-                    style="max-width: 100%; height: 200px; margin-bottom: 10px;">
-            </div>
-            <input type="submit" value="Enviar">
-            <v-alert v-if="responseMessage" :value="true"
-                :type="responseMessage.includes('Actualizado') ? 'success' : 'error'">
-                {{ responseMessage }}
-            </v-alert>
-        </form>
-    </div>
+    <v-dialog max-width="500">
+        <template v-slot:activator="{ props: activatorProps }">
+            <v-btn v-bind="activatorProps" rounded>
+                <v-icon color="white" size="32">
+                    mdi-paperclip
+                </v-icon>
+            </v-btn>
+        </template>
+        <template v-slot:default>
+            <v-card title="Actualizar Imagen">
+                <v-card-text>
+                    <form @submit.prevent="updateImage">
+                        <label for="imagen">Nueva Imagen</label>
+                        <input type="file" id="imagen" accept="image/*" @change="handleFileChange" required>
+                        <div v-if="imageDataUrl">
+                            <img :src="imageDataUrl" alt="Imagen seleccionada"
+                                style="max-width: 100%; height: 200px; margin-bottom: 10px;">
+                        </div>
+                        <input type="submit" value="Enviar">
+                        <v-alert v-if="responseMessage" :value="true"
+                            :type="responseMessage.includes('Actualizado') ? 'success' : 'error'">
+                            {{ responseMessage }}
+                        </v-alert>
+                    </form>
+                </v-card-text>
+            </v-card>
+        </template>
+    </v-dialog>
 </template>
 
 <style scoped>
+.v-btn {
+    background-color: rgb(58, 128, 194);
+}
+
+.v-btn:hover {
+    background-color: rgb(47, 82, 148);
+}
+
 form {
     max-width: 400px;
     margin: 0 auto;
