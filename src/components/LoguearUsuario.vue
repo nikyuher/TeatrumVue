@@ -31,7 +31,8 @@ const login = async () => {
     });
 
     if (!response.ok) {
-      throw new Error('Fallo al Iniciar Sesion.');
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al iniciar sesión.');
     }
 
     const userInfo = await response.json()
@@ -58,11 +59,16 @@ const login = async () => {
     }
 
   } catch (error) {
-    responseMessage.value = 'Error al Iniciar Sesion.';
-    setTimeout(() => {
-            responseMessage.value = '';
-        }, 2000);
-    console.error(error);
+      if (error instanceof Error) {
+      console.error(error);
+
+      responseMessage.value = error.message || 'Error al Iniciar Sesion.';
+      setTimeout(() => {
+        responseMessage.value = '';
+      }, 2000);
+    } else {
+      throw new Error(String(error));
+    }
   }
 };
 </script>
@@ -85,7 +91,8 @@ const login = async () => {
       <a href="#">¿Olvidaste tu contraseña?</a>
     </div>
     <button class="btn" type="submit">Login</button>
-    <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Correctamente') ? 'success' : 'error'">
+    <v-alert v-if="responseMessage" :value="true"
+      :type="responseMessage.includes('Correctamente') ? 'success' : 'error'">
       {{ responseMessage }}
     </v-alert>
   </form>

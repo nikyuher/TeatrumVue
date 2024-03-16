@@ -66,8 +66,8 @@ const addUser = async (confirmacion: boolean) => {
         });
 
         if (!response.ok) {
-            responseMessage.value = 'Fallo al crear Usuario.';
-            throw new Error('Fallo al Ingresar Usuario.');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Fallo al Crear al usuario.');
         }
 
         nombre.value = ''
@@ -83,12 +83,16 @@ const addUser = async (confirmacion: boolean) => {
         emits('confirmacion', confirmacion);
 
     } catch (error) {
-        console.error(error);
-        responseMessage.value = 'Ha ocurrido un Error al Crear .';
+        if (error instanceof Error) {
+            console.error(error);
 
-        setTimeout(() => {
-            responseMessage.value = '';
-        }, 2000);
+            responseMessage.value = error.message || 'Error al Crear Usuario.';
+            setTimeout(() => {
+                responseMessage.value = '';
+            }, 2000);
+        } else {
+            throw new Error(String(error));
+        }
     }
 }
 

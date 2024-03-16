@@ -25,7 +25,7 @@ const validarName = (name: string): boolean => {
 };
 
 const registerUser = async () => {
-    
+
     if (!validarName(username.value)) {
         responseMessage.value = 'El nombre debe tener al menos 4 caracteres';
         setTimeout(() => {
@@ -33,7 +33,7 @@ const registerUser = async () => {
         }, 2000);
         return;
     }
-    
+
     if (!validarEmail(email.value)) {
         responseMessage.value = 'Por favor ingrese un correo electrónico válido';
         setTimeout(() => {
@@ -41,7 +41,7 @@ const registerUser = async () => {
         }, 2000);
         return;
     }
-    
+
     if (!validarPassword(password.value)) {
         responseMessage.value = 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número';
         setTimeout(() => {
@@ -49,8 +49,8 @@ const registerUser = async () => {
         }, 3000);
         return;
     }
-    
-    
+
+
     if (!terminos.value) {
         responseMessage.value = 'Por favor acepte los Términos & Condiciones';
         setTimeout(() => {
@@ -64,18 +64,19 @@ const registerUser = async () => {
         correoElectronico: email.value,
         contraseña: password.value
     };
-    
+
     try {
-        const response = await fetch(`${baseUrl}/Usuario`, {
+        const response = await fetch(`${baseUrl}/Usuario/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(userData)
         });
-
+        
         if (!response.ok) {
-            throw new Error('Fallo al registrar al usuario.');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Fallo al registrar al usuario.');
         }
 
         username.value = '';
@@ -89,12 +90,16 @@ const registerUser = async () => {
         }, 2000);
 
     } catch (error) {
-        responseMessage.value = 'Error al Registrarte';
-        console.error(error);
-        
-        setTimeout(() => {
-            responseMessage.value = '';
-        }, 2000);
+        if (error instanceof Error) {
+            console.error(error);
+
+            responseMessage.value = error.message || 'Error al Registrarte.';
+            setTimeout(() => {
+                responseMessage.value = '';
+            }, 2000);
+        } else {
+            throw new Error(String(error));
+        }
     }
 };
 </script>
@@ -117,7 +122,8 @@ const registerUser = async () => {
             <label><input type="checkbox" v-model="terminos">Acepto los términos y condiciones</label>
         </div>
         <button class="btn" type="submit">Resgistrar</button>
-        <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Registrado') ? 'success' : 'error'">
+        <v-alert v-if="responseMessage" :value="true"
+            :type="responseMessage.includes('Registrado') ? 'success' : 'error'">
             {{ responseMessage }}
         </v-alert>
     </form>
