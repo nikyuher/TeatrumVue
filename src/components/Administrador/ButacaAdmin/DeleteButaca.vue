@@ -62,7 +62,6 @@ const deleteButaca = async (confirmacion: boolean) => {
             <v-card title="¿Seguro que quieres Eliminarlo?">
                 <v-card-text>
                     <div class="ajustar">
-                        {{ butacaId }}
                         <v-btn @click="deleteButaca(true)" type="submit" text="Si" class=" bg-blue-darken-1"></v-btn>
                         <v-btn text="No" @click="isActive.value = false"></v-btn>
                     </div>

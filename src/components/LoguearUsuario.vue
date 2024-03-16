@@ -85,7 +85,7 @@ const login = async () => {
       <a href="#">¿Olvidaste tu contraseña?</a>
     </div>
     <button class="btn" type="submit">Login</button>
-    <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+    <v-alert v-if="responseMessage" :value="true" :type="responseMessage.includes('Correctamente') ? 'success' : 'error'">
       {{ responseMessage }}
     </v-alert>
   </form>

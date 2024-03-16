@@ -36,8 +36,8 @@ const total = computed(() => {
 const eventoCompra = async () => {
     try {
 
-        if (Usuario.userInfo?.usuarioId == null) {
-            return alert('Tienes que Iniciar Sesion para Comprar.');
+        if (Usuario.userInfo?.usuarioId === null || Usuario.userInfo?.usuarioId === undefined) {
+            throw new Error('Tienes que Iniciar Sesion para Comprar.');
         }
 
         const Reservas = Butaca.butacasSeleccionadas.map(butaca => ({
@@ -90,7 +90,7 @@ const eventoCompra = async () => {
             Butaca.butacasSeleccionadas = [];
             setTimeout(() => {
                 router.push('/catalogo');
-            }, 2000);
+            }, 1000);
         }
 
 
@@ -124,7 +124,7 @@ const formatearFechaHora = (fechaHora: string | undefined): string => {
             <label>Sitio de Asiento:</label>
             <v-text-field type="text" id="inputSitioAsiento" :value="nombreAsientos" readonly></v-text-field>
             <label>Dìa y hora</label>
-            <v-text-field type="number">{{ formatearFechaHora( Obra.infoObra?.fechaHora ) }}</v-text-field>
+            <v-text-field type="number">{{ formatearFechaHora(Obra.infoObra?.fechaHora) }}</v-text-field>
             <label>Precio:</label>
             <v-text-field type="number" id="inputPrecio" :value="total">$</v-text-field>
         </div>
@@ -136,7 +136,18 @@ const formatearFechaHora = (fechaHora: string | undefined): string => {
                 </v-btn>
             </template>
             <template v-slot:default>
-                <v-card class="ajustar" >
+                <v-card class="ajustar" v-if="idUsuario === null || idUsuario === undefined">
+                    <v-icon color="red" size="100">
+                        mdi-close-circle
+                    </v-icon>
+                    <v-card-text>
+                        <h1>Tienes que Iniciar Sesión</h1>
+                    </v-card-text>
+                    <v-btn class="botonSesion">
+                        <router-link to="/login" class="text-color">Iniciar Sesion</router-link>
+                    </v-btn>
+                </v-card>
+                <v-card class="ajustar" v-else>
                     <v-icon color="green" size="100">
                         mdi-check-circle
                     </v-icon>
@@ -150,7 +161,23 @@ const formatearFechaHora = (fechaHora: string | undefined): string => {
 </template>
 
 <style scoped>
-.ajustar{
+
+.text-color{
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+
+.botonSesion {
+    font-family: 'Radio Canada', sans-serif;
+    background-color: rgb(55, 80, 165);
+}
+
+
+.botonSesion:hover {
+    background-color: rgb(29, 44, 92);
+}
+
+.ajustar {
     text-align: center;
     align-items: center;
 }
