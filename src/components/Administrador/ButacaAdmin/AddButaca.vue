@@ -4,11 +4,12 @@ import urlStore from '@/store/urlApi';
 
 const baseUrl: string = urlStore.baseUrl;
 
+const emits = defineEmits(['confirmacion']);
 const nombre = ref('');
 const estado = ref(false);
 const responseMessage = ref('');
 
-const butaca = async () => {
+const butaca = async (confirmacion: boolean) => {
 
     try {
         const crear = {
@@ -37,6 +38,8 @@ const butaca = async () => {
             responseMessage.value = '';
         }, 2000);
 
+        emits('confirmacion', confirmacion);
+
     } catch (error) {
         console.error(error);
         responseMessage.value = 'Ha ocurrido un Error al Crear .';
@@ -49,26 +52,46 @@ const butaca = async () => {
 </script>
 
 <template>
-    <div>
-        <h2>Crear Butaca</h2>
-        <form @submit.prevent="butaca">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" v-model="nombre" required>
-            <label for="estado">Estado</label>
-            <select id="estado" v-model="estado" required>
-                <option :value="true">Ocupado</option>
-                <option :value="false">Disponible</option>
-            </select>
-            <input type="submit" value="Enviar">
-            <v-alert v-if="responseMessage" :value="true"
-                :type="responseMessage.includes('Creado') ? 'success' : 'error'">
-                {{ responseMessage }}
-            </v-alert>
-        </form>
-    </div>
+    <v-dialog max-width="500">
+        <template v-slot:activator="{ props: activatorProps }">
+            <v-btn v-bind="activatorProps" rounded>
+                <v-icon color="white" size="32">
+                    mdi-plus
+                </v-icon>
+            </v-btn>
+        </template>
+        <template v-slot:default>
+            <v-card title="Crear Butaca">
+                <v-card-text>
+                    <form @submit.prevent="butaca(true)">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" v-model="nombre" required>
+                        <label for="estado">Estado</label>
+                        <select id="estado" v-model="estado" required>
+                            <option :value="true">Ocupado</option>
+                            <option :value="false">Disponible</option>
+                        </select>
+                        <input type="submit" value="Enviar">
+                        <v-alert v-if="responseMessage" :value="true"
+                            :type="responseMessage.includes('Creado') ? 'success' : 'error'">
+                            {{ responseMessage }}
+                        </v-alert>
+                    </form>
+                </v-card-text>
+            </v-card>
+        </template>
+    </v-dialog>
 </template>
 
 <style scoped>
+.v-btn {
+    background-color: rgb(54, 143, 54);
+}
+
+.v-btn:hover {
+    background-color: rgb(39, 102, 39);
+}
+
 form {
     max-width: 400px;
     margin: 0 auto;

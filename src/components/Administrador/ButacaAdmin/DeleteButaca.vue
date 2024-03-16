@@ -2,14 +2,25 @@
 import { ref } from 'vue'
 import urlStore from '@/store/urlApi';
 
+const props = defineProps<{
+    idButaca: number;
+}>();
+
+const emits = defineEmits(['confirmacion']);
 const baseUrl: string = urlStore.baseUrl;
 
-const butacaId = ref(0);
+const butacaId = ref(props.idButaca);
 const responseMessage = ref('');
 
-const butaca = async () => {
+const deleteButaca = async (confirmacion: boolean) => {
 
     try {
+
+        if (!butacaId.value) {
+            responseMessage.value = 'Error con la Optencion del ID.';
+            throw new Error('Error con la Optencion del ID.');
+        }
+
         const response = await fetch(`${baseUrl}/Asiento/${butacaId.value}`, {
             method: 'DELETE',
             headers: {
@@ -22,14 +33,14 @@ const butaca = async () => {
             throw new Error('Error del Servidor');
         }
 
-        butacaId.value = 0
-
         responseMessage.value = 'Eliminado Correctamente.';
 
         setTimeout(() => {
             responseMessage.value = '';
         }, 3000);
 
+        emits('confirmacion', confirmacion);
+        
     } catch (error) {
         responseMessage.value = 'Fallo al Eliminar Butaca.'
         console.error(error);
@@ -38,63 +49,46 @@ const butaca = async () => {
 </script>
 
 <template>
-    <div>
-        <h2>Borrar Butaca</h2>
-        <form @submit.prevent="butaca">
-            <label for="butacaId">ID Butaca</label>
-            <input type="number" id="butacaId" v-model="butacaId" required>
-            <input type="submit" value="Enviar">
-            <v-alert v-if="responseMessage" :value="true"
-                :type="responseMessage.includes('Eliminado') ? 'success' : 'error'">
-                {{ responseMessage }}
-            </v-alert>
-        </form>
-    </div>
+    <v-dialog max-width="500">
+        <template v-slot:activator="{ props: activatorProps }">
+            <v-btn v-bind="activatorProps" rounded>
+                <v-icon color="white" size="20">
+                    mdi-delete
+                </v-icon>
+            </v-btn>
+
+        </template>
+        <template v-slot:default="{ isActive }">
+            <v-card title="¿Seguro que quieres Eliminarlo?">
+                <v-card-text>
+                    <div class="ajustar">
+                        {{ butacaId }}
+                        <v-btn @click="deleteButaca(true)" type="submit" text="Si" class=" bg-blue-darken-1"></v-btn>
+                        <v-btn text="No" @click="isActive.value = false"></v-btn>
+                    </div>
+                    <v-alert v-if="responseMessage" :value="true"
+                        :type="responseMessage.includes('Correctamente') ? 'success' : 'error'">
+                        {{ responseMessage }}
+                    </v-alert>
+                </v-card-text>
+            </v-card>
+        </template>
+    </v-dialog>
 </template>
 
 <style scoped>
-form {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.ajustar {
+    display: flex;
+    justify-content: space-evenly;
 }
 
-label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-input[type="number"],
-select,
-input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-select {
-    appearance: none;
-    background-repeat: no-repeat;
-    background-position: right 10px top 50%;
-    background-size: 20px auto;
-}
-
-input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
+.v-btn {
+    height: 30px;
     color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    background-color: red;
 }
 
-.response {
-    margin-top: 10px;
-    color: green;
+.v-btn:hover {
+    background-color: rgb(179, 39, 39);
 }
 </style>

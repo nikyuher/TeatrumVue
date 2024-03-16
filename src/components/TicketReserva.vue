@@ -136,9 +136,12 @@ const formatearFechaHora = (fechaHora: string | undefined): string => {
                 </v-btn>
             </template>
             <template v-slot:default>
-                <v-card title="Comprado">
+                <v-card class="ajustar" >
+                    <v-icon color="green" size="100">
+                        mdi-check-circle
+                    </v-icon>
                     <v-card-text>
-                        Comprado Exitosamente
+                        <h1>Comprado Exitosamente</h1>
                     </v-card-text>
                 </v-card>
             </template>
@@ -147,6 +150,11 @@ const formatearFechaHora = (fechaHora: string | undefined): string => {
 </template>
 
 <style scoped>
+.ajustar{
+    text-align: center;
+    align-items: center;
+}
+
 .contenidoForm {
     text-align: left;
     width: 200px;

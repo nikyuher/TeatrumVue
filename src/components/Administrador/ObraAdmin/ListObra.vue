@@ -18,7 +18,11 @@ interface Obra {
   imagen: string;
 }
 
+const search = ref('');
 const obras = ref<Obra[]>([]);
+const responseMessage = ref('');
+const tableKey = ref(0);
+
 const headers = [
   { title: 'ID', key: 'obraId' },
   { title: 'Imagen', key: 'imagen' },
@@ -40,25 +44,45 @@ const fetchObras = async () => {
       obra.imagen = `data:image/jpeg;base64,${obra.imagen}`;
     });
     obras.value = data;
+    tableKey.value += 1;
   } catch (error) {
     console.error(error);
+    responseMessage.value = 'Ha ocurrido un error al obtener la lista de obras.';
   }
 };
 
 onMounted(fetchObras);
 
-const obrasTable = computed(() => obras.value);
+const BuscadorObras = computed(() => {
+  return obras.value.filter(obra =>
+    obra.título.toLowerCase().includes(search.value.toLowerCase()) ||
+    obra.genero.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
 
 const truncateDescription = (description: string): string => {
   return description.length > 30 ? `${description.slice(0, 30)}...` : description;
 };
+
+const reloadObras = (confirmacion: boolean) => {
+  if (confirmacion) {
+    tableKey.value += 1;
+    fetchObras();
+  }
+};
+
+const obtenerConfirmacion = (confirmacion: boolean) => {
+  reloadObras(confirmacion);
+};
+
 </script>
 
 <template>
   <v-container>
     <h2>Listado de Obras</h2>
-    <AddObra @click="fetchObras"></AddObra>
-    <v-data-table :headers="headers" :items="obrasTable" item-key="obraId">
+    <v-text-field v-model="search" label="Buscar" outlined @change="fetchObras" dense style="width: 250px;"></v-text-field>
+    <AddObra @confirmacion="obtenerConfirmacion"></AddObra>
+    <v-data-table :key="tableKey" :headers="headers" :items="BuscadorObras" item-key="obraId" v-if="obras.length > 0">
       <template v-slot:item="{ item }">
         <tr>
           <td>{{ item.obraId }}</td>
@@ -67,15 +91,16 @@ const truncateDescription = (description: string): string => {
           <td>{{ item.genero }}</td>
           <td>{{ truncateDescription(item.descripción) }}</td>
           <td>${{ item.precioEntrada }}</td>
-          <PutInfoObra :id-obra="item.obraId" @click="fetchObras"></PutInfoObra>
-          <PutImgObra :id-obra="item.obraId" @click="fetchObras"></PutImgObra>
-          <DeleteObra :id-obra="item.obraId" @click="fetchObras"></DeleteObra>
+          <PutInfoObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></PutInfoObra>
+          <PutImgObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></PutImgObra>
+          <DeleteObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></DeleteObra>
         </tr>
       </template>
     </v-data-table>
+    <p class="response">{{ responseMessage }}</p>
   </v-container>
 </template>
 
 <style scoped>
-
+/* Estilos */
 </style>

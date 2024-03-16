@@ -6,7 +6,7 @@ const props = defineProps<{
     idObra: number;
 }>();
 
-
+const emits = defineEmits(['confirmacion']);
 const baseUrl: string = urlStore.baseUrl;
 
 const obraId = ref(props.idObra);
@@ -14,7 +14,7 @@ const img = ref<File | null>(null);
 const responseMessage = ref('');
 const imageDataUrl = ref<string | null>(null);
 
-const updateImage = async () => {
+const updateImage = async (confirmacion: boolean) => {
     try {
         
         if (!img.value) {
@@ -46,6 +46,8 @@ const updateImage = async () => {
         setTimeout(() => {
             responseMessage.value = '';
         }, 2000);
+
+        emits('confirmacion', confirmacion);
 
     } catch (error) {
         console.error(error);
@@ -97,7 +99,7 @@ const fileToBase64 = (file: File): Promise<string> => {
         <template v-slot:default>
             <v-card title="Actualizar Imagen">
                 <v-card-text>
-                    <form @submit.prevent="updateImage">
+                    <form @submit.prevent="updateImage(true)">
                         <label for="imagen">Nueva Imagen</label>
                         <input type="file" id="imagen" accept="image/*" @change="handleFileChange" required>
                         <div v-if="imageDataUrl">

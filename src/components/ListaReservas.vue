@@ -2,10 +2,13 @@
 import { ref, onMounted } from 'vue'
 import urlStore from '@/store/urlApi';
 import { usarInfoUsuario } from '@/store/userInfo';
+import DeleteReserva from '@/components/ReservaDelete.vue';
 
 const Usuario = usarInfoUsuario();
 const idUsuario = Usuario.userInfo?.usuarioId
 const baseUrl: string = urlStore.baseUrl;
+const tableKey = ref(0);
+
 interface Reserva {
     reservaId: number;
     obra: {
@@ -28,7 +31,7 @@ const headers = [
     { title: 'Asiento', value: 'asiento.nombreAsiento' },
     { title: 'Precio', value: 'obra.precioEntrada' },
 ];
-onMounted(async () => {
+const fetchReservas = async () => {
 
     try {
         const response = await fetch(`${baseUrl}/Reserva/usuario/${idUsuario}`);
@@ -44,7 +47,7 @@ onMounted(async () => {
     } catch (error) {
         console.log(error)
     }
-});
+};
 const ImagenUrl = (base64Image: string): string => {
     return `data:image/jpeg;base64,${base64Image}`;
 };
@@ -60,12 +63,26 @@ const formatearFechaHora = (fechaHora: string): string => {
     };
     return date.toLocaleDateString('es-ES', options);
 };
+
+const reloadReservas = (confirmacion: boolean) => {
+    if (confirmacion) {
+        tableKey.value += 1;
+        fetchReservas();
+    }
+};
+
+onMounted(fetchReservas);
+
+const obtenerConfirmacion = (confirmacion: boolean) => {
+    reloadReservas(confirmacion);
+};
+
 </script>
 
 <template>
     <v-container>
         <h2>Listado de Reservas</h2>
-        <v-data-table :headers="headers" :items="Reservas" item-key="reservaId">
+        <v-data-table :key="tableKey" :headers="headers" :items="Reservas" item-key="reservaId">
             <template v-slot:item="{ item }">
                 <tr>
                     <td><img :src="ImagenUrl(item.obra.imagen)" alt="Imagen de la obra" height="50"></td>
@@ -74,6 +91,7 @@ const formatearFechaHora = (fechaHora: string): string => {
                     <td>{{ formatearFechaHora(item.obra.fechaHora) }}</td>
                     <td>{{ item.asiento.nombreAsiento }}</td>
                     <td>${{ item.obra.precioEntrada }}</td>
+                    <DeleteReserva :id-reserva="item.reservaId" @confirmacion="obtenerConfirmacion"></DeleteReserva>
                 </tr>
             </template>
         </v-data-table>

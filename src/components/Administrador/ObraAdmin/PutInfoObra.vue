@@ -6,6 +6,7 @@ const props = defineProps<{
     idObra?: number;
 }>();
 
+const emits = defineEmits(['confirmacion']);
 const baseUrl: string = urlStore.baseUrl;
 
 const obraId = ref(props.idObra);
@@ -29,7 +30,7 @@ const generos = ['comedia', 'terror', 'drama', 'musical', 'tragedia']
 const horas = Array.from({ length: 24 }, (_, i) => i);
 const minutos = Array.from({ length: 60 }, (_, i) => i);
 
-const updateObra = async () => {
+const updateObra = async (confirmacion: boolean) => {
     try {
 
         const obraData = {
@@ -63,6 +64,7 @@ const updateObra = async () => {
         setTimeout(() => {
             responseMessage.value = '';
         }, 2000);
+        emits('confirmacion', confirmacion);
 
     } catch (error) {
         console.error(error);
@@ -93,7 +95,7 @@ const limitInput = () => {
         <template v-slot:default>
             <v-card title="Actualizar Informacion">
                 <v-card-text>
-                    <form @submit.prevent="updateObra" class="form">
+                    <form @submit.prevent="updateObra(true)" class="form">
                         <div class="form-group">
                             <label for="genero">Género</label>
                             <v-select v-model="genero" :items="generos" density="compact" label="generos"

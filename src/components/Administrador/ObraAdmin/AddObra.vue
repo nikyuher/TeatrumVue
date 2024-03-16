@@ -13,6 +13,7 @@ interface ObraData {
     imagen: string | null;
 }
 
+const emits = defineEmits(['confirmacion']);
 const img = ref<File | null>(null);
 const genero = ref('');
 const dia = ref('');
@@ -35,7 +36,7 @@ const generos = ['comedia', 'terror', 'drama', 'musical', 'tragedia']
 const horas = Array.from({ length: 24 }, (_, i) => i);
 const minutos = Array.from({ length: 60 }, (_, i) => i);
 
-const obra = async () => {
+const obra = async (confirmacion: boolean) => {
     try {
         let obraData: ObraData = {
             imagen: null,
@@ -78,6 +79,8 @@ const obra = async () => {
         setTimeout(() => {
             responseMessage.value = '';
         }, 2000);
+
+        emits('confirmacion', confirmacion);
 
     } catch (error) {
         console.error(error);
@@ -138,7 +141,7 @@ const limitInput = () => {
         <template v-slot:default>
             <v-card title="Crear Obra">
                 <v-card-text>
-                    <form @submit.prevent="obra">
+                    <form @submit.prevent="obra(true)">
                         <label for="imagen">Imagen</label>
                         <input type="file" id="imagen" accept="image/*" @change="handleFileChange" required>
                         <div v-if="imageDataUrl">

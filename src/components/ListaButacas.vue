@@ -100,7 +100,7 @@ const butacasFiltradas = (letra: string) => {
 
 const select = ref<number[]>([]);
 
-const toggleSelect = (butacaId: number) => {
+const marcarSelecionado = (butacaId: number) => {
     const index = select.value.indexOf(butacaId);
     if (index === -1) {
         // Si el id de la butaca no está en la lista de seleccionados, lo añadimos
@@ -110,6 +110,34 @@ const toggleSelect = (butacaId: number) => {
         select.value.splice(index, 1);
     }
 }
+
+const ordenarAsientos = (butacas: any[]) => {
+    // Crear un objeto para almacenar los asientos agrupados por letra
+    const asientosPorLetra: { [letra: string]: any[] } = {};
+
+    // Agrupar los asientos por letra
+    butacas.forEach(butaca => {
+        const letra = butaca.nombreAsiento.charAt(0);
+        if (!asientosPorLetra[letra]) {
+            asientosPorLetra[letra] = [];
+        }
+        asientosPorLetra[letra].push(butaca);
+    });
+
+    // Ordenar cada grupo de asientos por número
+    Object.keys(asientosPorLetra).forEach(letra => {
+        asientosPorLetra[letra].sort((a: any, b: any) => {
+            const numeroA = parseInt(a.nombreAsiento.substring(1));
+            const numeroB = parseInt(b.nombreAsiento.substring(1));
+            return numeroA - numeroB;
+        });
+    });
+
+    // Devolver un array de arrays de asientos ordenados
+    return Object.values(asientosPorLetra);
+};
+
+
 </script>
 
 <template>
@@ -119,8 +147,9 @@ const toggleSelect = (butacaId: number) => {
     <div class="cosa" v-show="cambiar">
         <div>
             <h3>Lateral Izquierdo</h3>
-            <div class="bloqueA">
-                <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
+            <div class="bloqueA" v-for="grupoLetra in ordenarAsientos(butacasFiltradas('A'))"
+                :key="grupoLetra[0].nombreAsiento.charAt(0)">
+                <div v-for="butaca in grupoLetra" :key="butaca.asientoId">
                     <div class="box">
                         <template v-if="butaca.estado">
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
@@ -128,11 +157,13 @@ const toggleSelect = (butacaId: number) => {
                         </template>
                         <template v-else-if="!select.includes(butaca.asientoId)">
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                            <butacaG @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaG>
+                            <butacaG @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                            </butacaG>
                         </template>
                         <template v-else>
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                            <butacaB @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaB>
+                            <butacaB @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                            </butacaB>
                         </template>
                     </div>
                 </div>
@@ -140,8 +171,9 @@ const toggleSelect = (butacaId: number) => {
         </div>
         <div>
             <h3>Centro</h3>
-            <div class="bloqueB">
-                <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
+            <div class="bloqueB" v-for="grupoLetra in ordenarAsientos(butacasFiltradas('B'))"
+                :key="grupoLetra[0].nombreAsiento.charAt(0)">
+                <div v-for="butaca in grupoLetra" :key="butaca.asientoId">
                     <div class="box">
                         <template v-if="butaca.estado">
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
@@ -149,11 +181,13 @@ const toggleSelect = (butacaId: number) => {
                         </template>
                         <template v-else-if="!select.includes(butaca.asientoId)">
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                            <butacaG @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaG>
+                            <butacaG @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                            </butacaG>
                         </template>
                         <template v-else>
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                            <butacaB @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaB>
+                            <butacaB @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                            </butacaB>
                         </template>
                     </div>
                 </div>
@@ -161,26 +195,30 @@ const toggleSelect = (butacaId: number) => {
         </div>
         <div>
             <h3>Lateral Derecho</h3>
-            <div class="bloqueC">
-                <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
-                    <div>
+            <div class="bloqueC" v-for="grupoLetra in ordenarAsientos(butacasFiltradas('C'))"
+                :key="grupoLetra[0].nombreAsiento.charAt(0)">
+                <div v-for="butaca in grupoLetra" :key="butaca.asientoId">
+                    <div class="box">
                         <template v-if="butaca.estado">
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
                             <butacaR :class="`cursor-not-allowed`"></butacaR>
                         </template>
                         <template v-else-if="!select.includes(butaca.asientoId)">
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                            <butacaG @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaG>
+                            <butacaG @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                            </butacaG>
                         </template>
                         <template v-else>
                             <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                            <butacaB @click="ObtenerButaca(butaca.asientoId); toggleSelect(butaca.asientoId)"></butacaB>
+                            <butacaB @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                            </butacaB>
                         </template>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div v-show="!cambiar">
         <v-carousel hide-delimiters>
             <div class="cosa2">

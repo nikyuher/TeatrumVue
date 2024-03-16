@@ -1,23 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 import urlStore from '@/store/urlApi';
 
 const props = defineProps<{
-    idObra?: number;
+    idReserva: number;
 }>();
 
 const emits = defineEmits(['confirmacion']);
 const baseUrl: string = urlStore.baseUrl;
+
 const responseMessage = ref('');
 
+const deleteReserva = async (confirmacion: boolean) => {
 
-const deleteUser = async (confirmacion: boolean) => {
     try {
-        if (!props.idObra) {
-            throw new Error('Por favor ingrese un ID de usuario válido.');
+
+        if (!props.idReserva) {
+            responseMessage.value = 'Error con la Optencion del ID.';
+            throw new Error('Error con la Optencion del ID.');
         }
 
-        const response = await fetch(`${baseUrl}/Usuario/${props.idObra}`, {
+        const response = await fetch(`${baseUrl}/Reserva/${props.idReserva}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -25,23 +28,21 @@ const deleteUser = async (confirmacion: boolean) => {
         });
 
         if (!response.ok) {
-            throw new Error('Fallo al eliminar Usuario.');
+            responseMessage.value = 'Error del Servidor'
+            throw new Error('Error del Servidor');
         }
 
         responseMessage.value = 'Eliminado Correctamente.';
 
         setTimeout(() => {
             responseMessage.value = '';
-        }, 2000);
+        }, 3000);
 
         emits('confirmacion', confirmacion);
-
+        
     } catch (error) {
+        responseMessage.value = 'Fallo al Eliminar Reserva.'
         console.error(error);
-        responseMessage.value = 'No se a podido Eliminar.';
-        setTimeout(() => {
-            responseMessage.value = '';
-        }, 2000);
     }
 }
 </script>
@@ -50,7 +51,7 @@ const deleteUser = async (confirmacion: boolean) => {
     <v-dialog max-width="500">
         <template v-slot:activator="{ props: activatorProps }">
             <v-btn v-bind="activatorProps" rounded>
-                <v-icon color="white" size="32">
+                <v-icon color="white" size="20">
                     mdi-delete
                 </v-icon>
             </v-btn>
@@ -60,9 +61,7 @@ const deleteUser = async (confirmacion: boolean) => {
             <v-card title="¿Seguro que quieres Eliminarlo?">
                 <v-card-text>
                     <div class="ajustar">
-                        <v-btn @click="deleteUser(true)" class=" bg-blue-darken-1">
-                            <input type="submit" value="Si">
-                        </v-btn>
+                        <v-btn @click="deleteReserva(true)" type="submit" text="Si" class=" bg-blue-darken-1"></v-btn>
                         <v-btn text="No" @click="isActive.value = false"></v-btn>
                     </div>
                     <v-alert v-if="responseMessage" :value="true"
@@ -76,13 +75,13 @@ const deleteUser = async (confirmacion: boolean) => {
 </template>
 
 <style scoped>
-.ajustar{
-    color: white;
+.ajustar {
     display: flex;
     justify-content: space-evenly;
 }
 
 .v-btn {
+    height: 30px;
     color: white;
     background-color: red;
 }

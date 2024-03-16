@@ -4,6 +4,7 @@ import urlStore from '@/store/urlApi';
 
 const baseUrl: string = urlStore.baseUrl;
 
+const emits = defineEmits(['confirmacion']);
 const nombre = ref('');
 const email = ref('');
 const password = ref('');
@@ -23,7 +24,7 @@ const validarName = (value: string): boolean => {
     return value.length >= 4;
 };
 
-const addUser = async () => {
+const addUser = async (confirmacion: boolean) => {
 
     try {
         if (!validarName(nombre.value)) {
@@ -79,6 +80,8 @@ const addUser = async () => {
             responseMessage.value = '';
         }, 2000);
 
+        emits('confirmacion', confirmacion);
+
     } catch (error) {
         console.error(error);
         responseMessage.value = 'Ha ocurrido un Error al Crear .';
@@ -103,7 +106,7 @@ const addUser = async () => {
         <template v-slot:default>
             <v-card title="Crear Usuario">
                 <v-card-text>
-                    <form @submit.prevent="addUser" class="form">
+                    <form @submit.prevent="addUser(true)" class="form">
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
                             <input type="text" id="nombre" v-model="nombre" required>
