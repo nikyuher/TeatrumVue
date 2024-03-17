@@ -35,7 +35,7 @@ const onClickSeeAll = () => {
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/Obra/generos/${genero}`);
+    const response = await fetch(`${baseUrl}/Obra/generos?genero=${genero}`);
 
     if (!response.ok) {
       throw new Error('No se pudo obtener la data');

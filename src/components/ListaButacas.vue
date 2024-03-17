@@ -42,7 +42,7 @@ const ajustarTamaño = () => {
 onMounted(async () => {
     try {
         Butaca.butacasSeleccionadas = [];
-        const responseAsientos = await fetch(`${baseUrl}/Asiento/estado/false`);
+        const responseAsientos = await fetch(`${baseUrl}/Asiento/disponible?estado=false`);
         const responseObra = await fetch(`${baseUrl}/Obra/${idObra}/asientos`);
 
         if (!responseAsientos.ok || !responseObra.ok) {

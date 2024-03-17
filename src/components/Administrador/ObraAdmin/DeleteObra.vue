@@ -17,7 +17,7 @@ const deleteObra = async (confirmacion: boolean) => {
             throw new Error('Error con la Optencion del ID.');
         }
 
-        const response = await fetch(`${baseUrl}/Obra/${props.idObra}`, {
+        const response = await fetch(`${baseUrl}/Obra?id=${props.idObra}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

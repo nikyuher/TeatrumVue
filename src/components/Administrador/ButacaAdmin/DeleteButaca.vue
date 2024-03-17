@@ -21,7 +21,7 @@ const deleteButaca = async (confirmacion: boolean) => {
             throw new Error('Error con la Optencion del ID.');
         }
 
-        const response = await fetch(`${baseUrl}/Asiento/${butacaId.value}`, {
+        const response = await fetch(`${baseUrl}/Asiento?id=${butacaId.value}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

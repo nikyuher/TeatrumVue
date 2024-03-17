@@ -42,7 +42,7 @@ const updateObra = async (confirmacion: boolean) => {
             precioEntrada: precioEntrada.value
         };
 
-        const response = await fetch(`${baseUrl}/Obra/info/${obraId.value}`, {
+        const response = await fetch(`${baseUrl}/Obra/info?id=${obraId.value}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

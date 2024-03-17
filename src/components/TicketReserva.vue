@@ -46,7 +46,7 @@ const eventoCompra = async () => {
             asientoId: butaca.asientoId
         }));
 
-        const response = await fetch(`${baseUrl}/Reserva/${idUsuario}`, {
+        const response = await fetch(`${baseUrl}/Reserva`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -19,6 +19,7 @@ interface Reserva {
         imagen: string;
     };
     asiento: {
+        asientoId: number;
         nombreAsiento: string;
     };
 }
@@ -34,7 +35,7 @@ const headers = [
 const fetchReservas = async () => {
 
     try {
-        const response = await fetch(`${baseUrl}/Reserva/usuario/${idUsuario}`);
+        const response = await fetch(`${baseUrl}/Reserva/usuario?id=${idUsuario}`);
 
         if (!response.ok) {
             throw new Error("No se pudo obtener data");
@@ -91,7 +92,7 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
                     <td>{{ formatearFechaHora(item.obra.fechaHora) }}</td>
                     <td>{{ item.asiento.nombreAsiento }}</td>
                     <td>${{ item.obra.precioEntrada }}</td>
-                    <DeleteReserva :id-reserva="item.reservaId" @confirmacion="obtenerConfirmacion"></DeleteReserva>
+                    <DeleteReserva :id-reserva="item.reservaId" :id-butaca="item.asiento.asientoId" @confirmacion="obtenerConfirmacion"></DeleteReserva>
                 </tr>
             </template>
         </v-data-table>
