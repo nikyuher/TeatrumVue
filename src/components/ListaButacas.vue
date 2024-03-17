@@ -218,23 +218,31 @@ const ordenarAsientos = (butacas: any[]) => {
             </div>
         </div>
     </div>
-
     <div v-show="!cambiar">
         <v-carousel hide-delimiters>
             <div class="cosa2">
                 <v-carousel-item>
                     <div>
                         <h3>Lateral Izquierdo</h3>
-                        <div class="bloqueA">
-                            <div v-for="butaca in butacasFiltradas('A')" :key="butaca.asientoId">
+                        <div class="bloqueA" v-for="grupoLetra in ordenarAsientos(butacasFiltradas('A'))"
+                            :key="grupoLetra[0].nombreAsiento.charAt(0)">
+                            <div v-for="butaca in grupoLetra" :key="butaca.asientoId">
                                 <div class="box">
                                     <template v-if="butaca.estado">
                                         <p class="text-style">{{ butaca.nombreAsiento }}</p>
                                         <butacaR :class="`cursor-not-allowed`"></butacaR>
                                     </template>
+                                    <template v-else-if="!select.includes(butaca.asientoId)">
+                                        <p class="text-style">{{ butaca.nombreAsiento }}</p>
+                                        <butacaG
+                                            @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                                        </butacaG>
+                                    </template>
                                     <template v-else>
                                         <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                                        <butacaB
+                                            @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                                        </butacaB>
                                     </template>
                                 </div>
                             </div>
@@ -244,16 +252,25 @@ const ordenarAsientos = (butacas: any[]) => {
                 <v-carousel-item>
                     <div>
                         <h3>Centro</h3>
-                        <div class="bloqueB">
-                            <div v-for="butaca in butacasFiltradas('B')" :key="butaca.asientoId">
+                        <div class="bloqueB" v-for="grupoLetra in ordenarAsientos(butacasFiltradas('B'))"
+                            :key="grupoLetra[0].nombreAsiento.charAt(0)">
+                            <div v-for="butaca in grupoLetra" :key="butaca.asientoId">
                                 <div class="box">
                                     <template v-if="butaca.estado">
                                         <p class="text-style">{{ butaca.nombreAsiento }}</p>
                                         <butacaR :class="`cursor-not-allowed`"></butacaR>
                                     </template>
+                                    <template v-else-if="!select.includes(butaca.asientoId)">
+                                        <p class="text-style">{{ butaca.nombreAsiento }}</p>
+                                        <butacaG
+                                            @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                                        </butacaG>
+                                    </template>
                                     <template v-else>
                                         <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                                        <butacaB
+                                            @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                                        </butacaB>
                                     </template>
                                 </div>
                             </div>
@@ -263,16 +280,25 @@ const ordenarAsientos = (butacas: any[]) => {
                 <v-carousel-item>
                     <div>
                         <h3>Lateral Derecho</h3>
-                        <div class="bloqueC">
-                            <div v-for="butaca in butacasFiltradas('C')" :key="butaca.asientoId">
-                                <div>
+                        <div class="bloqueC" v-for="grupoLetra in ordenarAsientos(butacasFiltradas('C'))"
+                            :key="grupoLetra[0].nombreAsiento.charAt(0)">
+                            <div v-for="butaca in grupoLetra" :key="butaca.asientoId">
+                                <div class="box">
                                     <template v-if="butaca.estado">
                                         <p class="text-style">{{ butaca.nombreAsiento }}</p>
                                         <butacaR :class="`cursor-not-allowed`"></butacaR>
                                     </template>
+                                    <template v-else-if="!select.includes(butaca.asientoId)">
+                                        <p class="text-style">{{ butaca.nombreAsiento }}</p>
+                                        <butacaG
+                                            @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                                        </butacaG>
+                                    </template>
                                     <template v-else>
                                         <p class="text-style">{{ butaca.nombreAsiento }}</p>
-                                        <butacaG @click="ObtenerButaca(butaca.asientoId)"></butacaG>
+                                        <butacaB
+                                            @click="ObtenerButaca(butaca.asientoId); marcarSelecionado(butaca.asientoId)">
+                                        </butacaB>
                                     </template>
                                 </div>
                             </div>

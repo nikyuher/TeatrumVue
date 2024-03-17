@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onBeforeMount, computed, onMounted, ref, watch } from 'vue';
 import { usarInfoUsuario } from '@/store/userInfo';
+import search from '@/components/BusquedaObra.vue'
+
 
 const windowWidth = ref(window.innerWidth);
 const store = usarInfoUsuario();
@@ -11,7 +13,7 @@ onMounted(() => {
 });
 
 watch(windowWidth, (newWidth) => {
-  if (newWidth <= 734) {
+  if (newWidth <= 831) {
     // Ocultar el menú cuando el ancho de la ventana sea menor o igual a 556px
   }
 });
@@ -33,31 +35,36 @@ onBeforeMount(() => {
           <h1>Teatrum</h1>
         </router-link>
       </div>
-      <div v-if="windowWidth <= 734">
-        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" v-if="!userInfo" to="/login">Iniciar Sesion</router-link>
-        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" v-if="userInfo" :to="'/setting'">{{ userInfo.nombre }}</router-link>
+      <div v-if="windowWidth <= 831">
+        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+          v-if="!userInfo" to="/login">Iniciar Sesion</router-link>
+        <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+          v-if="userInfo" :to="'/setting'">{{ userInfo.nombre }}</router-link>
         <v-btn color="rgb(27, 27, 26)">
           <v-app-bar-nav-icon></v-app-bar-nav-icon>
           <v-menu activator="parent">
             <v-list style="background-color: #333;">
               <v-list-item>
-                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" to="/estrenos">ProximosEstrenos</router-link>
+                <search></search>
               </v-list-item>
               <v-list-item>
-                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" to="/catalogo">Catalogo</router-link>
+                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+                  to="/catalogo">Catalogo</router-link>
               </v-list-item>
               <v-list-item>
-                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" to="/about">Contactanos</router-link>
+                <router-link style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+                  to="/about">Contactanos</router-link>
               </v-list-item>
               <v-list-item><router-link
-                  style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;" v-if="userInfo && userInfo.rol === true" to="/admin">Administrador</router-link>
+                  style="color: white; font-family: 'Radio Canada', sans-serif; text-decoration: none;"
+                  v-if="userInfo && userInfo.rol === true" to="/admin">Administrador</router-link>
               </v-list-item>
             </v-list>
           </v-menu>
         </v-btn>
       </div>
-      <nav v-if="windowWidth > 734">
-        <router-link to="/estrenos">Proximos Estrenos</router-link>
+      <nav v-if="windowWidth > 831">
+        <search></search>
         <router-link to="/catalogo">Catalogo</router-link>
         <router-link to="/about">Contactanos</router-link>
         <router-link v-if="userInfo && userInfo.rol === true" to="/admin">Administrador</router-link>

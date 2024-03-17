@@ -31,65 +31,72 @@ const ajustarTamaño = () => {
     }
 };
 const items = ['Información de la Obra', 'Escoger Butacas', 'Comprar Tickets'];
+const items2 = ['Información', 'Butacas', 'Comprar'];
 const step = ref<number>(1);
 </script>
 
 <template>
-    <!-- <div v-show="cambiar"> -->
-    <v-stepper v-model="step" :items="items" show-actions>
-        <template v-slot:item>
-            <div class="contenedorComprar">
-                <div class="contImagenObraPopular">
-                    <img :src="obraInfo?.imagen" alt="Imagen de la obra">
-                </div>
-                <div class="descripcionCompra">
-                    <ObraId :id-obra="idObra"></ObraId>
-                </div>
-            </div>
-        </template>
-
-        <template v-slot:item.2>
-            <div class="contenedorBloques">
-                <butacas :id-obra="idObra"></butacas>
-            </div>
-        </template>
-
-        <template v-slot:item.3>
-            <div class="formComprar">
-                <Ticket :id-obra="idObra"></Ticket>
-            </div>
-        </template>
-    </v-stepper>
-    <!-- </div>
-    <div v-show="!cambiar">
-        <div class="cosa2">
-            <div class="contenedorComprar2">
-                <h1>Informacion Obra</h1>
-                <v-carousel hide-delimiters>
-                    <div class="cosa2">
-                        <v-carousel-item>
-                            <div class="contImagenObraPopular">
-                                <img :src="obraInfo?.imagen" alt="Imagen de la obra">
-                            </div>
-                        </v-carousel-item>
-                        <v-carousel-item>
-                            <div class="descripcionCompra2">
-                                <ObraId :id-obra="idObra"></ObraId>
-                            </div>
-                        </v-carousel-item>
+    <div v-show="cambiar">
+        <v-stepper v-model="step" :items="items" show-actions>
+            <template v-slot:item>
+                <div class="contenedorComprar">
+                    <div class="contImagenObraPopular">
+                        <img :src="obraInfo?.imagen" alt="Imagen de la obra">
                     </div>
-                </v-carousel>
-            </div>
-            <h1>Informacion Asientos</h1>
-            <div class="contenedorBloques">
-                <butacas :id-obra="idObra"></butacas>
-            </div>
-            <h1>Comprar</h1>
-            <div class="formComprar">
-                <Ticket :id-obra="idObra"></Ticket>
-            </div>
-        </div>
-    </div> -->
+                    <div class="descripcionCompra">
+                        <ObraId :id-obra="idObra"></ObraId>
+                    </div>
+                </div>
+            </template>
+
+            <template v-slot:item.2>
+                <div class="contenedorBloques">
+                    <butacas :id-obra="idObra"></butacas>
+                </div>
+            </template>
+
+            <template v-slot:item.3>
+                <div class="formComprar">
+                    <Ticket :id-obra="idObra"></Ticket>
+                </div>
+            </template>
+        </v-stepper>
+    </div>
+    <div v-show="!cambiar">
+        <v-stepper v-model="step" :items="items2" show-actions>
+            <template v-slot:item>
+                <div class="contenedorComprar2">
+                    <h1>Informacion Obra</h1>
+                    <v-carousel hide-delimiters>
+                        <div class="cosa2">
+                            <v-carousel-item>
+                                <div class="contImagenObraPopular">
+                                    <img :src="obraInfo?.imagen" alt="Imagen de la obra">
+                                </div>
+                            </v-carousel-item>
+                            <v-carousel-item>
+                                <div class="descripcionCompra2">
+                                    <ObraId :id-obra="idObra"></ObraId>
+                                </div>
+                            </v-carousel-item>
+                        </div>
+                    </v-carousel>
+                </div>
+            </template>
+
+            <template v-slot:item.2>
+                <div class="contenedorBloques">
+                    <butacas :id-obra="idObra"></butacas>
+                </div>
+            </template>
+
+            <template v-slot:item.3>
+                <div class="formComprar">
+                    <Ticket :id-obra="idObra"></Ticket>
+                </div>
+            </template>
+        </v-stepper>
+    </div>
 </template>
 
 <style scoped>
