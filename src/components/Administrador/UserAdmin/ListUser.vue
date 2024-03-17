@@ -5,7 +5,6 @@ import DeleteAdd from '@/components/Administrador/UserAdmin/DeleteUser.vue';
 import AdminAdd from '@/components/Administrador/UserAdmin/AddUser.vue';
 
 const baseUrl: string = urlStore.baseUrl;
-const itemsPerPage = ref<number>(10);
 const search = ref<string>('');
 const tableKey = ref(0);
 
@@ -22,7 +21,7 @@ const responseMessage = ref('');
 const headers = [
     { title: 'ID', key: 'usuarioId' },
     { title: 'Nombre', key: 'nombre' },
-    { title: 'Correo Electrónico', key: 'correoElectronico' },
+    { title: 'Correo', key: 'correoElectronico' },
     { title: 'Rol', key: 'rol' }
 ];
 
@@ -71,12 +70,12 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
 </script>
 
 <template>
-    <v-container class="contenedor" style="height: 500px; overflow-y: auto;">
+    <div class="contenedor">
         <h2>Lista de Usuarios</h2>
-        <v-text-field v-model="search" label="Buscar por nombre o correo electrónico" @change="fetchUsuarios"  outlined dense
-            style="width: 250px;"></v-text-field>
+        <v-text-field v-model="search" label="Buscar por nombre o correo electrónico" @change="fetchUsuarios" outlined
+            dense style="width: 250px;"></v-text-field>
         <AdminAdd @confirmacion="obtenerConfirmacion"></AdminAdd>
-        <v-data-table :key="tableKey" :headers="headers" :items="usuariosTable" v-model:items-per-page="itemsPerPage">
+        <v-data-table class="ajustar" :key="tableKey" :headers="headers" :items="usuariosTable">
             <template v-slot:item="{ item }">
                 <tr>
                     <td>{{ item.usuarioId }}</td>
@@ -87,13 +86,16 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
                 </tr>
             </template>
         </v-data-table>
-        <v-alert v-if="responseMessage" :value="true" type="error" dismissible>
-            {{ responseMessage }}
-        </v-alert>
-    </v-container>
+        <p class="response">{{ responseMessage }}</p>
+    </div>
 </template>
 
 <style scoped>
+
+.ajustar {
+    width: 100%
+}
+
 .contenedor {
     width: 100%;
     margin: auto;

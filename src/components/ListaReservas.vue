@@ -81,9 +81,9 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
 </script>
 
 <template>
-    <v-container>
+    <div class="contenedor">
         <h2>Listado de Reservas</h2>
-        <v-data-table :key="tableKey" :headers="headers" :items="Reservas" item-key="reservaId">
+        <v-data-table class="ajustar" :key="tableKey" :headers="headers" :items="Reservas" item-key="reservaId">
             <template v-slot:item="{ item }">
                 <tr>
                     <td><img :src="ImagenUrl(item.obra.imagen)" alt="Imagen de la obra" height="50"></td>
@@ -92,11 +92,11 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
                     <td>{{ formatearFechaHora(item.obra.fechaHora) }}</td>
                     <td>{{ item.asiento.nombreAsiento }}</td>
                     <td>${{ item.obra.precioEntrada }}</td>
-                    <DeleteReserva :id-reserva="item.reservaId" :id-butaca="item.asiento.asientoId" @confirmacion="obtenerConfirmacion"></DeleteReserva>
+                    <DeleteReserva :id-reserva="item.reservaId"  @confirmacion="obtenerConfirmacion"></DeleteReserva>
                 </tr>
             </template>
         </v-data-table>
-    </v-container>
+    </div>
 </template>
 
 <style scoped>
@@ -105,7 +105,13 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
     flex-wrap: wrap;
     gap: 20px;
 }
+.contenedor {
+  width: 100%;
+}
 
+.ajustar {
+  width: 100%
+}
 .reserva-card {
     width: 300px;
 }

@@ -14,6 +14,7 @@ interface Obra {
   genero: string;
   título: string;
   descripción: string;
+  fechaHora: string;
   precioEntrada: number;
   imagen: string;
 }
@@ -29,6 +30,7 @@ const headers = [
   { title: 'Título', key: 'título' },
   { title: 'Género', key: 'genero' },
   { title: 'Descripción', key: 'descripción' },
+  { title: 'Fecha Hora', key: 'fechaHora' },
   { title: 'Precio', key: 'precioEntrada' },
 ];
 
@@ -78,11 +80,13 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
 </script>
 
 <template>
-  <v-container>
+  <div class="contenedor">
     <h2>Listado de Obras</h2>
-    <v-text-field v-model="search" label="Buscar" outlined @change="fetchObras" dense style="width: 250px;"></v-text-field>
+    <v-text-field v-model="search" label="Buscar" outlined @change="fetchObras" dense
+      style="width: 250px;"></v-text-field>
     <AddObra @confirmacion="obtenerConfirmacion"></AddObra>
-    <v-data-table :key="tableKey" :headers="headers" :items="BuscadorObras" item-key="obraId" v-if="obras.length > 0">
+    <v-data-table class="ajustar" :key="tableKey" :headers="headers" :items="BuscadorObras" item-key="obraId"
+      v-if="obras.length > 0">
       <template v-slot:item="{ item }">
         <tr>
           <td>{{ item.obraId }}</td>
@@ -90,6 +94,7 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
           <td>{{ truncateDescription(item.título) }}</td>
           <td>{{ item.genero }}</td>
           <td>{{ truncateDescription(item.descripción) }}</td>
+          <td>{{ item.fechaHora }}</td>
           <td>${{ item.precioEntrada }}</td>
           <PutInfoObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></PutInfoObra>
           <PutImgObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></PutImgObra>
@@ -98,9 +103,15 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
       </template>
     </v-data-table>
     <p class="response">{{ responseMessage }}</p>
-  </v-container>
+  </div>
 </template>
 
 <style scoped>
-/* Estilos */
+.contenedor {
+  width: 100%;
+}
+
+.ajustar {
+  width: 100%
+}
 </style>

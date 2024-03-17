@@ -76,7 +76,7 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
       <AddButaca @confirmacion="obtenerConfirmacion"></AddButaca>
     </div>
     <input type="text" v-model="nombreButacaABuscar" placeholder="Buscar por nombre..." class="input-field">
-    <v-data-table :key="tableKey" :headers="headers" :items="filteredButacas" v-if="butacas.length > 0">
+    <v-data-table  :key="tableKey" :headers="headers" :items="filteredButacas" v-if="butacas.length > 0">
       <template v-slot:item="{ item }">
         <tr>
           <td>{{ item.asientoId }}</td>

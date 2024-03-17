@@ -4,9 +4,9 @@ import { usarInfoUsuario } from '@/store/userInfo';
 import search from '@/components/BusquedaObra.vue'
 
 
-const windowWidth = ref(window.innerWidth);
 const store = usarInfoUsuario();
 const userInfo = computed(() => store.userInfo);
+const windowWidth = ref(window.innerWidth);
 
 onMounted(() => {
   window.addEventListener('resize', updateWindowWidth);
@@ -25,6 +25,7 @@ const updateWindowWidth = () => {
 onBeforeMount(() => {
   store.loadUserInfo();
 });
+
 </script>
 
 <template>

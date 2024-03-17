@@ -4,7 +4,6 @@ import urlStore from '@/store/urlApi';
 
 const props = defineProps<{
     idReserva: number;
-    idButaca:number;
 }>();
 
 const emits = defineEmits(['confirmacion']);
@@ -33,17 +32,6 @@ const deleteReserva = async (confirmacion: boolean) => {
             throw new Error('Error del Servidor');
         }
 
-        const response2 = await fetch(`${baseUrl}/Asiento?id=${props.idButaca}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response2.ok) {
-            responseMessage.value = 'Error del Servidor'
-            throw new Error('Error del Servidor');
-        }
         responseMessage.value = 'Eliminado Correctamente.';
 
         setTimeout(() => {
