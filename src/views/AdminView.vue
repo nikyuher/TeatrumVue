@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VEmptyState } from 'vuetify/labs/VEmptyState'
-import { ref, onMounted, onBeforeMount, watch, computed} from 'vue';
+import { ref, onMounted, onBeforeMount, watch, computed } from 'vue';
 import { usarInfoUsuario } from '@/store/userInfo';
 
 import ListUser from '@/components/Administrador/UserAdmin/ListUser.vue';
@@ -22,59 +22,23 @@ const mostrarView = (view: string) => {
     opcionActual.value = view;
 };
 
-//Cambio de Resolucion
-const windowWidth = ref(window.innerWidth);
-
-const updateWindowWidth = () => {
-    windowWidth.value = window.innerWidth;
-};
-
-onMounted(() => {
-    window.addEventListener('resize', updateWindowWidth);
-});
-
-// actualizacion del tamaño de la ventana 
-onBeforeMount(() => {
-    updateWindowWidth();
-});
-
-watch(windowWidth, (newWidth) => {
-    if (newWidth <= 866) {
-        // comentario para no de error
-    }
-});
 
 </script>
 
 <template>
     <main>
         <div v-if="isAdmin">
-            <div class="contDiseñoMobil" v-if="windowWidth <= 866">
-                <div class="navMobil">
-                    <nav>
-                        <ul>
-                            <li @click="mostrarView('user')">Usuario</li>
-                            <li @click="mostrarView('obra')">Obra</li>
-                            <li @click="mostrarView('butaca')">Butaca</li>
-                        </ul>
-                    </nav>
-                </div>
-                <article>
-                    <section>
-                        <div class="form-box" v-if="opcionActual === 'user'">
-                            <ListUser></ListUser>
-                        </div>
-                        <div class="form-box" v-else-if="opcionActual === 'obra'">
-                            <ListObra></ListObra>
-                        </div>
-                        <div class="form-box" v-else-if="opcionActual === 'butaca'">
-                            <ListButaca></ListButaca>
-                        </div>
-                    </section>
-                </article>
-            </div>
-            <div class="contDiseñoWindows" v-else>
+            <div class="navMobil">
                 <nav>
+                    <ul>
+                        <li @click="mostrarView('user')">Usuario</li>
+                        <li @click="mostrarView('obra')">Obra</li>
+                        <li @click="mostrarView('butaca')">Butaca</li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="contDiseñoWindows">
+                <nav class="navWindows">
                     <ul>
                         <li @click="mostrarView('user')">Usuario</li>
                         <li @click="mostrarView('obra')">Obra</li>
@@ -86,10 +50,10 @@ watch(windowWidth, (newWidth) => {
                         <div class="form-box" v-if="opcionActual === 'user'">
                             <ListUser></ListUser>
                         </div>
-                        <div class="form-box" v-else-if="opcionActual === 'obra'">
+                        <div class="form-box" v-if="opcionActual === 'obra'">
                             <ListObra></ListObra>
                         </div>
-                        <div class="form-box" v-else-if="opcionActual === 'butaca'">
+                        <div class="form-box" v-if="opcionActual === 'butaca'">
                             <ListButaca></ListButaca>
                         </div>
                     </section>
@@ -121,6 +85,7 @@ watch(windowWidth, (newWidth) => {
 
 /* Contenedor Nav para telefonos */
 .navMobil {
+    display: none;
     background-color: #333;
 }
 
@@ -177,5 +142,16 @@ watch(windowWidth, (newWidth) => {
 .form-box {
     border: 1px solid #ccc;
     min-height: 885px;
+}
+
+/* Estilos para pantallas */
+@media screen and (max-width: 875px) {
+    .navWindows {
+        display: none;
+    }
+
+    .navMobil {
+        display: block;
+    }
 }
 </style>
