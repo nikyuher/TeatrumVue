@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeMount, watch } from 'vue';
+import { ref } from 'vue';
 
 import CerrarSesion from '@/components/CerrarSesion.vue';
 import ChangeName from '@/components/ChangeName.vue';
@@ -11,64 +11,24 @@ const vistaActual = ref<string>('info');
 const mostrarView = (view: string) => {
     vistaActual.value = view;
 };
-
-//Cambio de Resolucion
-const windowWidth = ref(window.innerWidth);
-
-const updateWindowWidth = () => {
-    windowWidth.value = window.innerWidth;
-};
-
-onMounted(() => {
-    window.addEventListener('resize', updateWindowWidth);
-});
-
-// actualizacion del tamaño de la ventana 
-onBeforeMount(() => {
-    updateWindowWidth();
-});
-
-watch(windowWidth, (newWidth) => {
-    if (newWidth <= 875) {
-        // comentario para no de error
-    }
-});
 </script>
 
 <template>
     <main>
-        <div v-if="windowWidth <= 875">
-            <div class="navMobil">
-                <nav>
-                    <ul>
-                        <li @click="mostrarView('info')">Información Usuario</li>
-                        <li @click="mostrarView('change')">Cambiar Información</li>
-                        <li @click="mostrarView('reserva')">Reservas</li>
-                        <li>
-                            <CerrarSesion></CerrarSesion>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <article >
-                <section>
-                    <div class="form-box" v-if="vistaActual === 'reserva'">
-                        <h2>Reservas</h2>
-                        <Reservas></Reservas>
-                    </div>
-                    <div class="form-box" v-else-if="vistaActual === 'info'">
-                        <h2>Información Usuario</h2>
-                        <InfoUser></InfoUser>
-                    </div>
-                    <div class="form-box" v-else-if="vistaActual === 'change'">
-                        <h2>Cambiar Información</h2>
-                        <ChangeName></ChangeName>
-                    </div>
-                </section>
-            </article>
-        </div>
-        <div class="container" v-else>
+        <div class="navMobil">
             <nav>
+                <ul>
+                    <li @click="mostrarView('info')">Información Usuario</li>
+                    <li @click="mostrarView('change')">Cambiar Información</li>
+                    <li @click="mostrarView('reserva')">Reservas</li>
+                    <li>
+                        <CerrarSesion></CerrarSesion>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="container">
+            <nav class="navWindows">
                 <ul>
                     <li @click="mostrarView('info')">Información Usuario</li>
                     <li @click="mostrarView('change')">Cambiar Información</li>
@@ -99,8 +59,7 @@ watch(windowWidth, (newWidth) => {
 </template>
 
 <style scoped>
-
-main{
+main {
     min-height: 800px;
 }
 
@@ -173,5 +132,20 @@ li:hover {
     border-radius: 5px;
     margin: 20px;
     flex-grow: 1;
+}
+
+.navMobil {
+    display: none;
+}
+
+/* Estilos para pantallas */
+@media screen and (max-width: 875px) {
+    .navWindows {
+        display: none;
+    }
+
+    .navMobil {
+        display: block;
+    }
 }
 </style>
