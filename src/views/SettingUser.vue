@@ -84,11 +84,11 @@ watch(windowWidth, (newWidth) => {
                         <h2>Reservas</h2>
                         <Reservas></Reservas>
                     </div>
-                    <div class="form-box" v-else-if="vistaActual === 'info'">
+                    <div class="form-box" v-if="vistaActual === 'info'">
                         <h2>Información Usuario</h2>
                         <InfoUser></InfoUser>
                     </div>
-                    <div class="form-box" v-else-if="vistaActual === 'change'">
+                    <div class="form-box" v-if="vistaActual === 'change'">
                         <h2>Cambiar Información</h2>
                         <ChangeName></ChangeName>
                     </div>
