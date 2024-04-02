@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { VEmptyState } from 'vuetify/labs/VEmptyState'
-import { ref, onMounted, onBeforeMount, watch, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { usarInfoUsuario } from '@/store/userInfo';
 
 import ListUser from '@/components/Administrador/UserAdmin/ListUser.vue';
