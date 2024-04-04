@@ -6,38 +6,20 @@ import { useInfoAsientos } from '@/store/listaButacas'
 import butacaR from '@/components/icons/IconButacaRed.vue'
 import butacaG from '@/components/icons/IconButacaGreen.vue'
 import butacaB from '@/components/icons/IconButacaBlue.vue'
-
 import urlStore from '@/store/urlApi';
 
 const props = defineProps<{
     idObra?: number;
 }>();
+
 const Butaca = useInfoButaca();
-
 const baseUrl: string = urlStore.baseUrl;
-
 
 const butacas = ref<any[]>([]);
 const infoButaca = useInfoButaca();
 const listButacas = useInfoAsientos()
 const mostar = computed(() => listButacas.asientos);
 const idObra = props.idObra;
-
-const cambiar = ref<boolean>();
-
-onMounted(() => {
-    window.addEventListener('resize', ajustarTamaño);
-    ajustarTamaño();
-});
-
-const ajustarTamaño = () => {
-    const width = window.innerWidth;
-    if (width <= 1060) {
-        cambiar.value = false
-    } else {
-        cambiar.value = true
-    }
-};
 
 onMounted(async () => {
     try {
@@ -137,14 +119,13 @@ const ordenarAsientos = (butacas: any[]) => {
     return Object.values(asientosPorLetra);
 };
 
-
 </script>
 
 <template>
     <div class="pantalla">
         <h1>Pantalla</h1>
     </div>
-    <div class="cosa" v-show="cambiar">
+    <div class="cosa vistaWindows">
         <div>
             <h3>Lateral Izquierdo</h3>
             <div class="bloqueA" v-for="grupoLetra in ordenarAsientos(butacasFiltradas('A'))"
@@ -218,7 +199,7 @@ const ordenarAsientos = (butacas: any[]) => {
             </div>
         </div>
     </div>
-    <div v-show="!cambiar">
+    <div class="vistaMobil">
         <v-carousel hide-delimiters>
             <div class="cosa2">
                 <v-carousel-item>
@@ -311,6 +292,10 @@ const ordenarAsientos = (butacas: any[]) => {
 </template>
 
 <style scoped>
+.vistaMobil{
+    display: none;
+}
+
 .pantalla {
     background-color: gray;
     text-align: center;
@@ -364,4 +349,14 @@ const ordenarAsientos = (butacas: any[]) => {
     flex-wrap: wrap;
     align-items: center;
 }
+@media screen and (max-width: 1060px) {
+    .vistaWindows {
+        display: none;
+    }
+
+    .vistaMobil {
+        display: block;
+    }
+}
+
 </style>

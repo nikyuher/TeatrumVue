@@ -1,12 +1,13 @@
 <script setup lang="ts">
 
+import { computed, ref } from 'vue'
+import { useObraInfo } from '@/store/obraInfo';
+import { useRoute } from 'vue-router';
+
 import butacas from '@/components/ListaButacas.vue'
 import ObraId from '@/components/ObraEspecificaId.vue'
 import Ticket from '@/components/TicketReserva.vue'
 
-import { computed, ref, onMounted } from 'vue'
-import { useObraInfo } from '@/store/obraInfo';
-import { useRoute } from 'vue-router';
 
 const store = useObraInfo();
 const obraInfo = computed(() => store.infoObra);
@@ -15,28 +16,14 @@ const route = useRoute();
 const idObra = ref<number>(0);
 idObra.value = Array.isArray(route.params.idObra) ? parseInt(route.params.idObra[0]) : parseInt(route.params.idObra);
 
-const cambiar = ref<boolean>();
-
-onMounted(() => {
-    window.addEventListener('resize', ajustarTamaño);
-    ajustarTamaño();
-});
-
-const ajustarTamaño = () => {
-    const resolucion = window.innerWidth;
-    if (resolucion <= 1060) {
-        cambiar.value = false
-    } else {
-        cambiar.value = true
-    }
-};
 const items = ['Información de la Obra', 'Escoger Butacas', 'Comprar Tickets'];
 const items2 = ['Información', 'Butacas', 'Comprar'];
 const step = ref<number>(1);
+
 </script>
 
 <template>
-    <div v-show="cambiar">
+    <div class="vistaWindows">
         <v-stepper v-model="step" :items="items" show-actions>
             <template v-slot:item>
                 <div class="contenedorComprar">
@@ -62,7 +49,7 @@ const step = ref<number>(1);
             </template>
         </v-stepper>
     </div>
-    <div v-show="!cambiar">
+    <div class="vistaMobil">
         <v-stepper v-model="step" :items="items2" show-actions>
             <template v-slot:item>
                 <div class="contenedorComprar2">
@@ -112,6 +99,10 @@ const step = ref<number>(1);
     margin-bottom: 30px;
 }
 
+.vistaMobil {
+    display: none;
+}
+
 /*Informacion de la Obra */
 
 .contImagenObraPopular img {
@@ -158,4 +149,15 @@ const step = ref<number>(1);
     align-items: center;
     text-align: center
 }
+
+@media screen and (max-width: 1060px) {
+    .vistaWindows {
+        display: none;
+    }
+
+    .vistaMobil {
+        display: block;
+    }
+}
+
 </style>

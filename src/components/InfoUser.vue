@@ -12,17 +12,17 @@ const userInfo = computed(() => [
 </script>
 
 <template>
-        <v-card class="info-card">
-            <v-card-title class="info-title">Detalles del Usuario</v-card-title>
-            <v-card-text>
-                <v-container>
-                    <v-row v-for="info in userInfo" :key="info.label" class="info-row">
-                        <v-col cols="4" class="info-label">{{ info.label }}:</v-col>
-                        <v-col cols="8" class="info-value">{{ info.value }}</v-col>
-                    </v-row>
-                </v-container>
-            </v-card-text>
-        </v-card>
+    <v-card class="info-card">
+        <v-card-title class="info-title">Detalles del Usuario</v-card-title>
+        <v-card-text>
+            <v-container>
+                <v-row v-for="info in userInfo" :key="info.label" class="info-row">
+                    <v-col cols="4" class="info-label">{{ info.label }}:</v-col>
+                    <v-col cols="8" class="info-value">{{ info.value }}</v-col>
+                </v-row>
+            </v-container>
+        </v-card-text>
+    </v-card>
 </template>
 
 <style scoped>
