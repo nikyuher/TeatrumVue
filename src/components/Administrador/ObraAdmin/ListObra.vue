@@ -80,38 +80,54 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
 </script>
 
 <template>
-  <div class="contenedor">
-    <h2>Listado de Obras</h2>
-    <v-text-field v-model="search" label="Buscar" outlined @change="fetchObras" dense
-      style="width: 250px;"></v-text-field>
-    <AddObra @confirmacion="obtenerConfirmacion"></AddObra>
-    <v-data-table class="ajustar" :key="tableKey" :headers="headers" :items="BuscadorObras" item-key="obraId"
-      v-if="obras.length > 0">
-      <template v-slot:item="{ item }">
-        <tr>
-          <td>{{ item.obraId }}</td>
-          <td><v-img :src="item.imagen" height="55" contain /></td>
-          <td>{{ truncateDescription(item.título) }}</td>
-          <td>{{ item.genero }}</td>
-          <td>{{ truncateDescription(item.descripción) }}</td>
-          <td>{{ item.fechaHora }}</td>
-          <td>${{ item.precioEntrada }}</td>
-          <PutInfoObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></PutInfoObra>
-          <PutImgObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></PutImgObra>
-          <DeleteObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></DeleteObra>
-        </tr>
-      </template>
-    </v-data-table>
-    <p class="response">{{ responseMessage }}</p>
-  </div>
+  <h2>Listado de Obras</h2>
+  <v-text-field v-model="search" label="Buscar" outlined @change="fetchObras" dense
+    style="width: 250px;"></v-text-field>
+  <AddObra @confirmacion="obtenerConfirmacion"></AddObra>
+  <v-data-table :key="tableKey" :headers="headers" :items="BuscadorObras" item-key="obraId" v-if="obras.length > 0">
+    <template v-slot:item="{ item }">
+      <tr>
+        <td>{{ item.obraId }}</td>
+        <td><v-img :src="item.imagen" height="55" contain /></td>
+        <td>{{ truncateDescription(item.título) }}</td>
+        <td>{{ item.genero }}</td>
+        <td>{{ truncateDescription(item.descripción) }}</td>
+        <td>{{ item.fechaHora }}</td>
+        <td>${{ item.precioEntrada }}</td>
+        <PutInfoObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></PutInfoObra>
+        <PutImgObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></PutImgObra>
+        <DeleteObra :id-obra="item.obraId" @confirmacion="obtenerConfirmacion"></DeleteObra>
+      </tr>
+    </template>
+  </v-data-table>
+  <p class="response">{{ responseMessage }}</p>
 </template>
 
 <style scoped>
-.contenedor {
-  width: 100%;
+@media screen and (max-width: 875px) {
+  .v-data-table {
+    width: 820px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .v-data-table {
+    width: 750px;
+  }
+}
+@media screen and (max-width: 540px) {
+  .v-data-table {
+    width: 520px;
+  }
+}
+@media screen and (max-width: 430px) {
+  .v-data-table {
+    width: 412px;
+  }
 }
 
-.ajustar {
-  width: 100%
+@media screen and (max-width: 390px) {
+  .v-data-table {
+    width: 390px;
+  }
 }
 </style>

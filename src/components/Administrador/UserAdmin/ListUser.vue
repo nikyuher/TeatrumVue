@@ -100,4 +100,30 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
     width: 100%;
     margin: auto;
 }
+@media screen and (max-width: 875px) {
+  .v-data-table {
+    width: 820px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .v-data-table {
+    width: 750px;
+  }
+}
+@media screen and (max-width: 540px) {
+  .v-data-table {
+    width: 520px;
+  }
+}
+@media screen and (max-width: 430px) {
+  .v-data-table {
+    width: 412px;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .v-data-table {
+    width: 390px;
+  }
+}
 </style>

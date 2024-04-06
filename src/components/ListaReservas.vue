@@ -81,46 +81,51 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
 </script>
 
 <template>
-    <div class="contenedor">
-        <h2>Listado de Reservas</h2>
-        <v-data-table class="ajustar" :key="tableKey" :headers="headers" :items="Reservas" item-key="reservaId">
-            <template v-slot:item="{ item }">
-                <tr>
-                    <td><img :src="ImagenUrl(item.obra.imagen)" alt="Imagen de la obra" height="50"></td>
-                    <td>{{ item.obra.título }}</td>
-                    <td>{{ item.obra.genero }}</td>
-                    <td>{{ formatearFechaHora(item.obra.fechaHora) }}</td>
-                    <td>{{ item.asiento.nombreAsiento }}</td>
-                    <td>${{ item.obra.precioEntrada }}</td>
-                    <DeleteReserva :id-reserva="item.reservaId"  @confirmacion="obtenerConfirmacion"></DeleteReserva>
-                </tr>
-            </template>
-        </v-data-table>
-    </div>
+    <h2>Listado de Reservas</h2>
+    <v-data-table :key="tableKey" :headers="headers" :items="Reservas" item-key="reservaId">
+        <template v-slot:item="{ item }">
+            <tr>
+                <td><img :src="ImagenUrl(item.obra.imagen)" alt="Imagen de la obra" height="50"></td>
+                <td>{{ item.obra.título }}</td>
+                <td>{{ item.obra.genero }}</td>
+                <td>{{ formatearFechaHora(item.obra.fechaHora) }}</td>
+                <td>{{ item.asiento.nombreAsiento }}</td>
+                <td>${{ item.obra.precioEntrada }}</td>
+                <DeleteReserva :id-reserva="item.reservaId" @confirmacion="obtenerConfirmacion"></DeleteReserva>
+            </tr>
+        </template>
+    </v-data-table>
 </template>
 
 <style scoped>
-.reservas-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-.contenedor {
-  width: 100%;
+
+@media screen and (max-width: 875px) {
+    .v-data-table {
+        width: 820px;
+    }
 }
 
-.ajustar {
-  width: 100%
-}
-.reserva-card {
-    width: 300px;
-}
-
-.reserva-card v-card {
-    width: 100%;
+@media screen and (max-width: 768px) {
+    .v-data-table {
+        width: 750px;
+    }
 }
 
-.reserva-card v-img {
-    object-fit: cover;
+@media screen and (max-width: 540px) {
+    .v-data-table {
+        width: 520px;
+    }
+}
+
+@media screen and (max-width: 430px) {
+    .v-data-table {
+        width: 412px;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .v-data-table {
+        width: 390px;
+    }
 }
 </style>

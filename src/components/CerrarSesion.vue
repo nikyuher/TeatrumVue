@@ -17,18 +17,31 @@ const eventCerrarSesion = async () => {
 </script>
 
 <template>
-    <v-btn @click="eventCerrarSesion" color="error" dark>
-        Cerrar Sesión
-    </v-btn>
+    <div class="btn-pc">
+        <v-btn @click="eventCerrarSesion" color="error" dark>
+            Cerrar Sesión
+        </v-btn>
+    </div>
+    <div class="btn-mobil">
+        <v-btn @click="eventCerrarSesion" color="error" dark>
+            Cerrar
+        </v-btn>
+    </div>
 </template>
 
 
 <style scoped>
-.contenedor {
-    margin: auto;
-    width: 300px;
-    height: 500px;
-    text-align: center;
-    border: solid 1px black;
+.btn-mobil {
+    display: none;
+}
+
+@media screen and (max-width: 451px) {
+    .btn-mobil {
+        display: block;
+    }
+
+    .btn-pc {
+        display: none;
+    }
 }
 </style>

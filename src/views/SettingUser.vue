@@ -18,8 +18,8 @@ const mostrarView = (view: string) => {
         <div class="navMobil">
             <nav>
                 <ul>
-                    <li @click="mostrarView('info')">Información Usuario</li>
-                    <li @click="mostrarView('change')">Cambiar Información</li>
+                    <li @click="mostrarView('info')">Información</li>
+                    <li @click="mostrarView('change')">Modificar</li>
                     <li @click="mostrarView('reserva')">Reservas</li>
                     <li>
                         <CerrarSesion></CerrarSesion>
@@ -45,7 +45,7 @@ const mostrarView = (view: string) => {
                         <Reservas></Reservas>
                     </div>
                     <div class="form-box" v-if="vistaActual === 'info'">
-                        <h2>Información Usuario</h2>
+                        <h2>Información</h2>
                         <InfoUser></InfoUser>
                     </div>
                     <div class="form-box" v-if="vistaActual === 'change'">
@@ -124,14 +124,6 @@ li:hover {
     display: flex;
     justify-content: center;
     margin: auto;
-}
-
-.form-box {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin: 20px;
-    flex-grow: 1;
 }
 
 .navMobil {

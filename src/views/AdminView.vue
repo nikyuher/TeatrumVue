@@ -140,8 +140,8 @@ const mostrarView = (view: string) => {
 /* Contenedor de las listas */
 
 .form-box {
-    border: 1px solid #ccc;
     min-height: 885px;
+    width: auto;
 }
 
 /* Estilos para pantallas */
