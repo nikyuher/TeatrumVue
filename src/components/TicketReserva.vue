@@ -1,12 +1,11 @@
 <script setup lang="ts">
 
-import { useInfoButaca } from '@/store/infoButaca';
 import { useInfoAsientos } from '@/store/listaButacas';
 import { usarInfoUsuario } from '@/store/userInfo';
 import { useObraInfo } from '@/store/obraInfo';
 import { computed } from 'vue';
-import urlStore from '@/store/urlApi';
 import { useRouter } from 'vue-router';
+import urlStore from '@/store/urlApi';
 const router = useRouter();
 
 const baseUrl: string = urlStore.baseUrl;
@@ -14,6 +13,7 @@ const baseUrl: string = urlStore.baseUrl;
 const props = defineProps<{
     idObra?: number;
 }>();
+
 const idObraReal = props.idObra;
 
 const Usuario = usarInfoUsuario();
@@ -21,16 +21,15 @@ const Usuario = usarInfoUsuario();
 const Obra = useObraInfo();
 const obraInfo = computed(() => Obra.infoObra);
 
-const Butaca = useInfoButaca();
 const Asientos = useInfoAsientos();
 
 const idUsuario = Usuario.userInfo?.usuarioId
 
-const nombreAsientos = computed(() => Butaca.butacasSeleccionadas.map(butaca => butaca.nombreAsiento).join(', '));
+const nombreAsientos = computed(() => Asientos.butacasSeleccionadas.map(butaca => butaca.nombreAsiento).join(', '));
 
 const total = computed(() => {
     if (!obraInfo.value) return 0;
-    return obraInfo.value.precio * Butaca.butacasSeleccionadas.length;
+    return obraInfo.value.precio * Asientos.butacasSeleccionadas.length;
 })
 
 const eventoCompra = async () => {
@@ -40,7 +39,7 @@ const eventoCompra = async () => {
             throw new Error('Tienes que Iniciar Sesion para Comprar.');
         }
 
-        const Reservas = Butaca.butacasSeleccionadas.map(butaca => ({
+        const Reservas = Asientos.butacasSeleccionadas.map(butaca => ({
             usuarioId: idUsuario,
             obraId: idObraReal,
             asientoId: butaca.asientoId
@@ -58,7 +57,7 @@ const eventoCompra = async () => {
             throw new Error('Fallo al Hacer la reserva');
         }
 
-        const ocuparAsiento = Butaca.butacasSeleccionadas.map(butaca => ({
+        const ocuparAsiento = Asientos.butacasSeleccionadas.map(butaca => ({
             obraId: idObraReal,
             asientoId: butaca.asientoId
         }));
@@ -87,7 +86,7 @@ const eventoCompra = async () => {
             });
 
             Asientos.setAsientos(nuevosAsientos);
-            Butaca.butacasSeleccionadas = [];
+            Asientos.butacasSeleccionadas = [];
             setTimeout(() => {
                 router.push('/catalogo');
             }, 1000);

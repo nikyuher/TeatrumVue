@@ -1,75 +1,26 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { useInfoButaca } from '@/store/infoButaca';
 import { useInfoAsientos } from '@/store/listaButacas'
 
 import butacaR from '@/components/icons/IconButacaRed.vue'
 import butacaG from '@/components/icons/IconButacaGreen.vue'
 import butacaB from '@/components/icons/IconButacaBlue.vue'
-import urlStore from '@/store/urlApi';
 
 const props = defineProps<{
-    idObra?: number;
+    idObra: number;
 }>();
 
-const baseUrl: string = urlStore.baseUrl;
-const Butaca = useInfoButaca();
-
-const butacas = ref<any[]>([]);
-const infoButaca = useInfoButaca();
 const listButacas = useInfoAsientos()
 const mostar = computed(() => listButacas.asientos);
+const select = ref<number[]>([]);
 const idObra = props.idObra;
 
-onMounted(async () => {
-    try {
-        Butaca.butacasSeleccionadas = [];
-        const responseAsientos = await fetch(`${baseUrl}/Asiento/disponible?estado=false`);
-        const responseObra = await fetch(`${baseUrl}/Obra/${idObra}/asientos`);
-
-        if (!responseAsientos.ok || !responseObra.ok) {
-            throw new Error("No se pudo obtener data");
-        }
-
-        const dataAsientos = await responseAsientos.json();
-        const dataObra = await responseObra.json();
-
-        dataObra.asientosOcupados.forEach((obraAsiento: any) => {
-            const index = dataAsientos.findIndex((asiento: any) => asiento.nombreAsiento === obraAsiento.nombreAsiento);
-            if (index !== -1) {
-                dataAsientos[index].estado = obraAsiento.estado;
-            }
-        });
-
-        butacas.value = dataAsientos;
-        listButacas.setAsientos(dataAsientos);
-
-    } catch (error) {
-        console.log('Error al cargar las butacas', error)
-    }
+onMounted(() => {   
+    listButacas.listaAsientos(idObra);
 });
 
-const fetchButaca = async (butacaId: number) => {
-    try {
-        const response = await fetch(`${baseUrl}/Asiento/${butacaId}`);
-
-        if (!response.ok) {
-            throw new Error('No se pudo obtener la data');
-        }
-
-        const data = await response.json();
-
-        const Butaca = {
-            asientoId: data.asientoId,
-            nombreAsiento: data.nombreAsiento,
-            estado: data.estado
-        };
-
-        infoButaca.ButacasSeleccionadas(Butaca);
-
-    } catch (error) {
-        console.error('Error al obtener la butaca:', error);
-    }
+const fetchButaca = (butacaId: number) => {
+    listButacas.Butaca(butacaId);
 };
 
 const ObtenerButaca = (butacaId: number) => {
@@ -80,7 +31,6 @@ const butacasFiltradas = (letra: string) => {
     return mostar.value.filter(butaca => butaca.nombreAsiento.startsWith(letra));
 }
 
-const select = ref<number[]>([]);
 
 const marcarSelecionado = (butacaId: number) => {
     const index = select.value.indexOf(butacaId);
