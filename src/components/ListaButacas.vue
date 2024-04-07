@@ -12,8 +12,8 @@ const props = defineProps<{
     idObra?: number;
 }>();
 
-const Butaca = useInfoButaca();
 const baseUrl: string = urlStore.baseUrl;
+const Butaca = useInfoButaca();
 
 const butacas = ref<any[]>([]);
 const infoButaca = useInfoButaca();
