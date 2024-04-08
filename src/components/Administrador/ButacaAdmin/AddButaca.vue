@@ -1,48 +1,37 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import urlStore from '@/store/urlApi';
+import { useInfoAsientos } from '@/store/listaButacas';
 
-const baseUrl: string = urlStore.baseUrl;
+const listButacas = useInfoAsientos();
 
 const emits = defineEmits(['confirmacion']);
 const nombre = ref('');
 const estado = ref(false);
 const responseMessage = ref('');
 
-const butaca = async (confirmacion: boolean) => {
-
+const addButaca = async () => {
     try {
-        const crear = {
-            nombreAsiento: nombre.value,
-            estado: estado.value
-        };
+        
+        const confirmacion = await listButacas.addButaca(nombre.value, estado.value);
 
-        const response = await fetch(`${baseUrl}/Asiento`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(crear)
-        });
+        if (confirmacion) {
+            nombre.value = '';
+            estado.value = false;
 
-        if (!response.ok) {
+            responseMessage.value = 'Creado Correctamente.';
+
+            setTimeout(() => {
+                responseMessage.value = '';
+            }, 2000);
+
+            emits('confirmacion', true);
+        } else {
             throw new Error('Fallo al crear Butaca.');
         }
 
-        nombre.value = ''
-        estado.value = false
-
-        responseMessage.value = 'Creado Correctamente.';
-
-        setTimeout(() => {
-            responseMessage.value = '';
-        }, 2000);
-
-        emits('confirmacion', confirmacion);
-
     } catch (error) {
         console.error(error);
-        responseMessage.value = 'Ha ocurrido un Error al Crear .';
+        responseMessage.value = 'Ha ocurrido un Error al Crear Butaca.';
 
         setTimeout(() => {
             responseMessage.value = '';
@@ -63,7 +52,7 @@ const butaca = async (confirmacion: boolean) => {
         <template v-slot:default>
             <v-card title="Crear Butaca">
                 <v-card-text>
-                    <form @submit.prevent="butaca(true)">
+                    <form @submit.prevent="addButaca()">
                         <label for="nombre">Nombre</label>
                         <input type="text" id="nombre" v-model="nombre" required>
                         <label for="estado">Estado</label>

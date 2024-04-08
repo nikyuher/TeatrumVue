@@ -44,7 +44,8 @@ const obtenerGenero = (contexto: string): string => {
                                 <h2>{{ obtenerGenero(contexto) }}</h2>
                             </router-link>
                         </div>
-                        <ListaGenero :genero="obtenerGenero(contexto)" :mostrar-solo-tres="true" class="listaGeneros"></ListaGenero>
+                        <ListaGenero :genero="obtenerGenero(contexto)" :mostrar-solo-tres="true">
+                        </ListaGenero>
                     </div>
                 </section>
             </div>
@@ -53,9 +54,6 @@ const obtenerGenero = (contexto: string): string => {
 </template>
 
 <style scoped>
-.listaGeneros {
-    margin: auto;
-}
 
 main {
     background-color: rgb(99, 0, 0);
@@ -73,7 +71,7 @@ main {
     color: rgb(235, 170, 49);
 }
 
-h2{
+h2 {
     color: rgb(235, 170, 49);
 }
 

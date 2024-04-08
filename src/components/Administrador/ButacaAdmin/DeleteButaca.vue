@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import urlStore from '@/store/urlApi';
+import { useInfoAsientos } from '@/store/listaButacas';
+
+const listButacas = useInfoAsientos();
 
 const props = defineProps<{
     idButaca: number;
 }>();
 
 const emits = defineEmits(['confirmacion']);
-const baseUrl: string = urlStore.baseUrl;
 
 const butacaId = ref(props.idButaca);
 const responseMessage = ref('');
 
-const deleteButaca = async (confirmacion: boolean) => {
+const deleteButaca = async () => {
 
     try {
 
@@ -21,26 +22,19 @@ const deleteButaca = async (confirmacion: boolean) => {
             throw new Error('Error con la Optencion del ID.');
         }
 
-        const response = await fetch(`${baseUrl}/Asiento?id=${butacaId.value}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            responseMessage.value = 'Error del Servidor'
-            throw new Error('Error del Servidor');
-        }
-
-        responseMessage.value = 'Eliminado Correctamente.';
-
-        setTimeout(() => {
-            responseMessage.value = '';
-        }, 3000);
-
-        emits('confirmacion', confirmacion);
+        const confirmacion = await listButacas.deleteButaca(butacaId.value);
         
+        if (confirmacion) {
+            responseMessage.value = 'Eliminado Correctamente.';
+
+            setTimeout(() => {
+                responseMessage.value = '';
+            }, 3000);
+
+            emits('confirmacion', true);
+        } else {
+            throw new Error('Fallo al Eliminar Butaca.');
+        }
     } catch (error) {
         responseMessage.value = 'Fallo al Eliminar Butaca.'
         console.error(error);
@@ -62,7 +56,8 @@ const deleteButaca = async (confirmacion: boolean) => {
             <v-card title="¿Seguro que quieres Eliminarlo?">
                 <v-card-text>
                     <div class="ajustar">
-                        <v-btn @click="deleteButaca(true)" type="submit" text="Si" class=" bg-blue-darken-1"></v-btn>
+                        <p>{{ butacaId }}</p>
+                        <v-btn @click="deleteButaca()" type="submit" text="Si" class=" bg-blue-darken-1"></v-btn>
                         <v-btn text="No" @click="isActive.value = false"></v-btn>
                     </div>
                     <v-alert v-if="responseMessage" :value="true"

@@ -5,11 +5,11 @@ const baseUrl: string = urlStore.baseUrl;
 
 export const useInfoAsientos = defineStore('infoAsientos', {
   state: () => ({
-    asientos: [] as any[], // Puedes definir aquí tus estados iniciales
+    asientos: [] as any[],
     butacasSeleccionadas: [] as any[],
   }),
   actions: {
-    async Butaca(butacaId: number) {
+    async butacaEspecifica(butacaId: number) {
       try {
         const response = await fetch(`${baseUrl}/Asiento/${butacaId}`);
 
@@ -25,14 +25,17 @@ export const useInfoAsientos = defineStore('infoAsientos', {
           estado: data.estado
         };
 
-        this.infoButaca(butaca);
+        this.butacaSelecionada(butaca);
 
       } catch (error) {
         console.error('Error al obtener la butaca:', error);
       }
     },
-    async listaAsientos(idObra: number) {
+    async listButacasObra(idObra: number) {
       try {
+
+        this.butacasSeleccionadas = []
+
         const responseAsientos = await fetch(`${baseUrl}/Asiento/disponible?estado=false`);
         const responseObra = await fetch(`${baseUrl}/Obra/${idObra}/asientos`);
 
@@ -56,7 +59,74 @@ export const useInfoAsientos = defineStore('infoAsientos', {
         console.log('Error al cargar las butacas', error)
       }
     },
-    infoButaca(butaca: any) {
+    async allButacas() {
+      try {
+        const response = await fetch(`${baseUrl}/Asiento`);
+        if (!response.ok) {
+          throw new Error('Fallo al obtener la lista de butacas.');
+        }
+        const data = await response.json();
+        this.setAsientos(data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteButaca(butacaId: number) {
+      try {
+        const response = await fetch(`${baseUrl}/Asiento?id=${butacaId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Error del Servidor');
+        }
+
+        const index = this.asientos.findIndex((butaca: any) => butaca.asientoId === butacaId);
+        if (index !== -1) {
+          this.asientos.splice(index, 1);
+        }
+
+        await this.allButacas();
+
+        return true;
+
+      } catch (error) {
+        console.error(error);
+        throw new Error('Fallo al Eliminar Butaca.');
+      }
+    },
+    async addButaca(nombre: string, estado: boolean) {
+      try {
+        const crear = {
+            nombreAsiento: nombre,
+            estado: estado
+        };
+
+        const response = await fetch(`${baseUrl}/Asiento`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(crear)
+        });
+
+        if (!response.ok) {
+            throw new Error('Fallo al crear Butaca.');
+        }
+
+        await this.allButacas();
+
+        return true;  
+
+      } catch (error) {
+        console.error(error);
+        throw new Error('Ha ocurrido un Error al Crear Butaca Pinia.');
+      }
+    },
+    butacaSelecionada(butaca: any) {
       const index = this.butacasSeleccionadas.findIndex(b => b.asientoId === butaca.asientoId);
       if (index === -1) {
         this.butacasSeleccionadas.push({ ...butaca, cantidad: 1 });

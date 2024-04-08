@@ -16,11 +16,11 @@ const select = ref<number[]>([]);
 const idObra = props.idObra;
 
 onMounted(() => {   
-    listButacas.listaAsientos(idObra);
+    listButacas.listButacasObra(idObra);
 });
 
 const fetchButaca = (butacaId: number) => {
-    listButacas.Butaca(butacaId);
+    listButacas.butacaEspecifica(butacaId);
 };
 
 const ObtenerButaca = (butacaId: number) => {

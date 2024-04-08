@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import urlStore from '@/store/urlApi';
+import { useInfoAsientos } from '@/store/listaButacas';
+
 import AddButaca from '@/components/Administrador/ButacaAdmin/AddButaca.vue';
 import DeleteButaca from '@/components/Administrador/ButacaAdmin/DeleteButaca.vue';
-
-const baseUrl: string = urlStore.baseUrl;
-
-interface Asiento {
-  asientoId: number;
-  nombreAsiento: string;
-  estado: boolean;
-}
 
 const headers = [
   { title: 'ID', key: 'asientoId' },
@@ -18,31 +11,18 @@ const headers = [
   { title: 'Estado', key: 'estado' }
 ];
 
-const butacas = ref<Asiento[]>([]);
+const listButacas = useInfoAsientos();
 const responseMessage = ref('');
 const estadoSeleccionado = ref<boolean | null>(null);
 const nombreButacaABuscar = ref('');
 const tableKey = ref(0);
 
-const fetchButacas = async () => {
-  try {
-    const response = await fetch(`${baseUrl}/Asiento`);
-    if (!response.ok) {
-      throw new Error('Fallo al obtener la lista de butacas.');
-    }
-    const data = await response.json();
-    butacas.value = data;
-    tableKey.value += 1;
-  } catch (error) {
-    console.error(error);
-    responseMessage.value = 'Ha ocurrido un error al obtener la lista de butacas.';
-  }
-};
-
-onMounted(fetchButacas);
+onMounted(() => {
+  listButacas.allButacas();
+});
 
 const filteredButacas = computed(() => {
-  return butacas.value.filter(butaca => {
+  return listButacas.asientos.filter(butaca => {
     const estadoFilter = estadoSeleccionado.value === null || butaca.estado === estadoSeleccionado.value;
     const nombreFilter = nombreButacaABuscar.value === '' || butaca.nombreAsiento.toLowerCase().includes(nombreButacaABuscar.value.toLowerCase());
     return estadoFilter && nombreFilter;
@@ -52,14 +32,13 @@ const filteredButacas = computed(() => {
 const reloadButacas = (confirmacion: boolean) => {
   if (confirmacion) {
     tableKey.value += 1;
-    fetchButacas();
+    listButacas.allButacas();
   }
 };
 
 const obtenerConfirmacion = (confirmacion: boolean) => {
   reloadButacas(confirmacion);
 };
-
 
 </script>
 
@@ -68,7 +47,7 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
     <h2>Lista de Butacas</h2>
     <div>
       <label for="estado">Filtrar por estado:</label>
-      <select id="estado" v-model="estadoSeleccionado" @change="fetchButacas" class="custom-select">
+      <select id="estado" v-model="estadoSeleccionado" @change="listButacas.allButacas" class="custom-select">
         <option :value="null">Todos</option>
         <option :value="true">Ocupado</option>
         <option :value="false">Disponible</option>
@@ -76,7 +55,7 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
       <AddButaca @confirmacion="obtenerConfirmacion"></AddButaca>
     </div>
     <input type="text" v-model="nombreButacaABuscar" placeholder="Buscar por nombre..." class="input-field">
-    <v-data-table  :key="tableKey" :headers="headers" :items="filteredButacas" v-if="butacas.length > 0">
+    <v-data-table  :key="tableKey" :headers="headers" :items="filteredButacas" v-if="listButacas.asientos.length > 0">
       <template v-slot:item="{ item }">
         <tr>
           <td>{{ item.asientoId }}</td>
