@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import ListaGenero from '@/components/ListaGenero.vue'
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import ListaGenero from '@/components/ListaGenero.vue'
 
 // Obtener la referencia a la ruta actual
 const route = useRoute();
@@ -31,7 +31,7 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
                 </section>
                 <section>
                     <div class="contGeneros">
-                        <ListaGenero :genero="genero" :mostrar-todo="true" class="listaGeneros"></ListaGenero>
+                        <ListaGenero :genero="genero" :mostrar-todo="false"></ListaGenero>
                     </div>
                 </section>
             </div>
@@ -41,9 +41,6 @@ genero.value = Array.isArray(route.params.genero) ? route.params.genero[0] : rou
 
 <style scoped>
 
-.listaGeneros {
-    margin: auto;
-}
 main {
     background-color: rgb(99, 0, 0);
     color: white;

@@ -1,19 +1,35 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import urlStore from '@/store/urlApi';
-
-const baseUrl: string = urlStore.baseUrl;
+import { useObraInfo } from '@/store/obraInfo';
 
 const props = defineProps<{
   genero: string;
-  mostrarSoloTres?: boolean;
-  mostrarTodo?: boolean;
+  mostrarSoloTres: boolean;
 }>();
 
 const itemsPerPage = ref(4);
 const itemsPerPage2 = ref(4);
+
 const obras = ref<any[]>([]);
+const store = useObraInfo();
+
 const genero = props.genero;
+const mostrar = props.mostrarSoloTres;
+
+onMounted(async () => {
+  try {
+    await store.listaGeneros(genero);
+
+    obras.value = props.mostrarSoloTres ? store.generoEspecifico.slice(0, 5) : store.generoEspecifico;
+
+  } catch (error) {
+    console.error('Error al obtener las obras:', error);
+  }
+});
+
+onMounted(async () => {
+  store.generoEspecific(genero)
+});
 
 onMounted(() => {
   window.addEventListener('resize', ajustarTamaño);
@@ -33,22 +49,10 @@ const onClickSeeAll = () => {
   itemsPerPage2.value = itemsPerPage2.value === 4 ? obras.value.length : 4;
 };
 
-onMounted(async () => {
-  try {
-    const response = await fetch(`${baseUrl}/Obra/generos?genero=${genero}`);
-
-    if (!response.ok) {
-      throw new Error('No se pudo obtener la data');
-    }
-
-    const data = await response.json();
-
-    obras.value = props.mostrarSoloTres ? data.slice(0, 6) : data;
-
-  } catch (error) {
-    console.error('Error al obtener las obras:', error);
-  }
-});
+const getImagenUrl = (imagenBytes: string) => {
+  const blob = new Blob([base64ToArrayBuffer(imagenBytes)], { type: 'image/png' });
+  return URL.createObjectURL(blob);
+};
 
 const base64ToArrayBuffer = (base64: string) => {
   const binaryString = window.atob(base64);
@@ -60,28 +64,23 @@ const base64ToArrayBuffer = (base64: string) => {
   return bytes.buffer;
 };
 
-const getImagenUrl = (imagenBytes: string) => {
-  const blob = new Blob([base64ToArrayBuffer(imagenBytes)], { type: 'image/png' });
-  return URL.createObjectURL(blob);
-};
-
 const formatearFechaHora = (fechaHora: string): string => {
-    const date = new Date(fechaHora);
-    const options: Intl.DateTimeFormatOptions = {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-    };
-    return date.toLocaleDateString('es-ES', options);
+  const date = new Date(fechaHora);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  };
+  return date.toLocaleDateString('es-ES', options);
 };
 
 </script>
 
 <template>
-  <div v-show="mostrarSoloTres">
+  <div v-show="mostrar">
     <v-data-iterator :items="obras" :items-per-page="itemsPerPage">
       <template v-slot:default="{ items }">
         <div class="d-flex flex-wrap align-center justify-center pa-4 ">
@@ -94,7 +93,7 @@ const formatearFechaHora = (fechaHora: string): string => {
                       <h3>{{ obra.raw.título }}</h3>
                       <p>{{ obra.raw.descripción.slice(0, 150) }}</p>
                       <p>Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
-                      <p>{{ formatearFechaHora( obra.raw.fechaHora ) }}</p>
+                      <p>{{ formatearFechaHora(obra.raw.fechaHora) }}</p>
                     </div>
                   </v-expand-transition>
                 </v-img>
@@ -123,8 +122,8 @@ const formatearFechaHora = (fechaHora: string): string => {
       </template>
     </v-data-iterator>
   </div>
-  <div v-show="!mostrarSoloTres">
-    <v-data-iterator :items="obras" :items-per-page="itemsPerPage2">
+  <div v-show="!mostrar">
+    <v-data-iterator :items="store.generoEspecifico" :items-per-page="itemsPerPage2">
       <template v-slot:default="{ items }">
         <div class="d-flex flex-wrap align-center justify-center pa-4 ">
           <div class="targeta d-flex row " v-for="obra in items" :key="obra.raw.obraId">
@@ -136,7 +135,7 @@ const formatearFechaHora = (fechaHora: string): string => {
                       <h3>{{ obra.raw.título }}</h3>
                       <p>{{ obra.raw.descripción.slice(0, 150) }}</p>
                       <p>Precio de entrada: ${{ obra.raw.precioEntrada }}</p>
-                      <p>{{ formatearFechaHora( obra.raw.fechaHora ) }}</p>
+                      <p>{{ formatearFechaHora(obra.raw.fechaHora) }}</p>
                     </div>
                   </v-expand-transition>
                 </v-img>

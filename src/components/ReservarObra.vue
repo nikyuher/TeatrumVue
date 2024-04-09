@@ -28,7 +28,7 @@ const step = ref<number>(1);
             <template v-slot:item>
                 <div class="contenedorComprar">
                     <div class="contImagenObraPopular">
-                        <img :src="obraInfo?.imagen" alt="Imagen de la obra">
+                        <img :src="obraInfo?.imagen" alt="Imagen de la obra" style="height: 500px;">
                     </div>
                     <div class="descripcionCompra">
                         <ObraId :id-obra="idObra"></ObraId>
@@ -104,10 +104,6 @@ const step = ref<number>(1);
 }
 
 /*Informacion de la Obra */
-
-.contImagenObraPopular img {
-    width: 266px;
-}
 
 .contImagenObraPopular {
     margin: auto;
