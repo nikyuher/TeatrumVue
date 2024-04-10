@@ -22,6 +22,7 @@ const busqueda = computed({
     set: (value) => {
         busquedaInput.value = value;
         if (!value) {
+            resultadosBusqueda.value = [];
             store.resultadosBusqueda = []
         }
     }
@@ -33,6 +34,7 @@ onMounted(() => {
 
 const manejarHacerclicFuera = (event: MouseEvent) => {
     if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
+        resultadosBusqueda.value = [];
         store.resultadosBusqueda = []
         busquedaInput.value = '';
     }
@@ -40,7 +42,12 @@ const manejarHacerclicFuera = (event: MouseEvent) => {
 
 const ocultarDesplegable = () => {
     busquedaInput.value = '';
-    store.resultadosBusqueda = []
+    resultadosBusqueda.value = [];
+    store.resultadosBusqueda = [];
+    setTimeout(() => {
+        window.location.reload();
+    }, 100);
+
 }
 
 </script>
