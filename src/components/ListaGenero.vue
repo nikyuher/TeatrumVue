@@ -27,10 +27,6 @@ onMounted(async () => {
   }
 });
 
-onMounted(async () => {
-  store.generoEspecific(genero)
-});
-
 onMounted(() => {
   window.addEventListener('resize', ajustarTamaño);
   ajustarTamaño();

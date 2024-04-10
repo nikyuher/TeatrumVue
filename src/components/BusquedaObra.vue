@@ -1,29 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import urlStore from '@/store/urlApi';
+import { useObraInfo } from '@/store/obraInfo';
 
-interface Obra {
-    obraId: number;
-    imagen: string;
-    título: string;
-    descripcion: string;
-    fechaHora: string;
-    precioEntrada: number;
-}
-
-const baseUrl: string = urlStore.baseUrl;
 const busquedaInput = ref('');
-const resultadosBusqueda = ref<Obra[]>([]);
+const resultadosBusqueda = ref<any[]>([]);
 const dropdown = ref<HTMLElement | null>(null);
+const store = useObraInfo();
 
 const search = async () => {
     try {
-        const response = await fetch(`${baseUrl}/Obra/search?titulo=${busquedaInput.value}`);
-        if (!response.ok) {
-            throw new Error('Fallo al obtener los datos.');
-        }
-        const data = await response.json();
-        resultadosBusqueda.value = data;
+        await store.searchObra(busquedaInput.value)
+
+        resultadosBusqueda.value = store.resultadosBusqueda;
     } catch (error) {
         console.log(error);
     }
@@ -31,10 +19,10 @@ const search = async () => {
 
 const busqueda = computed({
     get: () => busquedaInput.value,
-    set: (value) => { 
-        busquedaInput.value = value; 
+    set: (value) => {
+        busquedaInput.value = value;
         if (!value) {
-            resultadosBusqueda.value = []; 
+            store.resultadosBusqueda = []
         }
     }
 });
@@ -45,14 +33,14 @@ onMounted(() => {
 
 const manejarHacerclicFuera = (event: MouseEvent) => {
     if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
-        resultadosBusqueda.value = [];
-        busquedaInput.value = ''; 
+        store.resultadosBusqueda = []
+        busquedaInput.value = '';
     }
 }
 
 const ocultarDesplegable = () => {
-    busquedaInput.value = ''; 
-    resultadosBusqueda.value = [];
+    busquedaInput.value = '';
+    store.resultadosBusqueda = []
 }
 
 </script>

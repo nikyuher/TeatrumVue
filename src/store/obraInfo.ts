@@ -33,7 +33,8 @@ export const useObraInfo = defineStore({
 
     state: () => ({
         infoObra: null as ObraInfo | null,
-        generoEspecifico : [] as any[]
+        generoEspecifico : [] as ObraInfo[],
+        resultadosBusqueda: [] as ObraInfo[]
     }),
 
     actions: {
@@ -79,20 +80,16 @@ export const useObraInfo = defineStore({
                 console.error('Error al obtener las obras:', error);
             }
         },
-        async generoEspecific (genero : string ) {
+        async searchObra(busqueda : string) {
             try {
-                const response = await fetch(`${baseUrl}/Obra/generos?genero=${genero}`);
-                
+                const response = await fetch(`${baseUrl}/Obra/search?titulo=${busqueda}`);
                 if (!response.ok) {
-                    throw new Error('No se pudo obtener la data');
+                    throw new Error('Fallo al obtener los datos.');
                 }
-                
                 const data = await response.json();
-
-                this.generoEspecifico = data;
-                
+                this.resultadosBusqueda = data;
             } catch (error) {
-                console.error('Error al obtener las obras:', error);
+                console.log(error);
             }
         },
         setObraInfo(infoObra: ObraInfo) {
