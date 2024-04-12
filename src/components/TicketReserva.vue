@@ -119,7 +119,7 @@ const formatearFechaHora = (fechaHora: string | undefined): string => {
     <form @submit.prevent="eventoCompra">
         <div class="datosForm">
             <label>Obra de Teatro </label>
-            <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.titulo"></v-text-field>
+            <v-text-field type="text" id="inputNombreObra" :value="obraInfo?.título"></v-text-field>
             <label>Sitio de Asiento:</label>
             <v-text-field type="text" id="inputSitioAsiento" :value="nombreAsientos" readonly></v-text-field>
             <label>Dìa y hora</label>

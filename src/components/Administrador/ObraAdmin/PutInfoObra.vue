@@ -1,23 +1,25 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import urlStore from '@/store/urlApi';
+import { useObraInfo } from '@/store/obraInfo';
 
 const props = defineProps<{
-    idObra?: number;
+    idObra: number;
 }>();
 
 const emits = defineEmits(['confirmacion']);
-const baseUrl: string = urlStore.baseUrl;
+const store = useObraInfo();
 
 const obraId = ref(props.idObra);
 const genero = ref('');
-const dia = ref('');
 const titulo = ref('');
-const hora = ref(0);
-const minuto = ref(0);
 const descripcion = ref('');
 const precioEntrada = ref(0);
 const responseMessage = ref('');
+const descripcionLength = computed(() => descripcion.value.length);
+
+const dia = ref('');
+const hora = ref(0);
+const minuto = ref(0);
 
 const fechaHora = computed(() => {
     const fecha = dia.value ? new Date(dia.value) : new Date();
@@ -33,7 +35,7 @@ const minutos = Array.from({ length: 60 }, (_, i) => i);
 const updateObra = async (confirmacion: boolean) => {
     try {
 
-        const obraData = {
+        const obraData : any = {
             obraId: obraId.value,
             genero: genero.value,
             título: titulo.value,
@@ -42,17 +44,7 @@ const updateObra = async (confirmacion: boolean) => {
             precioEntrada: precioEntrada.value
         };
 
-        const response = await fetch(`${baseUrl}/Obra/info?id=${obraId.value}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obraData)
-        });
-
-        if (!response.ok) {
-            throw new Error('Fallo al actualizar la obra.');
-        }
+        await store.putInfoObra(obraData)
 
         genero.value = ''
         titulo.value = ''
@@ -75,12 +67,12 @@ const updateObra = async (confirmacion: boolean) => {
     }
 }
 
-const descripcionLength = computed(() => descripcion.value.length);
 const limitInput = () => {
     if (descripcionLength.value >= 250) {
         descripcion.value = descripcion.value.substring(0, 250);
     }
 }
+
 </script>
 
 <template>

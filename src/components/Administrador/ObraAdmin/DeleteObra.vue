@@ -1,32 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import urlStore from '@/store/urlApi';
+import { useObraInfo } from '@/store/obraInfo';
 
 const props = defineProps<{
     idObra: number;
 }>();
 
 const emits = defineEmits(['confirmacion']);
+
 const responseMessage = ref('');
-const baseUrl: string = urlStore.baseUrl;
+const store = useObraInfo();
 
 const deleteObra = async (confirmacion: boolean) => {
     try {
+        
         if (!props.idObra) {
             responseMessage.value = 'Error con la Optencion del ID.';
             throw new Error('Error con la Optencion del ID.');
         }
 
-        const response = await fetch(`${baseUrl}/Obra?id=${props.idObra}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Fallo al eliminar la obra.');
-        }
+        await store.deleteObra(props.idObra)
 
         responseMessage.value = 'Eliminada Correctamente.';
 

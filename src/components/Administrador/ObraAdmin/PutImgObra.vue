@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import urlStore from '@/store/urlApi';
+import { useObraInfo } from '@/store/obraInfo';
 
 const props = defineProps<{
     idObra: number;
 }>();
 
 const emits = defineEmits(['confirmacion']);
-const baseUrl: string = urlStore.baseUrl;
+const store = useObraInfo();
 
 const obraId = ref(props.idObra);
 const img = ref<File | null>(null);
@@ -28,18 +28,7 @@ const updateImage = async (confirmacion: boolean) => {
             imagen: base64Image
         };
 
-        const response = await fetch(`${baseUrl}/Obra/img?id=${obraId.value}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(PutImgObra)
-        });
-
-        if (!response.ok) {
-            throw new Error('Fallo al actualizar la imagen de la obra.');
-        }
-
+        await store.putImgObra(PutImgObra)
 
         responseMessage.value = 'Actualizado correctamente.';
 

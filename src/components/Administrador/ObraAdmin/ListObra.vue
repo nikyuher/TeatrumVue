@@ -4,10 +4,7 @@ import DeleteObra from '@/components/Administrador/ObraAdmin/DeleteObra.vue'
 import AddObra from '@/components/Administrador/ObraAdmin/AddObra.vue'
 import PutInfoObra from '@/components/Administrador/ObraAdmin/PutInfoObra.vue'
 import PutImgObra from '@/components/Administrador/ObraAdmin/PutImgObra.vue'
-
-import urlStore from '@/store/urlApi';
-
-const baseUrl: string = urlStore.baseUrl;
+import { useObraInfo } from '@/store/obraInfo';
 
 interface Obra {
   obraId: number;
@@ -19,6 +16,7 @@ interface Obra {
   imagen: string;
 }
 
+const store = useObraInfo();
 const search = ref('');
 const obras = ref<Obra[]>([]);
 const responseMessage = ref('');
@@ -36,17 +34,19 @@ const headers = [
 
 const fetchObras = async () => {
   try {
-    const response = await fetch(`${baseUrl}/Obra`);
-    if (!response.ok) {
-      throw new Error('Fallo al obtener la lista de obras.');
-    }
-    const data = await response.json();
+
+    await store.listaObras();
+
+    const data = store.listaObra;
+    
     // Transformar la imagen de base64 a URL
     data.forEach((obra: Obra) => {
       obra.imagen = `data:image/jpeg;base64,${obra.imagen}`;
     });
+
     obras.value = data;
     tableKey.value += 1;
+
   } catch (error) {
     console.error(error);
     responseMessage.value = 'Ha ocurrido un error al obtener la lista de obras.';
@@ -109,16 +109,19 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
     width: 820px;
   }
 }
+
 @media screen and (max-width: 768px) {
   .v-data-table {
     width: 750px;
   }
 }
+
 @media screen and (max-width: 540px) {
   .v-data-table {
     width: 520px;
   }
 }
+
 @media screen and (max-width: 430px) {
   .v-data-table {
     width: 412px;

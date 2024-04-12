@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useObraInfo } from '@/store/obraInfo';
 import { onMounted } from 'vue';
+import { useObraInfo } from '@/store/obraInfo';
 
 const props = defineProps<{
     idObra: number;
@@ -17,7 +17,7 @@ onMounted(() => {
 
 <template>
     <div v-if="obra">
-        <h1>{{ obra.infoObra?.titulo }}</h1>
+        <h1>{{ obra.infoObra?.título }}</h1>
         <p>{{ obra.infoObra?.descripción }}</p>
     </div>
     <div v-else>

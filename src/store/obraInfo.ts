@@ -4,12 +4,14 @@ import urlStore from '@/store/urlApi';
 const baseUrl: string = urlStore.baseUrl;
 
 interface ObraInfo {
-    idObra: number;
-    titulo: string;
+    obraId: number;
+    genero: string;
+    título: string;
     precio: number;
-    descripción:string;
+    descripción: string;
     fechaHora: string;
     imagen: string;
+    precioEntrada: number;
 }
 
 const getImagenUrl = (imagenBytes: string) => {
@@ -34,7 +36,8 @@ export const useObraInfo = defineStore({
     state: () => ({
         infoObra: null as ObraInfo | null,
         generoEspecifico : [] as ObraInfo[],
-        resultadosBusqueda: [] as ObraInfo[]
+        resultadosBusqueda: [] as ObraInfo[],
+        listaObra: [] as ObraInfo[]
     }),
 
     actions: {
@@ -50,12 +53,14 @@ export const useObraInfo = defineStore({
                 const data = await response.json();
         
                 const infoObra = {
-                    idObra: data.obraId,
-                    titulo: data.título,
+                    obraId: data.obraId,
+                    genero: data.genero,
+                    título: data.título,
                     precio: data.precioEntrada,
                     descripción: data.descripción,
                     fechaHora: data.fechaHora,
-                    imagen: getImagenUrl(data.imagen)
+                    imagen: getImagenUrl(data.imagen),
+                    precioEntrada: data.precioEntrada
                 };
         
                 this.setObraInfo(infoObra);
@@ -80,6 +85,22 @@ export const useObraInfo = defineStore({
                 console.error('Error al obtener las obras:', error);
             }
         },
+        async listaObras () {
+            try {
+          
+              const response = await fetch(`${baseUrl}/Obra`);
+          
+              if (!response.ok) {
+                throw new Error('Fallo al obtener la lista de obras.');
+              }
+              const data = await response.json();
+          
+              this.listaObra = data;
+          
+            } catch (error) {
+              console.error(error);
+            }
+          },
         async searchObra(busqueda : string) {
             try {
                 const response = await fetch(`${baseUrl}/Obra/search?titulo=${busqueda}`);
@@ -90,6 +111,86 @@ export const useObraInfo = defineStore({
                 this.resultadosBusqueda = data;
             } catch (error) {
                 console.log(error);
+            }
+        },
+        async putInfoObra(obra : ObraInfo ) {
+            try {
+        
+                const response = await fetch(`${baseUrl}/Obra/info?id=${obra.obraId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(obra)
+                });
+        
+                if (!response.ok) {
+                    throw new Error('Fallo al actualizar la informacion.');
+                }
+        
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async putImgObra(obra : any ) {
+            try {
+        
+                const objetoPut = {
+                    obraId: obra.obraId,
+                    imagen: obra.imagen
+                }
+
+                const response = await fetch(`${baseUrl}/Obra/img?id=${obra.obraId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(objetoPut)
+                });
+        
+                if (!response.ok) {
+                    throw new Error('Fallo al actualizar la imagen.');
+                }
+        
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async deleteObra(idObra : number ) {
+            try {
+        
+                const response = await fetch(`${baseUrl}/Obra?id=${idObra}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+        
+                if (!response.ok) {
+                    throw new Error('Fallo al eliminar la obra.');
+                }
+        
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async addObra(obra : any ) {
+            try {
+        
+                const response = await fetch(`${baseUrl}/Obra`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(obra)
+                });
+        
+                if (!response.ok) {
+                    throw new Error('Fallo al crear la obra.');
+                }
+        
+            } catch (error) {
+                console.error(error);
             }
         },
         setObraInfo(infoObra: ObraInfo) {

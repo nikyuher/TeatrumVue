@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import urlStore from '@/store/urlApi';
+import { useObraInfo } from '@/store/obraInfo';
 
-const baseUrl: string = urlStore.baseUrl;
-
-interface ObraData {
+interface ObraInfo {
     genero: string;
     título: string;
     descripción: string;
@@ -14,14 +12,19 @@ interface ObraData {
 }
 
 const emits = defineEmits(['confirmacion']);
+const store = useObraInfo();
+
 const img = ref<File | null>(null);
 const genero = ref('');
-const dia = ref('');
+
 const titulo = ref('');
 const descri = ref('');
 const precio = ref(0);
+
+const dia = ref('');
 const hora = ref(0);
 const minuto = ref(0);
+
 const responseMessage = ref('');
 const imageDataUrl = ref<string | null>(null);
 
@@ -36,9 +39,9 @@ const generos = ['comedia', 'terror', 'drama', 'musical', 'tragedia']
 const horas = Array.from({ length: 24 }, (_, i) => i);
 const minutos = Array.from({ length: 60 }, (_, i) => i);
 
-const obra = async (confirmacion: boolean) => {
+const addObra = async (confirmacion: boolean) => {
     try {
-        let obraData: ObraData = {
+        let obraData: ObraInfo = {
             imagen: null,
             genero: genero.value,
             título: titulo.value,
@@ -55,17 +58,7 @@ const obra = async (confirmacion: boolean) => {
             };
         }
 
-        const response = await fetch(`${baseUrl}/Obra`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obraData)
-        });
-
-        if (!response.ok) {
-            throw new Error('Fallo al crear la obra.');
-        }
+        await store.addObra(obraData)
 
         genero.value = '';
         titulo.value = '';
@@ -141,7 +134,7 @@ const limitInput = () => {
         <template v-slot:default>
             <v-card title="Crear Obra">
                 <v-card-text>
-                    <form @submit.prevent="obra(true)">
+                    <form @submit.prevent="addObra(true)">
                         <label for="imagen">Imagen</label>
                         <input type="file" id="imagen" accept="image/*" @change="handleFileChange" required>
                         <div v-if="imageDataUrl">
