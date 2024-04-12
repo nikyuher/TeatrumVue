@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import urlStore from '@/store/urlApi';
+import { usarInfoUsuario } from '@/store/userInfo';
 import DeleteAdd from '@/components/Administrador/UserAdmin/DeleteUser.vue';
 import AdminAdd from '@/components/Administrador/UserAdmin/AddUser.vue';
 
-const baseUrl: string = urlStore.baseUrl;
 const search = ref<string>('');
 const tableKey = ref(0);
+const store = usarInfoUsuario();
 
 interface Usuario {
     usuarioId: number;
@@ -27,14 +27,9 @@ const headers = [
 
 const fetchUsuarios = async () => {
     try {
-        const response = await fetch(`${baseUrl}/Usuario`);
+        await store.listaUsers()
 
-        if (!response.ok) {
-            throw new Error('Fallo al obtener la lista de usuarios.');
-        }
-
-        const data = await response.json();
-        usuarios.value = data;
+        usuarios.value = store.listaUser;
         tableKey.value += 1;
     } catch (error) {
         console.error(error);

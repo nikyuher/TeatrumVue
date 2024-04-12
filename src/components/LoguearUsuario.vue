@@ -3,9 +3,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { usarInfoUsuario } from '@/store/userInfo';
-import urlStore from '@/store/urlApi';
 
-const baseUrl: string = urlStore.baseUrl;
 
 const store = usarInfoUsuario();
 
@@ -22,44 +20,21 @@ const login = async () => {
       contraseña: password.value
     };
 
-    const response = await fetch(`${baseUrl}/Usuario/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(login)
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Error al iniciar sesión.');
-    }
-
-    const userInfo = await response.json()
-
-    const infoUsuario = {
-      usuarioId: userInfo.usuarioId,
-      rol: userInfo.rol,
-      nombre: userInfo.nombre,
-      correoElectronico: userInfo.correoElectronico,
-      contraseña: userInfo.contraseña
-    }
-
-    store.setUserInfo(infoUsuario);
+    await store.loginUser(login)
 
     email.value = '';
     password.value = '';
 
     responseMessage.value = 'Inicio Sesion Correctamente.';
 
-    if (!infoUsuario.rol) {
+    if (!store.userInfo.rol) {
       router.push('/');
     } else {
       router.push('/admin')
     }
 
   } catch (error) {
-      if (error instanceof Error) {
+    if (error instanceof Error) {
       console.error(error);
 
       responseMessage.value = error.message || 'Error al Iniciar Sesion.';

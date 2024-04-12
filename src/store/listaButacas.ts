@@ -29,6 +29,7 @@ export const useInfoAsientos = defineStore('infoAsientos', {
 
       } catch (error) {
         console.error('Error al obtener la butaca:', error);
+        throw error;
       }
     },
     async listButacasObra(idObra: number) {
@@ -57,6 +58,7 @@ export const useInfoAsientos = defineStore('infoAsientos', {
 
       } catch (error) {
         console.log('Error al cargar las butacas', error)
+        throw error;
       }
     },
     async allButacas() {
@@ -69,6 +71,7 @@ export const useInfoAsientos = defineStore('infoAsientos', {
         this.setAsientos(data);
       } catch (error) {
         console.error(error);
+        throw error;
       }
     },
     async deleteButaca(butacaId: number) {
@@ -96,6 +99,7 @@ export const useInfoAsientos = defineStore('infoAsientos', {
       } catch (error) {
         console.error(error);
         throw new Error('Fallo al Eliminar Butaca.');
+        
       }
     },
     async addButaca(nombre: string, estado: boolean) {

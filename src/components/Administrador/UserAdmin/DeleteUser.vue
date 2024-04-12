@@ -1,32 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import urlStore from '@/store/urlApi';
+import { usarInfoUsuario } from '@/store/userInfo';
 
 const props = defineProps<{
-    idObra?: number;
+    idObra: number;
 }>();
 
 const emits = defineEmits(['confirmacion']);
-const baseUrl: string = urlStore.baseUrl;
 const responseMessage = ref('');
-
+const store = usarInfoUsuario();
 
 const deleteUser = async (confirmacion: boolean) => {
     try {
+        
         if (!props.idObra) {
             throw new Error('Por favor ingrese un ID de usuario válido.');
         }
 
-        const response = await fetch(`${baseUrl}/Usuario/${props.idObra}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Fallo al eliminar Usuario.');
-        }
+        await store.deleteUser(props.idObra)
 
         responseMessage.value = 'Eliminado Correctamente.';
 

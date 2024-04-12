@@ -67,6 +67,7 @@ export const useObraInfo = defineStore({
         
             } catch (error) {
                 console.error('Error al obtener la obra:', error);
+                throw error;
             }
         },
         async listaGeneros (genero : string ) {
@@ -83,6 +84,7 @@ export const useObraInfo = defineStore({
                 
             } catch (error) {
                 console.error('Error al obtener las obras:', error);
+                throw error;
             }
         },
         async listaObras () {
@@ -99,6 +101,7 @@ export const useObraInfo = defineStore({
           
             } catch (error) {
               console.error(error);
+              throw error;
             }
           },
         async searchObra(busqueda : string) {
@@ -111,6 +114,7 @@ export const useObraInfo = defineStore({
                 this.resultadosBusqueda = data;
             } catch (error) {
                 console.log(error);
+                throw error;
             }
         },
         async putInfoObra(obra : ObraInfo ) {
@@ -130,6 +134,7 @@ export const useObraInfo = defineStore({
         
             } catch (error) {
                 console.error(error);
+                throw error;
             }
         },
         async putImgObra(obra : any ) {
@@ -154,6 +159,7 @@ export const useObraInfo = defineStore({
         
             } catch (error) {
                 console.error(error);
+                throw error;
             }
         },
         async deleteObra(idObra : number ) {
@@ -172,6 +178,7 @@ export const useObraInfo = defineStore({
         
             } catch (error) {
                 console.error(error);
+                throw error;
             }
         },
         async addObra(obra : any ) {
@@ -191,6 +198,7 @@ export const useObraInfo = defineStore({
         
             } catch (error) {
                 console.error(error);
+                throw error;
             }
         },
         setObraInfo(infoObra: ObraInfo) {

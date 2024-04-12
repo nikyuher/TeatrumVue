@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import urlStore from '@/store/urlApi';
-
-const baseUrl: string = urlStore.baseUrl;
+import { usarInfoUsuario } from '@/store/userInfo';
 
 const emits = defineEmits(['confirmacion']);
+const store = usarInfoUsuario();
+
 const nombre = ref('');
 const email = ref('');
 const password = ref('');
@@ -57,18 +57,7 @@ const addUser = async (confirmacion: boolean) => {
             contraseña: password.value
         };
 
-        const response = await fetch(`${baseUrl}/Usuario/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(crear)
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Fallo al Crear al usuario.');
-        }
+        await store.addUser(crear)
 
         nombre.value = ''
         email.value = ''

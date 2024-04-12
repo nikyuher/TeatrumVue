@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { usarInfoUsuario } from '@/store/userInfo';
+
+const store = usarInfoUsuario();
 
 const username = ref('');
 const email = ref('');
 const password = ref('');
 const terminos = ref(false);
 const responseMessage = ref('');
-import urlStore from '@/store/urlApi';
 
-const baseUrl: string = urlStore.baseUrl;
 
 const validarEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -66,18 +67,8 @@ const registerUser = async () => {
     };
 
     try {
-        const response = await fetch(`${baseUrl}/Usuario/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        });
         
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Fallo al registrar al usuario.');
-        }
+        await store.addUser(userData)
 
         username.value = '';
         email.value = '';
@@ -85,6 +76,7 @@ const registerUser = async () => {
         terminos.value = false;
 
         responseMessage.value = 'Registrado Correctamente.';
+        
         setTimeout(() => {
             responseMessage.value = '';
         }, 2000);

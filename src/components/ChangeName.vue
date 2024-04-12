@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { usarInfoUsuario } from '@/store/userInfo';
-import urlStore from '@/store/urlApi';
 
-const baseUrl: string = urlStore.baseUrl;
 
 const nombre = ref<string>('');
 const correo = ref<string>('');
@@ -31,17 +29,7 @@ const UpdateUser = async () => {
         };
 
 
-        const response = await fetch(`${baseUrl}/Usuario/${idUsuario}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(update)
-        });
-
-        if (!response.ok) {
-            throw new Error('Fallo al Hacer cambios.');
-        }
+        await Usuario.changeUserInfo(update)
 
         const cambioExitoso = {
             usuarioId: idUsuario !== undefined ? idUsuario : 0,
@@ -50,16 +38,15 @@ const UpdateUser = async () => {
             correoElectronico: update.correoElectronico
         };
 
-        if (response.ok) {
-            Usuario.setUserInfo(cambioExitoso);
-            responseMessage.value = "Guardado Correctamente";
-            nombre.value = '';
-            correo.value = '';
-            contraseña.value = '';
-            setTimeout(() => {
-                responseMessage.value = '';
-            }, 2000);
-        }
+        Usuario.setUserInfo(cambioExitoso);
+        responseMessage.value = "Guardado Correctamente";
+        nombre.value = '';
+        correo.value = '';
+        contraseña.value = '';
+        setTimeout(() => {
+            responseMessage.value = '';
+        }, 2000);
+        
     } catch (error) {
         responseMessage.value = "El valor ya esta en Uso";
         setTimeout(() => {
