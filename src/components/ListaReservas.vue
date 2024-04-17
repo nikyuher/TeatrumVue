@@ -1,29 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import urlStore from '@/store/urlApi';
 import { usarInfoUsuario } from '@/store/userInfo';
+import { useReserva } from '@/store/reserva';
 import DeleteReserva from '@/components/ReservaDelete.vue';
 
 const Usuario = usarInfoUsuario();
 const idUsuario = Usuario.userInfo?.usuarioId
-const baseUrl: string = urlStore.baseUrl;
+const store = useReserva();
 const tableKey = ref(0);
 
-interface Reserva {
-    reservaId: number;
-    obra: {
-        título: string;
-        genero: string;
-        fechaHora: string;
-        precioEntrada: number;
-        imagen: string;
-    };
-    asiento: {
-        asientoId: number;
-        nombreAsiento: string;
-    };
-}
-const Reservas = ref<Reserva[]>([]);
+const Reservas = ref<any[]>([]);
 const headers = [
     { title: 'Imagen', value: 'obra.imagen' },
     { title: 'Título', value: 'obra.título' },
@@ -35,15 +21,9 @@ const headers = [
 const fetchReservas = async () => {
 
     try {
-        const response = await fetch(`${baseUrl}/Reserva/usuario?id=${idUsuario}`);
+        await store.listaReservas(idUsuario)
 
-        if (!response.ok) {
-            throw new Error("No se pudo obtener data");
-        }
-
-        const listReservas = await response.json();
-
-        Reservas.value = listReservas;
+        Reservas.value = store.listaReserva;
 
     } catch (error) {
         console.log(error)
@@ -81,7 +61,7 @@ const obtenerConfirmacion = (confirmacion: boolean) => {
 </script>
 
 <template>
-    <h2>Listado de Reservas</h2>
+    <h2>Listado de Reservas {{ idUsuario }}</h2>
     <v-data-table :key="tableKey" :headers="headers" :items="Reservas" item-key="reservaId">
         <template v-slot:item="{ item }">
             <tr>

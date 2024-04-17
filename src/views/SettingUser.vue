@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 import CerrarSesion from '@/components/CerrarSesion.vue';
 import ChangeName from '@/components/ChangeName.vue';
 import InfoUser from '@/components/InfoUser.vue';
 import Reservas from '@/components/ListaReservas.vue';
+import { usarInfoUsuario } from '@/store/userInfo';
+import  LoginView from '@/views/LoginView.vue';
+
+//Obtener Rol de usuiario
+const infoUsuario = usarInfoUsuario();
+
+const sesionIniciada = computed(() => {
+    return infoUsuario.userInfo !== null && infoUsuario.userInfo.usuarioId;
+});
 
 const vistaActual = ref<string>('info');
 
@@ -15,7 +24,8 @@ const mostrarView = (view: string) => {
 
 <template>
     <main>
-        <div class="navMobil">
+        <div v-if="sesionIniciada">
+            <div class="navMobil">
             <nav>
                 <ul>
                     <li @click="mostrarView('info')">Información</li>
@@ -54,6 +64,10 @@ const mostrarView = (view: string) => {
                     </div>
                 </section>
             </article>
+        </div>
+        </div>
+        <div v-else>
+              <LoginView></LoginView>
         </div>
     </main>
 </template>

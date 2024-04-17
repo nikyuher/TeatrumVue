@@ -5,13 +5,13 @@ import { usarInfoUsuario } from '@/store/userInfo';
 import { useObraInfo } from '@/store/obraInfo';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import urlStore from '@/store/urlApi';
-const router = useRouter();
+import { useReserva } from '@/store/reserva';
 
-const baseUrl: string = urlStore.baseUrl;
+const router = useRouter();
+const storeReserva = useReserva();
 
 const props = defineProps<{
-    idObra?: number;
+    idObra: number;
 }>();
 
 const idObraReal = props.idObra;
@@ -45,52 +45,31 @@ const eventoCompra = async () => {
             asientoId: butaca.asientoId
         }));
 
-        const response = await fetch(`${baseUrl}/Reserva`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(Reservas)
-        });
-
-        if (!response.ok) {
-            throw new Error('Fallo al Hacer la reserva');
-        }
+        await storeReserva.crearReserva(Reservas)
 
         const ocuparAsiento = Asientos.butacasSeleccionadas.map(butaca => ({
             obraId: idObraReal,
             asientoId: butaca.asientoId
         }));
 
+        await Asientos.crearButacaOcupada(ocuparAsiento)
 
-        const ocuparAsientoResponse = await fetch(`${baseUrl}/Asiento/ocupados`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(ocuparAsiento)
+        const nuevosAsientos = Asientos.asientos.map(asiento => {
+            if (nombreAsientos.value.includes(asiento.nombreAsiento)) {
+                return {
+                    ...asiento,
+                    estado: true
+                };
+            }
+            return asiento;
         });
 
-        if (!ocuparAsientoResponse.ok) {
-            throw new Error('Fallo al actualizar el estado del asiento.');
-        } else {
+        Asientos.setAsientos(nuevosAsientos);
+        Asientos.butacasSeleccionadas = [];
+        setTimeout(() => {
+            router.push('/catalogo');
+        }, 1000);
 
-            const nuevosAsientos = Asientos.asientos.map(asiento => {
-                if (nombreAsientos.value.includes(asiento.nombreAsiento)) {
-                    return {
-                        ...asiento,
-                        estado: true
-                    };
-                }
-                return asiento;
-            });
-
-            Asientos.setAsientos(nuevosAsientos);
-            Asientos.butacasSeleccionadas = [];
-            setTimeout(() => {
-                router.push('/catalogo');
-            }, 1000);
-        }
 
 
     } catch (error) {
@@ -160,8 +139,7 @@ const formatearFechaHora = (fechaHora: string | undefined): string => {
 </template>
 
 <style scoped>
-
-.text-color{
+.text-color {
     color: rgb(255, 255, 255);
     text-decoration: none;
 }

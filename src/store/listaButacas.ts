@@ -130,6 +130,25 @@ export const useInfoAsientos = defineStore('infoAsientos', {
         throw new Error('Ha ocurrido un Error al Crear Butaca Pinia.');
       }
     },
+    async crearButacaOcupada(ocuparAsiento: any) {
+      try {
+        const ocuparAsientoResponse = await fetch(`${baseUrl}/Asiento/ocupados`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(ocuparAsiento)
+      });
+
+      if (!ocuparAsientoResponse.ok) {
+          throw new Error('Fallo al actualizar el estado del asiento.');
+      }
+
+      } catch (error) {
+        console.error(error);
+        throw new Error('Fallo al actualizar el estado del asiento.');
+      }
+    },
     butacaSelecionada(butaca: any) {
       const index = this.butacasSeleccionadas.findIndex(b => b.asientoId === butaca.asientoId);
       if (index === -1) {

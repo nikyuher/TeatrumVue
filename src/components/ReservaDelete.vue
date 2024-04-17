@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import urlStore from '@/store/urlApi';
+import { useReserva } from '@/store/reserva';
 
 const props = defineProps<{
     idReserva: number;
 }>();
 
 const emits = defineEmits(['confirmacion']);
-const baseUrl: string = urlStore.baseUrl;
+const store = useReserva();
 
 const responseMessage = ref('');
 
@@ -20,17 +20,7 @@ const deleteReserva = async (confirmacion: boolean) => {
             throw new Error('Error con la Optencion del ID.');
         }
 
-        const response = await fetch(`${baseUrl}/Reserva?id=${props.idReserva}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            responseMessage.value = 'Error del Servidor'
-            throw new Error('Error del Servidor');
-        }
+        await store.deleteReserva(props.idReserva)
 
         responseMessage.value = 'Eliminado Correctamente.';
 
