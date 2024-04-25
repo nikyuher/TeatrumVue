@@ -61,8 +61,7 @@ const mostrarView = (view: string) => {
             </div>
         </div>
         <div class="contenedorError" v-else>
-            <v-empty-state headline="Whoops, 404" title="Page not found"
-                text="Parece que no tienes Accseso a esta pestaña"
+            <v-empty-state headline="Whoops" title="Parece que no tienes Accseso a esta pestaña"
                 image="https://vuetifyjs.b-cdn.net/docs/images/components/v-empty-state/astro-cat.svg">
             </v-empty-state>
         </div>
