@@ -46,7 +46,7 @@ const ocultarDesplegable = () => {
     store.resultadosBusqueda = [];
     setTimeout(() => {
         window.location.reload();
-    }, 100);
+    }, 200);
 
 }
 

@@ -83,6 +83,8 @@ export const usarInfoUsuario = defineStore({
 
         this.userInfo = infoUsuario
 
+        this.setUserInfo(infoUsuario)
+
       } catch (error) {
         console.error(error);
         throw error;
@@ -134,6 +136,11 @@ export const usarInfoUsuario = defineStore({
       if (userInfo) {
         this.userInfo = JSON.parse(userInfo);
       }
+    }
+  },
+  getters: {
+    isAdmin: (state) => {
+      return state.userInfo?.rol || false;
     }
   }
 });

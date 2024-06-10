@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { usarInfoUsuario } from '@/store/userInfo';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,13 +49,29 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      name: 'cataadminlogo',
-      component: () => import('../views/AdminView.vue')
+      name: 'admin',
+      component: () => import('../views/AdminView.vue'),
+      beforeEnter: (to, from, next) => {
+        const userInfoStore = usarInfoUsuario();
+        if (userInfoStore.isAdmin) {
+          next();
+        } else {
+          next('/');
+        }
+      }
     },
     {
       path: '/setting',
       name: 'setting',
-      component: () => import('../views/SettingUser.vue')
+      component: () => import('../views/SettingUser.vue'),
+      beforeEnter: (to, from, next) => {
+        const userInfoStore = usarInfoUsuario();
+        if (userInfoStore.userInfo) { 
+          next();
+        } else {
+          next('/login');
+        }
+      }
     }
   ]
 })
